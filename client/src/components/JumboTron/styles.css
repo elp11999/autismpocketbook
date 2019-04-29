@@ -1,0 +1,9 @@
+/*
+** CSS for the JumboTron UI component
+*/
+.jumbotron {
+    height: 300px; 
+    clear: both; 
+    padding-top: 80px; 
+    text-align: center;
+}

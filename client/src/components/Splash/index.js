@@ -1,5 +1,5 @@
 //
-// NavBar UI Component
+// Splash UI Component
 //
 // index.js
 //
@@ -11,7 +11,7 @@ import React from "react";
 import './styles.css';
 
 // Function to construct the NavBar component of the UI
-function Home(props) {
+function Splash(props) {
     //console.log(props);
     return (
         <div className="home-header">
@@ -23,5 +23,5 @@ function Home(props) {
     );
 }
 
-// Export the NavBar UI component
-export default Home;
+// Export the Splash UI component
+export default Splash;

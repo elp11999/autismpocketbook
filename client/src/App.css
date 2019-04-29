@@ -78,3 +78,13 @@ table {
   clear: both;
   *zoom: 1;
 }
+
+/*
+** Custom CSS
+*/
+h1 {
+	font-size: 40px;
+	font-family: "Arial";
+	font-weight: 900;
+	margin: 5px; 
+}
