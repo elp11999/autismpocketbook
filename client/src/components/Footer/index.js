@@ -16,7 +16,7 @@ function Footer(props) {
         <footer className="page-footer font-small special-color-dark pt-4">  
             <div className="container"> 
               <div className="row"> 
-                <div className="col-md-12 py-3">
+                <div className="col-md-12 py-2">
                   <div className="text-center">
                     <a className="fb-ic" href="/">
                       <i className="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
