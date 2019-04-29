@@ -1,0 +1,40 @@
+/*
+** CSS for the Home component
+*/
+.home-header {
+    position: relative;
+}
+
+.home-header-image {
+    width: 100%;
+    max-width: 100%;
+}
+
+.home-header-text {
+    position: absolute;
+    top: 80px;
+    left: 40px;
+    max-width: 60%;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 50px;
+    line-height: 1.5;
+}
+
+@media only screen and (max-width: 1240px) {
+    .home-header-text { 
+        font-size: 40px;
+    }
+}
+
+@media only screen and (max-width: 940px) {
+    .home-header-text { 
+        font-size: 35px;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .home-header-text { 
+        font-size: 30px;
+    }
+}

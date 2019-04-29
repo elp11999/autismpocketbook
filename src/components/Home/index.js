@@ -6,16 +6,19 @@
 
 // Import the React library
 import React from "react";
-//import './styles.css';
 
-// Import the CSS for the NavBar component
+// Import the CSS for the Home component
+import './styles.css';
 
 // Function to construct the NavBar component of the UI
 function Home(props) {
     //console.log(props);
     return (
-        <div>
-            <img src="https://www.autismspeaks.org/sites/default/files/styles/hero_tablet/public/Leonardo_hero_2.jpg?h=239e4b0a&itok=t2whwMJQ" alt="pic"></img>
+        <div className="home-header">
+            <img className="home-header-image" src="/home.jpg" alt="pic"></img>
+            <h1 className="home-header-text">
+                Using the Autism Pocketbook will make it possible to gain insight into what triggers behaviors and can assist families into developing strategies for their children.
+            </h1>
         </div>
     );
 }
