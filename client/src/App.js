@@ -7,6 +7,8 @@ import Usage from './pages/Usage';
 import Reports from './pages/Reports';
 import Resources from './pages/Resources';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
+import AddChild from './pages/AddChild';
 import NoMatch from "./pages/NoMatch";
 import './App.css';
 
@@ -21,6 +23,8 @@ function App() {
           <Route exact path="/reports" component={Reports} />
           <Route exact path="/resources" component={Resources} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/addc" component={AddChild} />
           <Route component={NoMatch} />
         </Switch>
         <Footer />

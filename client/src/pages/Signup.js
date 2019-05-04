@@ -1,7 +1,7 @@
 //
-// Login page
+// Signup page
 //
-// Login.js
+// Signup.js
 //
 
 // Import the React library
@@ -9,9 +9,6 @@ import React from "react";
 
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-
-// Import the Splash component
-//import Splash from "../components/Splash";
 
 const styles = {
     header: {
@@ -65,26 +62,24 @@ const styles = {
         padding: 10,
         borderRadius: 5,
         width: "100%"
-    },
-    signup : {
-      float: "right",
-      color: "blue"
     }
   }
 
 // Function to construct Login page of the UI
-class Login extends React.Component {
+class Signup extends React.Component {
   render = () => {
 
     return (
       <React.Fragment>
         
-        <p style={styles.header}>Sign in to Autism Pocket Book</p>         
+        <p style={styles.header}>Create account with Autism Pocket Book</p>         
         <div style={styles.container}>
             <Formik
-                initialValues={{ email: '', password: '' }}
+                initialValues={{ username: '', email: '', password: '' }}
                 validate={values => {
                     let errors = {};
+                    if (!values.username)
+                        errors.username = 'Username required';
                     if (!values.email) {
                         errors.email = 'Email required';
                     } else if (
@@ -108,6 +103,12 @@ class Login extends React.Component {
                     <div>
                         <Form>
                             <div>
+                                <label style={styles.label} htmlFor="username">User name</label>
+                            </div>
+                            <Field style={styles.field} type="username" name="username" />
+                            <ErrorMessage style={styles.errorMessage} name="username" component="div" />
+
+                            <div>
                                 <label style={styles.label} htmlFor="email">Email address</label>
                             </div>
                             <Field style={styles.field} type="email" name="email" />
@@ -115,25 +116,20 @@ class Login extends React.Component {
 
                             <div>
                                 <label  style={styles.label} htmlFor="password">Password</label>
-                                <a style={styles.signup} href="/signup">Forgot password?</a>
                             </div>
                             <Field style={styles.field} type="password" name="password" />
                             <ErrorMessage style={styles.errorMessage} name="password" component="div" />
                             <br />
-                            <button style={styles.button} type="submit" disabled={isSubmitting}>Sign in</button>
+                            <button style={styles.button} type="submit" disabled={isSubmitting}>Create account</button>
                         </Form>
                     </div>
                 )}
             </Formik>
-        </div>
-        <div style={styles.container}>
-          <span>New to Autism Pocket Book?</span>
-          <a style={styles.signup} href="/signup">Create Account.</a>
         </div>
       </React.Fragment> 
     );
   }
 }
 
-// Export the Login UI page
-export default Login;
+// Export the Signup UI page
+export default Signup;
