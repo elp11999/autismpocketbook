@@ -98,9 +98,8 @@ class Login extends React.Component {
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
+                    console.log(JSON.stringify(values, null, 2));
                     setSubmitting(false);
-                    this.toggleModal();
                     }, 400);
                 }}
                 >

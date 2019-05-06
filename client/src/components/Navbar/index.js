@@ -15,7 +15,7 @@ function NavBar(props) {
     //console.log(props);
     return (
         <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
-            <a class="navbar-brand" href="/"> 
+            <a className="navbar-brand" href="/"> 
                 <img id="nav-bar-image" alt="logo" src="/autism.jpg"></img>
                 <span className="navbar-bar-text">Autism Pocket Book</span>
             </a> 
