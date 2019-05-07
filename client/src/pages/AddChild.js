@@ -10,6 +10,8 @@ import React from "react";
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+import Modal from "../components/Modal";
+
 const styles = {
     header: {
       fontSize: "2rem",
@@ -119,20 +121,55 @@ const styles = {
         padding: 10,
         borderRadius: 5,
         width: "100%"
+    },
+    levelheader: {
+        fontWeight: 700
     }
   }
 
+const levels = [
+    {
+        heading: "Level 1: Requiring Support",
+        social: "An individual with this diagnosis will have deficits in social communication that cause them noticeable impairments.  They show difficulties with starting social interactions and have difficulties with properly interacting with peers.   They will likely be verbal, but could have difficulties with using language in a proper manner.",
+        behavior: "An individual with this diagnosis will have repetitive type behaviors and routines/rituals that interfere with day-to-day life. This can include things such as difficulty with transitions and inflexible behaviors."
+    },
+    {
+        heading: "Level 2: Requiring Substantial Support",
+        social: "Social: An individual with this diagnosis will have deficits in social communication, that will include both verbal and nonverbal.  These impairments are noticeable even with extra supports in place for the individual.  The individual will have difficulties with starting social interactions and have difficulties with properly interacting with peers.",
+        behavior: "An individual with this diagnosis will have repetitive type behaviors and routines/rituals that interfere with day-to-day life.  This can include things such as difficulty with transitions and inflexible behaviors.  These behaviors will however be frequent enough to be noticed by those around them.  When these behaviors are interrupted, the individual will become frustrated and have difficulty with being redirected from the item of interest."
+    },
+    {
+        heading: "Level 3: Requiring Very Substantial Support",
+        social: "An individual with this diagnosis will have severe deficits in social communication, that will include both verbal and nonverbal communication.  This causes severe limitations in social interactions with others and will have very little response to social interactions from others.",
+        behavior: "An individual with this diagnosis will have inflexible behaviors, very restrictive routines/rituals, extreme difficulty change and transitions, or other restricted behaviors that severely interfere with functioning in all areas. The individual will have extreme difficulty with being redirected from an item of interest."
+    }
+];
+
 // Function to construct Login page of the UI
 class AddChild extends React.Component {
+    state = {
+        showModal: false,
+        level: 0,
+    }
+    toggleModal = () => {
+        this.setState({ showModal: !this.state.showModal});
+    }
   
-    handleClick (event) {
-        console.log("handleClick entered... value=" + event.target.id);
+    handleClick = (event) =>{
+        console.log("handleClick entered... id=" + event.target.id);
+        this.setState({ level: event.target.id, showModal: true});
     }
 
     render = () => {
 
         return (
             <React.Fragment>
+            <Modal heading={levels[this.state.level].heading} open={this.state.showModal} onClose={this.toggleModal}>
+                <br></br>
+                <p><span style={styles.levelheader}>Social: </span><span>{levels[this.state.level].social}</span></p>
+                <br></br>
+                <p><span style={styles.levelheader}>Behavior/Interest: </span><span>{levels[this.state.level].behavior}</span></p>
+            </Modal>
             
             <p style={styles.header}>Add a child</p>         
             <div style={styles.container}>
@@ -330,12 +367,12 @@ class AddChild extends React.Component {
                                         <label style={styles.rlabel}>
                                             <input style={styles.radio}
                                                 name="autsimlevel"
-                                                id="autsimlevel1"
+                                                id="0"
                                                 type="radio"
                                                 value="Level 1"
                                                 onClick={this.handleClick}
                                             />
-                                            Level 1: Requiring Support Socialx
+                                            Level 1: Requiring Support Social
                                         </label>
                                     </div>
 
@@ -343,9 +380,10 @@ class AddChild extends React.Component {
                                         <label style={styles.rlabel}>
                                             <input style={styles.radio}
                                                 name="autsimlevel"
-                                                id="autsimlevel2"
+                                                id="1"
                                                 type="radio"
                                                 value="level 2"
+                                                onClick={this.handleClick}
                                             />
                                             Level 2: Requiring Substantial Support Social
                                         </label>
@@ -355,9 +393,10 @@ class AddChild extends React.Component {
                                         <label style={styles.rlabel}>
                                             <input style={styles.radio}
                                                 name="autsimlevel"
-                                                id="autsimlevel3"
+                                                id="2"
                                                 type="radio"
                                                 value="Level 3"
+                                                onClick={this.handleClick}
                                             />
                                             Level 3: Requiring Very Substantial Support Social
                                         </label>

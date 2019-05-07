@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AddChild from './pages/AddChild';
 import NoMatch from "./pages/NoMatch";
+import DashBoard from './pages/DashBoard';
 import './App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/addc" component={AddChild} />
+          <Route exact path="/dashboard" component={DashBoard} />
           <Route component={NoMatch} />
         </Switch>
         <Footer />
