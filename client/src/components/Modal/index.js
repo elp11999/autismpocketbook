@@ -35,7 +35,6 @@ const styles = {
 }
 
 const Modal = ({heading, children, onClose, open }) => {
-    console.log("open=" + open);
     return(
         open
         ? ReactDOM.createPortal(
