@@ -42,6 +42,7 @@ class Calendar extends React.Component {
   calendarComponentRef = React.createRef();
 
   state = {
+    value: "",
     showModal: false,
     clickFunction: this.handleDateClick,
     level: 0,
@@ -61,9 +62,11 @@ class Calendar extends React.Component {
   };
 
   toggleModal = () => {
+      console.log("toggleModal=" , this.state.showModal);
       this.setState({ showModal: !this.state.showModal});
-      console.log("We are here showModal=" + this.state.showModal);
-      if (this.state.showModal) {
+      console.log("toggleModal=" , this.state.showModal);
+      if (this.state.showModal === false) {
+        console.log("toggleModal: Adding new calendar data");
         this.setState({
           // add new event data
           calendarEvents: this.state.calendarEvents.concat({
@@ -86,6 +89,11 @@ class Calendar extends React.Component {
     this.setState({ start: arg.date}); 
     this.setState({ allDay: arg.allDay}); 
   }
+
+  handleOnChange = (event) => {
+     this.setState({value: event.target.value});
+  }
+
 
 /*
         <div className="demo-app-top">
@@ -190,7 +198,7 @@ class Calendar extends React.Component {
 
                 <div>
                   <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="notes">Notes:</label>
-                  <textarea rows="5" cols="50" style={styles.notesarea} value="Sam is having a great day!!!" name="notes"></textarea>
+                  <textarea onChange={this.handleOnChange} rows="5" cols="50" style={styles.notesarea} value="Sam is having a great day!!!" name="notes"></textarea>
                 </div>
 
               </Form>
