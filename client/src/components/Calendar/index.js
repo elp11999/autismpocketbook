@@ -62,30 +62,30 @@ class Calendar extends React.Component {
 
   toggleModal = () => {
       this.setState({ showModal: !this.state.showModal});
+      console.log("We are here showModal=" + this.state.showModal);
+      if (this.state.showModal) {
+        this.setState({
+          // add new event data
+          calendarEvents: this.state.calendarEvents.concat({
+            // creates a new array
+            title:  "New Note",
+            start: this.state.start,
+            allDay: this.state.allDay
+          })
+        });
+      }
+  }
+
+  handleEventClick = (arg) => {
+    console.log("handleEventClick" , arg);
   }
 
   handleDateClick = (arg) => {
-    console.log("handleDateClick!!!!");
     this.toggleModal();
-    if (this.state.showModal) {
-      console.log(arg);
-      this.setState({ title: "New Note"});  
-      this.setState({ start: arg.date}); 
-      this.setState({ allDay: arg.allDay});  
-      this.setState({ plugins: [dayGridPlugin, timeGridPlugin]}); 
-    } else { 
-      this.setState({ plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin]});  
-      this.setState({
-        // add new event data
-        calendarEvents: this.state.calendarEvents.concat({
-          // creates a new array
-          title: this.state.title,
-          start: this.state.start,
-          allDay: this.state.allDay
-        })
-      });
-    }
-  };
+    this.setState({ title: "New Note"});  
+    this.setState({ start: arg.date}); 
+    this.setState({ allDay: arg.allDay}); 
+  }
 
 /*
         <div className="demo-app-top">
@@ -113,6 +113,7 @@ class Calendar extends React.Component {
               weekends={this.state.calendarWeekends}
               events={this.state.calendarEvents}
               dateClick={this.handleDateClick}
+              eventClick={this.handleEventClick}
             />
           </div>
         </div>

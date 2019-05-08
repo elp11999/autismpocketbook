@@ -22,7 +22,8 @@ const styles = {
       borderRadius: 8,
       padding: 20,
       maxWidth: 600,
-      transform: "translate(-50%, -50%)"
+      transform: "translate(-50%, -50%)",
+      zIndex: 1
     },
     closeButton: {
       fontSize: "1rem",
