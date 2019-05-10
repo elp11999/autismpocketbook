@@ -180,11 +180,6 @@ const Notes = ({heading, onCancel, onSave, onChange, open }) => {
 
 class Notes extends React.Component {
 
-    state = {
-      value: "",
-      mood: "Calm"
-    };
-
     render() {
       return ( 
         this.props.open
