@@ -6,6 +6,8 @@
 
 // Load Express libray
 const express = require("express");
+// Load Cookie parser library
+const cookieParser = require('cookie-parser');
 
 // Load Mongoose library
 const mongoose = require("mongoose");
@@ -16,6 +18,7 @@ const app = express();
 // Setup Express Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Setup location of static html content
 if (process.env.NODE_ENV === "production") {

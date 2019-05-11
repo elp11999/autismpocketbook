@@ -4,17 +4,17 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
+    "@fullcalendar/daygrid": "4.0.1",
+    "@fullcalendar/interaction": "4.0.2",
+    "@fullcalendar/react": "4.0.2-beta",
+    "@fullcalendar/timegrid": "4.0.1",
     "axios": "^0.18.0",
     "formik": "^1.5.4",
     "gh-pages": "^2.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.0",
-    "@fullcalendar/daygrid": "4.0.1",
-    "@fullcalendar/interaction": "4.0.2",
-    "@fullcalendar/react": "4.0.2-beta",
-    "@fullcalendar/timegrid": "4.0.1"
+    "react-scripts": "3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

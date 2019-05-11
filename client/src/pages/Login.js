@@ -10,6 +10,12 @@ import React from "react";
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+// Import DashBoard UI Component
+import DashBoard from "./DashBoard";
+
+// Import the API library
+import API from "../utils/API";
+
 // Import the Splash component
 //import Splash from "../components/Splash";
 
@@ -74,63 +80,88 @@ const styles = {
 
 // Function to construct Login page of the UI
 class Login extends React.Component {
+    
+  state = {
+      showDashBoard: false
+  }
+
   render = () => {
+    if (this.state.showDashBoard === true) {            
+        return (
+            <React.Fragment>
+                <DashBoard />
+            </React.Fragment>
+        );
+    } else {
+      return (
+        <React.Fragment>
+          
+          <p style={styles.header}>Sign in to Autism Pocket Book</p>         
+          <div style={styles.container}>
+              <Formik
+                  initialValues={{ email: '', password: '' }}
+                  validate={values => {
+                      let errors = {};
+                      if (!values.email) {
+                          errors.email = 'Email required';
+                      } else if (
+                          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                      ) {
+                          errors.email = 'Invalid email address';
+                      }
+                      if (!values.password)
+                          errors.password = 'Password required';
+                      return errors;
+                  }}
+                  onSubmit={(values, { setSubmitting }) => {
+                      setTimeout(() => {
+                      console.log(JSON.stringify(values, null, 2));
+                      setSubmitting(false);                                     
 
-    return (
-      <React.Fragment>
-        
-        <p style={styles.header}>Sign in to Autism Pocket Book</p>         
-        <div style={styles.container}>
-            <Formik
-                initialValues={{ email: '', password: '' }}
-                validate={values => {
-                    let errors = {};
-                    if (!values.email) {
-                        errors.email = 'Email required';
-                    } else if (
-                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                    ) {
-                        errors.email = 'Invalid email address';
-                    }
-                    if (!values.password)
-                        errors.password = 'Password required';
-                    return errors;
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                    console.log(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                    }, 400);
-                }}
-                >
-                {({ isSubmitting }) => (
-                    <div>
-                        <Form>
-                            <div>
-                                <label style={styles.label} htmlFor="email">Email address</label>
-                            </div>
-                            <Field style={styles.field} type="email" name="email" />
-                            <ErrorMessage style={styles.errorMessage} name="email" component="div" />
+                        // Authenticate user
+                        API.authenticateUser(values)
+                        .then(res =>  {
+                            console.log(this.props);
+                            console.log(res.data); 
+                            console.log("Good to go!!!");
+                            this.props.history.push("/dashboard");
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
 
-                            <div>
-                                <label  style={styles.label} htmlFor="password">Password</label>
-                                <a style={styles.signup} href="/signup">Forgot password?</a>
-                            </div>
-                            <Field style={styles.field} type="password" name="password" />
-                            <ErrorMessage style={styles.errorMessage} name="password" component="div" />
-                            <br />
-                            <button style={styles.button} type="submit" disabled={isSubmitting}>Sign in</button>
-                        </Form>
-                    </div>
-                )}
-            </Formik>
-        </div>
-        <div style={styles.container}>
-          <span>New to Autism Pocket Book?</span>
-          <a style={styles.signup} href="/signup">Create Account.</a>
-        </div>
-      </React.Fragment> 
-    );
+                      }, 400);
+                  }}
+                  >
+                  {({ isSubmitting }) => (
+                      <div>
+                          <Form>
+                              <div>
+                                  <label style={styles.label} htmlFor="email">Email address</label>
+                              </div>
+                              <Field style={styles.field} type="email" name="email" />
+                              <ErrorMessage style={styles.errorMessage} name="email" component="div" />
+
+                              <div>
+                                  <label  style={styles.label} htmlFor="password">Password</label>
+                                  <a style={styles.signup} href="/signup">Forgot password?</a>
+                              </div>
+                              <Field style={styles.field} type="password" name="password" />
+                              <ErrorMessage style={styles.errorMessage} name="password" component="div" />
+                              <br />
+                              <button style={styles.button} type="submit" disabled={isSubmitting}>Sign in</button>
+                          </Form>
+                      </div>
+                  )}
+              </Formik>
+          </div>
+          <div style={styles.container}>
+            <span>New to Autism Pocket Book?</span>
+            <a style={styles.signup} href="/signup">Create Account.</a>
+          </div>
+        </React.Fragment> 
+      );
+    }
   }
 }
 

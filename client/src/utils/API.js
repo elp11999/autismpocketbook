@@ -27,5 +27,13 @@ export default {
   // Saves a note to the database
   saveNote: function(noteData) {
     return axios.post("/api/note", noteData);
+  },
+  // Authenticate user
+  authenticateUser: function(userData) {
+    return axios.post("/api/authenticate", userData);
+  },
+  // Authenticate user
+  authenticate: function() {
+    return axios.get("/api/authenticate");
   }
 };
