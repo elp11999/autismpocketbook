@@ -1,15 +1,5 @@
 //
-// Google search books application
-//
-// This NodeJS Application is a React-based Google Books Search application.
-//
-// Users can search for books via the Google Books API and render them here.
-// Users have the option to "View" a book, bringing them to the book on Google Books,
-// or "Save" a book, saving it to the Mongo database.
-// 
-// Users can also see all books saved to the Mongo database. Users have an option to
-// "View" the book, bringing them to the book on Google Books, or "Delete" a book,
-// removing it from the Mongo database.
+// Autism Notebook application
 //
 // server.js - Entry point to the Google Search Book application
 //
@@ -33,7 +23,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Load API Routes library
-//require("./routes/apiRoutes")(app);
+require("./routes/apiRoutes")(app);
 
 // Set port to listen on
 const PORT = process.env.PORT || 3001;

@@ -11,6 +11,9 @@ import ReactDOM from "react-dom";
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+// Import the API library
+import API from "../../utils/API";
+
 // Inline styles for the Notes component
 const styles = {
     nav: {
@@ -188,12 +191,12 @@ class Notes extends React.Component {
                 <div style={styles.nav}><h1 style={styles.h1}>{this.props.heading}</h1></div>
                 <Formik
                     initialValues={{ mood: 'Happy', 
-                                    sleep: '', 
-                                    nutrition: '', 
-                                    behavior: '', 
-                                    sensoryregulation: "",
-                                    exercise: "",
-                                    weather: "",
+                                    sleep: 'Well Rested', 
+                                    nutrition: 'Full Meals/Balanced Diet', 
+                                    behavior: 'No issues', 
+                                    sensoryregulation: "High",
+                                    exercise: "High",
+                                    weather: "Sunny",
                                     notes: "",
                                     }}
                     validate={values => {
@@ -203,8 +206,18 @@ class Notes extends React.Component {
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                         console.log(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                        this.props.onSave();
+                        setSubmitting(false);                   
+
+                        // Save Note to database
+                        API.saveNote(values)
+                        .then(res =>  {
+                            console.log(res.data);
+                            this.props.onSave();
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+
                         }, 400);
                     }}
                     >
