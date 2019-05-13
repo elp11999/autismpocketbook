@@ -93,6 +93,20 @@ module.exports = function(app) {
         });
     });
 
+    // Route to get all child notes from database
+    app.get("/api/getnotes", function(req, res) {
+        db.Note.find({})
+          .then(function(dbNotes) {
+            // Send books to client
+            res.json(dbNotes);
+          })
+          .catch(function(err) {
+            console.log("Find failed: " + err);
+            // Send error to client 
+            res.json(err);
+          });
+    });    
+
     // Use default react app if no api routes
     app.use(function(req, res){
       res.sendFile(path.join(__dirname, "../client/build/index.html"));

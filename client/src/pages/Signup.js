@@ -10,9 +10,6 @@ import React from "react";
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-// Import AddChild UI Component
-import AddChild from "./AddChild";
-
 // Import the API library
 import API from "../utils/API";
 
@@ -74,89 +71,75 @@ const styles = {
 // Function to construct Login page of the UI
 class Signup extends React.Component {
 
-    state = {
-      showAddChild: false,
-    };
-
     render = () => {
+        return (
+            <React.Fragment>
         
-        if (this.state.showAddChild === true) {            
-            return (
-                <React.Fragment>
-                    <AddChild />
-                </React.Fragment>
-            );
-        }
-        else {
-            return (
-                <React.Fragment>
-            
-                    <p style={styles.header}>Create account with Autism Pocket Book</p>         
-                    <div style={styles.container}>
-                        <Formik
-                            initialValues={{ username: '', email: '', password: '' }}
-                            validate={values => {
-                                let errors = {};
-                                if (!values.username)
-                                    errors.username = 'Username required';
-                                if (!values.email) {
-                                    errors.email = 'Email required';
-                                } else if (
-                                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                                ) {
-                                    errors.email = 'Invalid email address';
-                                }
-                                if (!values.password)
-                                    errors.password = 'Password required';
-                                return errors;
-                            }}
-                            onSubmit={(values, { setSubmitting }) => {
-                                setTimeout(() => {
-                                console.log(JSON.stringify(values, null, 2));
-                                setSubmitting(false);                    
+                <p style={styles.header}>Create account with Autism Pocket Book</p>         
+                <div style={styles.container}>
+                    <Formik
+                        initialValues={{ username: '', email: '', password: '' }}
+                        validate={values => {
+                            let errors = {};
+                            if (!values.username)
+                                errors.username = 'Username required';
+                            if (!values.email) {
+                                errors.email = 'Email required';
+                            } else if (
+                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                            ) {
+                                errors.email = 'Invalid email address';
+                            }
+                            if (!values.password)
+                                errors.password = 'Password required';
+                            return errors;
+                        }}
+                        onSubmit={(values, { setSubmitting }) => {
+                            setTimeout(() => {
+                            console.log(JSON.stringify(values, null, 2));
+                            setSubmitting(false);                    
 
-                                // Save parent to database
-                                API.saveParent(values)
-                                .then(res =>  {
-                                    console.log(res.data);
-                                    this.setState({showAddChild: true});
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                });
-                                }, 400);
-                            }}
-                            >
-                            {({ isSubmitting }) => (
-                                <div>
-                                    <Form>
-                                        <div>
-                                            <label style={styles.label} htmlFor="username">User name</label>
-                                        </div>
-                                        <Field style={styles.field} type="username" name="username" />
-                                        <ErrorMessage style={styles.errorMessage} name="username" component="div" />
+                            // Save parent to database
+                            API.saveParent(values)
+                            .then(res =>  {
+                                console.log(res.data);
+                                this.props.history.push("/addc");
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            });
+                            }, 400);
+                        }}
+                        >
+                        {({ isSubmitting }) => (
+                            <div>
+                                <Form>
+                                    <div>
+                                        <label style={styles.label} htmlFor="username">User name</label>
+                                    </div>
+                                    <Field style={styles.field} type="username" name="username" />
+                                    <ErrorMessage style={styles.errorMessage} name="username" component="div" />
 
-                                        <div>
-                                            <label style={styles.label} htmlFor="email">Email address</label>
-                                        </div>
-                                        <Field style={styles.field} type="email" name="email" />
-                                        <ErrorMessage style={styles.errorMessage} name="email" component="div" />
+                                    <div>
+                                        <label style={styles.label} htmlFor="email">Email address</label>
+                                    </div>
+                                    <Field style={styles.field} type="email" name="email" />
+                                    <ErrorMessage style={styles.errorMessage} name="email" component="div" />
 
-                                        <div>
-                                            <label  style={styles.label} htmlFor="password">Password</label>
-                                        </div>
-                                        <Field style={styles.field} type="password" name="password" />
-                                        <ErrorMessage style={styles.errorMessage} name="password" component="div" />
-                                        <br />
-                                        <button style={styles.button} type="submit" disabled={isSubmitting}>Create account</button>
-                                    </Form>
-                                </div>
-                            )}
-                        </Formik>
-                    </div>
-                </React.Fragment> 
-            );
-        }
+                                    <div>
+                                        <label  style={styles.label} htmlFor="password">Password</label>
+                                    </div>
+                                    <Field style={styles.field} type="password" name="password" />
+                                    <ErrorMessage style={styles.errorMessage} name="password" component="div" />
+                                    <br />
+                                    <button style={styles.button} type="submit" disabled={isSubmitting}>Create account</button>
+                                </Form>
+                            </div>
+                        )}
+                    </Formik>
+                </div>
+            </React.Fragment> 
+        );
     }
 }
 

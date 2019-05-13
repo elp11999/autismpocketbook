@@ -28,9 +28,6 @@ function NavBar(props) {
                         <a className="nav-link" href="/usage">How it works</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="/reports">Reports</a>
-                    </li>
-                    <li className="nav-item">
                         <a className="nav-link" href="/resources">Resources</a>
                     </li>
                     <li className="nav-item">

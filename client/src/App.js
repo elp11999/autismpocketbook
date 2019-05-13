@@ -4,7 +4,6 @@ import Navbar from './components/Navbar/';
 import Footer from './components/Footer/';
 import Home from './pages/Home';
 import Usage from './pages/Usage';
-import Reports from './pages/Reports';
 import Resources from './pages/Resources';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -29,6 +28,7 @@ class PrivateRoute extends React.Component {
 
   render() {
     const { isAuthenticated } = this.state;
+    console.log("isAuthenticated=" + isAuthenticated)
 
     return isAuthenticated === null ? 
       <div>Loading...</div> : 
@@ -46,7 +46,6 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/usage" component={Usage} />
-          <Route exact path="/reports" component={Reports} />
           <Route exact path="/resources" component={Resources} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
