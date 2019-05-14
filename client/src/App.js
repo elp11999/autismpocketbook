@@ -13,12 +13,18 @@ import DashBoard from './pages/DashBoard';
 import './App.css';
 import API from "./utils/API";
 
+// Create local storage
+if (!localStorage.getItem("apbSystem"))
+  localStorage.setItem("apbSystem", JSON.stringify({ parent: "", child: "" }));
+
 class PrivateRoute extends React.Component {
   state = {
     isAuthenticated: null
   }
 
   componentDidMount() {
+
+    // Authenticate
     API.authenticate().then(() => {
       this.setState({isAuthenticated : true});
     }).catch(() => {

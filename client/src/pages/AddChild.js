@@ -163,7 +163,8 @@ class AddChild extends React.Component {
         this.setState({ level: event.target.id, showModal: true});
     }
 
-    render = () => { 
+    render = () => {
+        let apbSystem = JSON.parse(localStorage.getItem("apbSystem")); 
         return (
             <React.Fragment>
                 <Modal heading={levels[this.state.level].heading} open={this.state.showModal} onClose={this.toggleModal}>
@@ -231,11 +232,15 @@ class AddChild extends React.Component {
                         setTimeout(() => {
                         console.log(JSON.stringify(values, null, 2));
                         setSubmitting(false);
+                        console.log("addchild: props=" + this.props);
                                         
                         // Save Child to database
-                        API.saveChild(values)
+                        API.saveChild(apbSystem.parent, values)
                         .then(res =>  {
-                            console.log(res.data);                                
+                            console.log(res.data);
+                                console.log(res.data);
+                                apbSystem.child = res.data.child;
+                                localStorage.setItem("apbSystem", JSON.stringify(apbSystem));                                
                             this.props.history.push("/dashboard");
                         })
                         .catch(err => {

@@ -76,6 +76,7 @@ const styles = {
 class Login extends React.Component {
 
     render = () => {
+        let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
         return (
             <React.Fragment>
                 
@@ -104,9 +105,10 @@ class Login extends React.Component {
                             // Authenticate user
                             API.authenticateUser(values)
                             .then(res =>  {
-                                console.log(this.props);
                                 console.log(res.data); 
-                                console.log("Good to go!!!");
+                                apbSystem.parent = res.data.parent;
+                                console.log(apbSystem);
+                                localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
                                 this.props.history.push("/dashboard");
                             })
                             .catch(err => {

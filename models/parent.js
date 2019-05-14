@@ -32,7 +32,14 @@ var ParentSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },  
+    // Set up a children assocation
+    children: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "child"
+      }
+    ]
 });
 
 // Set unique indexes

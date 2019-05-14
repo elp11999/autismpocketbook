@@ -72,6 +72,7 @@ const styles = {
 class Signup extends React.Component {
 
     render = () => {
+        let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
         return (
             <React.Fragment>
         
@@ -103,6 +104,8 @@ class Signup extends React.Component {
                             API.saveParent(values)
                             .then(res =>  {
                                 console.log(res.data);
+                                apbSystem.parent = res.data.parent;
+                                localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
                                 this.props.history.push("/addc");
                             })
                             .catch(err => {

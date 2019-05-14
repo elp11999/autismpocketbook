@@ -44,6 +44,8 @@ const styles = {
     }
 }
 
+let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
+
 // Function to construct Login page of the UI
 class DashBoard extends React.Component {
 

@@ -181,7 +181,14 @@ var ChildSchema = new Schema({
     schoolaccomodations: {
         type: String,
         required: true
-    }
+    },  
+    // Set up a notes assocation
+    notes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "note"
+      }
+    ]
 });
 
 // Create the Child model

@@ -21,12 +21,12 @@ export default {
     return axios.post("/api/parent", parentData);
   },
   // Saves a child to the database
-  saveChild: function(childData) {
-    return axios.post("/api/child", childData);
+  saveChild: function(id, childData) {
+    return axios.post("/api/child/" + id, childData);
   },
   // Saves a note to the database
-  saveNote: function(noteData) {
-    return axios.post("/api/note", noteData);
+  saveNote: function(id, noteData) {
+    return axios.post("/api/note/" + id, noteData);
   },
   // Authenticate user
   authenticateUser: function(userData) {

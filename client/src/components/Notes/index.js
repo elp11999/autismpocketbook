@@ -184,6 +184,7 @@ const Notes = ({heading, onCancel, onSave, onChange, open }) => {
 class Notes extends React.Component {
 
     render() {
+      let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
       return ( 
         this.props.open
         ? ReactDOM.createPortal(
@@ -209,7 +210,7 @@ class Notes extends React.Component {
                         setSubmitting(false);                   
 
                         // Save Note to database
-                        API.saveNote(values)
+                        API.saveNote(apbSystem.child, values)
                         .then(res =>  {
                             console.log(res.data);
                             this.props.onSave();

@@ -27,9 +27,15 @@ module.exports = function(app) {
       const parent = new Parent({ username, email, password });
       parent.save(function(err) {
         if (err) {
+          console.log("New parent not added!!! err=" + err);
           res.status(500).send("Error registering new user please try again.");
-        } else {
-          res.status(200).send("ok");
+        } else { 
+          // Issue token
+          const payload = { email };
+          const token = jwt.sign(payload, secret, {
+            expiresIn: '1h',
+          });
+          res.cookie('token', token, { httpOnly: true }).status(200).json({parent: username});
         }
       });
     });
@@ -53,8 +59,8 @@ module.exports = function(app) {
               const payload = { email };
               const token = jwt.sign(payload, secret, {
                 expiresIn: '1h',
-              });
-              res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+              });           
+              res.cookie('token', token, { httpOnly: true }).status(200).json({parent: user.username});
             }
           });
         }
@@ -67,24 +73,37 @@ module.exports = function(app) {
     }); 
 
     // Route to add child to the database
-    app.post("/api/child", function(req, res) {
+    app.post("/api/child/:id", function(req, res) {
+      let firstname = "";
       db.Child.create(req.body)
         .then(function(dbChild) {
-            // Send "ok" to client 
-            res.json("ok");
+          // Save name of child
+          firstname = dbChild.firstname;
+          
+          // Update parent with new child
+          return db.Parent.findOneAndUpdate({ username: req.params.id}, { $push: { children: dbChild._id } }, { new: true });            
+        })
+        .then(function(dbParent) {
+          // Send "ok" to client;            
+          res.status(200).json({child: firstname});
         })
         .catch(function(err) {
           // Send error to client 
+          console.log("Error creating child err=" + err);
           res.json(err);
         });
     });
 
     // Route to add note to the database
-    app.post("/api/note", function(req, res) {
+    app.post("/api/note/:id", function(req, res) {
       db.Note.create(req.body)
-        .then(function(dbNote) {
-            // Send "ok" to client 
-            res.json("ok");
+        .then(function(dbNote) {          
+          // Update Child with new Note
+          return db.Child.findOneAndUpdate({ firstname: req.params.id}, { $push: { notes: dbNote._id } }, { new: true });            
+        })
+        .then(function(dbChild) {
+          // Send "ok" to client;            
+          res.status(200).json("ok");
         })
         .catch(function(err) {
           // Send error to client 
