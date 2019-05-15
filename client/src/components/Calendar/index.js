@@ -4,6 +4,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 
+// Import the API library
+import API from "../../utils/API";
+
 // Import calendar style sheets for each plugin
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
@@ -12,6 +15,9 @@ import "@fullcalendar/timegrid/main.css";
 // Import custom style sheets
 import "./styles.css";
 import Notes from "../Notes";
+
+// Load local storage
+let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
 
 class Calendar extends React.Component {
   calendarComponentRef = React.createRef();
@@ -24,7 +30,7 @@ class Calendar extends React.Component {
     calendarWeekends: true,
     title: "",
     start: null,
-    allDay: null,
+    allDay: true,
     calendarEvents: [
       // initial event data
       //{ title: "Note", start: new Date(), allDay: true }
@@ -35,6 +41,30 @@ class Calendar extends React.Component {
        interactionPlugin
     ]
   };
+
+  componentDidMount() {
+    // Get Notes
+    console.log(apbSystem.child);
+    API.getNotes(apbSystem.child)
+    .then(res =>  {
+      console.log(res.data);
+        if (res.data.length > 0) {
+          res.data.forEach((note) => {
+            this.setState({
+              // Add event data
+              calendarEvents: this.state.calendarEvents.concat({
+                title:  note.title,
+                start: note.start,
+                allDay: note.allDay
+              })
+            });
+          });
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    });
+  }
 
   handleOnChange = (event) => {
     console.log("handleOnChange: entered...");
@@ -65,7 +95,8 @@ class Calendar extends React.Component {
   }
 
   handleDateClick = (arg) => {
-    this.setState({ title: "Sam's note"});  
+    console.log(arg);
+    this.setState({ title: apbSystem.child + "'s note"});  
     this.setState({ start: arg.date}); 
     this.setState({ allDay: arg.allDay}); 
     this.setState({ showModal: !this.state.showModal});
@@ -93,7 +124,10 @@ class Calendar extends React.Component {
             />
           </div>
         </div>
-        <Notes heading={"Notes for Sam"}
+        <Notes heading={"Notes for " + apbSystem.child}
+          title={this.state.title}
+          start={this.state.start}
+          allDay={this.state.allDay}
           open={this.state.showModal}
           onSave={this.handleOnSave}
           onCancel={this.handleOnCancel}

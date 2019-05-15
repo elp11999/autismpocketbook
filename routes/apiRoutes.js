@@ -110,21 +110,25 @@ module.exports = function(app) {
           console.log("oops... Did not create a Note...");
           res.json(err);
         });
-    });
+    });     
 
     // Route to get all child notes from database
-    app.get("/api/getnotes", function(req, res) {
-        db.Note.find({})
-          .then(function(dbNotes) {
-            // Send books to client
-            res.json(dbNotes);
-          })
-          .catch(function(err) {
-            console.log("Find failed: " + err);
-            // Send error to client 
-            res.json(err);
-          });
-    });    
+    app.get("/api/getnotes/:id", function(req, res) {
+      console.log("parms=" + req.params.id);
+      // Find child by id
+      db.Child.findOne({ firstname: req.params.id })
+        // Get all notes for the child
+        .populate("notes")
+        .then(function(dbChild) {
+          // Return just the notes for the child
+          res.json(dbChild.notes);
+        })
+        .catch(function(err) {
+          // Send error
+          console.log(err);
+          res.json(err);
+        });
+    });
 
     // Use default react app if no api routes
     app.use(function(req, res){

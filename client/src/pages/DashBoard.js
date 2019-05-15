@@ -21,6 +21,9 @@ const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
+// Load local storage
+let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
+
 var notesDataSet = [];
 
 const styles = {
@@ -44,8 +47,6 @@ const styles = {
     }
 }
 
-let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
-
 // Function to construct Login page of the UI
 class DashBoard extends React.Component {
 
@@ -57,10 +58,10 @@ class DashBoard extends React.Component {
     console.log("handleEditOnClick: entered.");
   }
 
-  handleReportsOnClick = (event) => {                           
+  handleReportsOnClick = (event) => {
 
     // Get Notes
-    API.getNotes()
+    API.getNotes(apbSystem.child)
     .then(res =>  {
         console.log(this.props);
         if (res.data.length > 0) {

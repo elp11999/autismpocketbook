@@ -12,6 +12,21 @@ var Schema = mongoose.Schema;
 
 // Create Note database schema
 var NoteSchema = new Schema({
+    // Title
+    title: {
+        type: String,
+        required: true
+    },
+    // Start date
+    start: {
+        type: String,
+        required: true
+    },
+    // All day
+    allDay: {
+        type: Boolean,
+        required: true
+    },
     // Mood
     mood: {
         type: String,

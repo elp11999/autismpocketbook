@@ -14,6 +14,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 // Import the API library
 import API from "../../utils/API";
 
+// Set up local storage
+let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
+
 // Inline styles for the Notes component
 const styles = {
     nav: {
@@ -184,7 +187,6 @@ const Notes = ({heading, onCancel, onSave, onChange, open }) => {
 class Notes extends React.Component {
 
     render() {
-      let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
       return ( 
         this.props.open
         ? ReactDOM.createPortal(
@@ -206,8 +208,13 @@ class Notes extends React.Component {
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
-                        console.log(JSON.stringify(values, null, 2));
-                        setSubmitting(false);                   
+                        setSubmitting(false);
+                        console.log(this.props);
+
+                        values.title = this.props.title;
+                        values.start = this.props.start;
+                        values.allDay = this.props.allDay; 
+                        console.log(JSON.stringify(values, null, 2)); 
 
                         // Save Note to database
                         API.saveNote(apbSystem.child, values)
