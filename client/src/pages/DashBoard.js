@@ -7,11 +7,11 @@
 // Import the React library
 import React from "react";
 
-// Import Calendar component
-import Calendar from "../components/Calendar";
-
 // Import Excel export library
 import ReactExport from "react-export-excel";
+
+// Import Calendar component
+import Calendar from "../components/Calendar";
 
 // Import the API library
 import API from "../utils/API";
@@ -19,12 +19,16 @@ import API from "../utils/API";
 // Create Excel report components
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
+var multiDataSet = [
+  {
+      columns: ["Date", "Behavior", "Exercise", "Mood", "Nutrition" , "Sensory Regulation", "Sleep", "Weather", "Notes"],
+      data : []
+  }
+];
 
 // Load local storage
 let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
-
-var notesDataSet = [];
 
 const styles = {
     dashnav: {
@@ -65,7 +69,22 @@ class DashBoard extends React.Component {
     .then(res =>  {
         console.log(this.props);
         if (res.data.length > 0) {
-          notesDataSet = res.data;
+          res.data.sort((a, b) => (a.start < b.start) ? 1 : -1);
+          res.data.forEach((note) => {
+            multiDataSet[0].data.push([
+                {value: note.start},
+                {value: note.behavior},
+                {value: note.exercise},
+                {value: note.mood},
+                {value: note.nutrition},
+                {value: note.sensoryregulation},
+                {value: note.sleep},
+                {value: note.weather},
+                {value: note.notes}
+            ]);
+
+          });
+          console.log(multiDataSet);
           this.setState({showReportButton: true});
         }
     })
@@ -89,15 +108,7 @@ class DashBoard extends React.Component {
       download = 
         <ExcelFile element={<button style={styles.dashbutton} onClick={this.handleDownloadOnClick}>Download Report</button>}>
 
-            <ExcelSheet data={notesDataSet} name="Sam's Report">
-                <ExcelColumn label="Behavior" value="behavior"/>
-                <ExcelColumn label="Exercise" value="exercise"/>
-                <ExcelColumn label="Mood" value="mood"/>
-                <ExcelColumn label="Nutrition" value="nutrition"/>
-                <ExcelColumn label="Sensory Regulation" value="sensoryregulation"/>
-                <ExcelColumn label="Sleep" value="sleep"/>
-                <ExcelColumn label="Weather" value="weather"/>
-                <ExcelColumn label="Notes" value="notes"/>
+            <ExcelSheet dataSet={multiDataSet} name={apbSystem.child + "'s Notes"}>
             </ExcelSheet>
 
         </ExcelFile>;
