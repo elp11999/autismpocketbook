@@ -16,13 +16,11 @@ import "@fullcalendar/timegrid/main.css";
 import "./styles.css";
 import Notes from "../Notes";
 
-// Load local storage
-let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
-
 class Calendar extends React.Component {
   calendarComponentRef = React.createRef();
 
   state = {
+    child: "",
     value: "",
     showModal: false,
     clickFunction: this.handleDateClick,
@@ -43,27 +41,40 @@ class Calendar extends React.Component {
   };
 
   componentDidMount() {
-    // Get Notes
-    console.log(apbSystem.child);
-    API.getNotes(apbSystem.child)
-    .then(res =>  {
-      console.log(res.data);
-        if (res.data.length > 0) {
-          res.data.forEach((note) => {
-            this.setState({
-              // Add event data
-              calendarEvents: this.state.calendarEvents.concat({
-                title:  note.title,
-                start: note.start,
-                allDay: note.allDay
-              })
+
+    // Load local storage
+    let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
+
+
+    if (apbSystem.child === "") {
+      console.log("No child here!!!");
+    } else {
+
+      // Set child's name   
+      this.setState({child:apbSystem.child});
+
+      // Get Notes
+      console.log(apbSystem.child);
+      API.getNotes(apbSystem.child)
+      .then(res =>  {
+        console.log(res.data);
+          if (res.data.length > 0) {
+            res.data.forEach((note) => {
+              this.setState({
+                // Add event data
+                calendarEvents: this.state.calendarEvents.concat({
+                  title:  note.title,
+                  start: note.start,
+                  allDay: note.allDay
+                })
+              });
             });
-          });
-        }
-    })
-    .catch(err => {
-        console.log(err);
-    });
+          }
+      })
+      .catch(err => {
+          console.log(err);
+      });
+    }
   }
 
   handleOnChange = (event) => {
@@ -96,7 +107,7 @@ class Calendar extends React.Component {
 
   handleDateClick = (arg) => {
     console.log(arg);
-    this.setState({ title: apbSystem.child + "'s note"});  
+    this.setState({ title: this.state.child + "'s note"});  
     this.setState({ start: arg.date}); 
     this.setState({ allDay: arg.allDay}); 
     this.setState({ showModal: !this.state.showModal});
@@ -124,7 +135,7 @@ class Calendar extends React.Component {
             />
           </div>
         </div>
-        <Notes heading={"Notes for " + apbSystem.child}
+        <Notes heading={"Notes for " + this.state.child}
           title={this.state.title}
           start={this.state.start}
           allDay={this.state.allDay}

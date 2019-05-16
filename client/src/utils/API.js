@@ -36,6 +36,10 @@ export default {
   authenticate: function() {
     return axios.get("/api/authenticate");
   },
+  // Get all children
+  getChildren: function(id) {
+    return axios.get("/api/getchildren/" + id);
+  },
   // Get all child notes
   getNotes: function(id) {
     return axios.get("/api/getnotes/" + id);

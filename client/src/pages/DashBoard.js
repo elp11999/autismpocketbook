@@ -27,9 +27,6 @@ var multiDataSet = [
   }
 ];
 
-// Load local storage
-let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
-
 const styles = {
     dashnav: {
       marginBottom: 10,      
@@ -55,7 +52,17 @@ const styles = {
 class DashBoard extends React.Component {
 
   state = {
+      child: "",
       showReportButton: false
+  }
+
+  componentDidMount() {
+
+    // Load local storage
+    let apbSystem = JSON.parse(localStorage.getItem("apbSystem")); 
+    
+    // Set child's name   
+    this.setState({child:apbSystem.child});
   }
   
   handleEditOnClick = (event) => {
@@ -65,7 +72,7 @@ class DashBoard extends React.Component {
   handleReportsOnClick = (event) => {
 
     // Get Notes
-    API.getNotes(apbSystem.child)
+    API.getNotes(this.state.child)
     .then(res =>  {
         console.log(this.props);
         if (res.data.length > 0) {
@@ -108,7 +115,7 @@ class DashBoard extends React.Component {
       download = 
         <ExcelFile element={<button style={styles.dashbutton} onClick={this.handleDownloadOnClick}>Download Report</button>}>
 
-            <ExcelSheet dataSet={multiDataSet} name={apbSystem.child + "'s Notes"}>
+            <ExcelSheet dataSet={multiDataSet} name={this.state.child + "'s Notes"}>
             </ExcelSheet>
 
         </ExcelFile>;

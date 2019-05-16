@@ -105,6 +105,7 @@ class Signup extends React.Component {
                             .then(res =>  {
                                 console.log(res.data);
                                 apbSystem.parent = res.data.parent;
+                                apbSystem.child = "";
                                 localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
                                 this.props.history.push("/addc");
                             })

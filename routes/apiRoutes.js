@@ -110,17 +110,37 @@ module.exports = function(app) {
           console.log("oops... Did not create a Note...");
           res.json(err);
         });
+    });    
+
+    // Route to get all childrens from database
+    app.get("/api/getchildren/:id", function(req, res) {
+      console.log("getchildren parms=" + req.params.id);
+      // Find Parent by id
+      db.Parent.findOne({ username: req.params.id })
+        // Get all the children
+        .populate("children")
+        .then(function(dbParent) {
+          // Return just the children
+          //console.log(dbParent);
+          res.json(dbParent.children);
+        })
+        .catch(function(err) {
+          // Send error
+          console.log(err);
+          res.json(err);
+        });
     });     
 
     // Route to get all child notes from database
     app.get("/api/getnotes/:id", function(req, res) {
-      console.log("parms=" + req.params.id);
+      console.log("getnotes parms=" + req.params.id);
       // Find child by id
       db.Child.findOne({ firstname: req.params.id })
         // Get all notes for the child
         .populate("notes")
         .then(function(dbChild) {
           // Return just the notes for the child
+          //console.log(dbChild);
           res.json(dbChild.notes);
         })
         .catch(function(err) {

@@ -107,9 +107,25 @@ class Login extends React.Component {
                             .then(res =>  {
                                 console.log(res.data); 
                                 apbSystem.parent = res.data.parent;
+                                apbSystem.child = "";
                                 console.log(apbSystem);
                                 localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
-                                this.props.history.push("/dashboard");
+
+                                // Get children
+                                API.getChildren(apbSystem.parent)
+                                .then(res =>  {
+                                    console.log(res.data);
+                                    if (res.data.length > 0) {
+                                        apbSystem.child = res.data[0].firstname;
+                                        localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
+                                        this.props.history.push("/dashboard");
+                                    } else {
+                                        this.props.history.push("/addc");
+                                    }
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                });
                             })
                             .catch(err => {
                                 console.log(err);

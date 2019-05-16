@@ -37,7 +37,7 @@ var ParentSchema = new Schema({
     children: [
       {
         type: Schema.Types.ObjectId,
-        ref: "child"
+        ref: "Child"
       }
     ]
 });

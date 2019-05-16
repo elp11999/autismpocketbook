@@ -14,9 +14,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 // Import the API library
 import API from "../../utils/API";
 
-// Set up local storage
-let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
-
 // Inline styles for the Notes component
 const styles = {
     nav: {
@@ -186,6 +183,19 @@ const Notes = ({heading, onCancel, onSave, onChange, open }) => {
 
 class Notes extends React.Component {
 
+    state = {
+        child: ""
+    }
+
+    componentDidMount() {
+  
+      // Load local storage
+      let apbSystem = JSON.parse(localStorage.getItem("apbSystem")); 
+      
+      // Set child's name   
+      this.setState({child:apbSystem.child});
+    }
+
     render() {
       return ( 
         this.props.open
@@ -217,12 +227,13 @@ class Notes extends React.Component {
                         console.log(JSON.stringify(values, null, 2)); 
 
                         // Save Note to database
-                        API.saveNote(apbSystem.child, values)
+                        API.saveNote(this.state.child, values)
                         .then(res =>  {
                             console.log(res.data);
                             this.props.onSave();
                         })
                         .catch(err => {
+                            console.log("Error adding a note!!!");
                             console.log(err);
                         });
 
