@@ -10,6 +10,7 @@ import Signup from './pages/Signup';
 import AddChild from './pages/AddChild';
 import NoMatch from "./pages/NoMatch";
 import DashBoard from './pages/DashBoard';
+import Charts from './pages/Charts';
 import './App.css';
 import API from "./utils/API";
 
@@ -34,7 +35,7 @@ class PrivateRoute extends React.Component {
 
   render() {
     const { isAuthenticated } = this.state;
-    console.log("isAuthenticated=" + isAuthenticated)
+    //console.log("isAuthenticated=" + isAuthenticated)
 
     return isAuthenticated === null ? 
       <div>Loading...</div> : 
@@ -57,6 +58,7 @@ function App() {
           <Route exact path="/signup" component={Signup} />
           <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute exact path="/addc" component={AddChild} />
+          <PrivateRoute exact path="/charts" component={Charts} />
           <Route component={NoMatch} />
         </Switch>
         <Footer />

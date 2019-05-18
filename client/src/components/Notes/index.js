@@ -9,7 +9,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // Import the Formik library
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+//import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 // Import the API library
 import API from "../../utils/API";

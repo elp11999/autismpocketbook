@@ -53,7 +53,8 @@ class DashBoard extends React.Component {
 
   state = {
       child: "",
-      showReportButton: false
+      showReportButton: false,
+      multiDataSet: []
   }
 
   componentDidMount() {
@@ -63,16 +64,9 @@ class DashBoard extends React.Component {
     
     // Set child's name   
     this.setState({child:apbSystem.child});
-  }
-  
-  handleEditOnClick = (event) => {
-    console.log("handleEditOnClick: entered.");
-  }
-
-  handleReportsOnClick = (event) => {
 
     // Get Notes
-    API.getNotes(this.state.child)
+    API.getNotes(apbSystem.child)
     .then(res =>  {
         console.log(this.props);
         if (res.data.length > 0) {
@@ -89,15 +83,22 @@ class DashBoard extends React.Component {
                 {value: note.weather},
                 {value: note.notes}
             ]);
-
-          });
+            this.setState({multiDataSet: multiDataSet});
+          });          
           console.log(multiDataSet);
-          this.setState({showReportButton: true});
         }
     })
     .catch(err => {
         console.log(err);
     });
+  }
+  
+  handleEditOnClick = (event) => {
+    console.log("handleEditOnClick: entered.");
+  }
+
+  handleReportsOnClick = (event) => {
+    this.setState({showReportButton: true});
   }
 
   handleDownloadOnClick = (event) => {
@@ -105,17 +106,17 @@ class DashBoard extends React.Component {
   }
 
   handleChartsOnClick = (event) => {
-    console.log("handleChartsOnClick: entered.");
+    this.props.history.push("/charts");
   }
     
   render = () => {
-    let download = null;
+    let download = null;    
 
     if (this.state.showReportButton) {
       download = 
         <ExcelFile element={<button style={styles.dashbutton} onClick={this.handleDownloadOnClick}>Download Report</button>}>
 
-            <ExcelSheet dataSet={multiDataSet} name={this.state.child + "'s Notes"}>
+            <ExcelSheet dataSet={this.state.multiDataSet} name={this.state.child + "'s Notes"}>
             </ExcelSheet>
 
         </ExcelFile>;
