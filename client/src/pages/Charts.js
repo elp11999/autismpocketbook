@@ -7,6 +7,7 @@ import { Formik, Form, Field } from 'formik';
 
 // Import the API library
 import API from "../utils/API";
+
 const styles = {
     header: {
       fontSize: "2rem",
@@ -17,12 +18,12 @@ const styles = {
       fontWeight: 500,      
     },
     select: {
-      fontSize: "1.5rem",
+      fontSize: "1.0rem",
       textAlign: "center",
       alignContent : "center"
     },
     label: {
-        fontSize: "2rem",
+        fontSize: "1.5rem",
         color: "#eb6864",
         marginTop: 10,
         marginRight: 5,
@@ -67,12 +68,72 @@ const nutritionData = {
   percentages: [0, 0]
 };
 
+const exerciseData = {
+  name: "Exercise",
+  values: [
+    { title: 'Low',       count: 0  },
+    { title: 'Moderate',  count: 0  },
+    { title: 'High',      count: 0  }
+  ],
+  labels: ["Low", "Moderate", "High"],
+  colors: ['#ff6384', '#36a2eb', '#cc65fe'],
+  percentages: [0, 0, 0]
+};
+
+const sensoryData = {
+  name: "Sensory Regulation",
+  values: [
+    { title: 'Low',       count: 0  },
+    { title: 'Moderate',  count: 0  },
+    { title: 'High',      count: 0  }
+  ],
+  labels: ["Low", "Moderate", "High"],
+  colors: ['#ff6384', '#36a2eb', '#cc65fe'],
+  percentages: [0, 0, 0]
+};
+
+const behaviorData = {
+  name: "Behavior",
+  values: [
+    { title: 'No issues',                count: 0  },
+    { title: 'On task',                  count: 0  },
+    { title: 'Minor issues 2-3 a day',   count: 0  },
+    { title: 'Disruptive',               count: 0  },
+    { title: 'Motor/Verbal stimming',    count: 0  },
+    { title: 'Severe meltdown',          count: 0  },
+    { title: 'Elopement',                count: 0  },
+    { title: 'Property Destruction',     count: 0  },
+    { title: 'Self-Injurious Behavior',  count: 0  }
+  ],
+  labels: ["No issues", 
+           "On task", 
+           "Minor issues 2-3 a day", 
+           "Disruptive", 
+           "Motor/Verbal stimming", 
+           "Severe meltdown",
+           "Elopement",
+           "Property Destruction",
+           "Self-Injurious Behavior"
+  ],
+  colors: ['red', 
+           'pink',
+           'blue',
+           'brown', 
+           'teal',
+           'khaki',
+           'gray',
+           'orange',
+           'yellow'
+  ],
+  percentages: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+
 let chartData = {
   labels: [],
   datasets: [
     {
       backgroundColor: [],
-      data: [0, 0, 0, 0]
+      data: []
     }
   ]
 };
@@ -87,15 +148,15 @@ export default class chart extends Component {
     };
     
      setChartData = (data, index, target) => {
-      console.log("New way!!!");
       target.values.forEach((value) => {
         value.count = 0;
         value.percentage = 0;
       });
+      console.log(target);
       data.forEach((childData) => {
         let searchValue = childData[index].value;
         target.values.forEach((value, index) => {
-          console.log("searchValue=" + searchValue + " nutritions="  + value.title);
+          //console.log("searchValue=" + searchValue + "  value="  + value.title);
           if (value.title === searchValue) {
             value.count++;
             target.percentages[index] = (value.count * 100 / data.length)
@@ -107,7 +168,6 @@ export default class chart extends Component {
       chartData.labels = target.labels;
       chartData.datasets[0].backgroundColor = target.colors;
       chartData.datasets[0].data =  target.percentages;
-      console.log(chartData);
     }
 
     componentDidMount() {
@@ -139,9 +199,8 @@ export default class chart extends Component {
                 ]);
                 this.setState({data: childData});
               });
-              this.setChartData(childData, 3, moodData);
+              this.setChartData(this.state.data, 1, behaviorData);
               this.setState({showChart: true});
-              console.log(childData);
             }
         })
         .catch(err => {
@@ -150,22 +209,29 @@ export default class chart extends Component {
     }
 
     onClick = (event) => {
-      console.log("onClick: entered!!");
       switch (event.target.value) {
+        case "Behavior" :
+          this.setChartData(this.state.data, 1, behaviorData);
+          break;
+        case "Exercise" :
+          this.setChartData(this.state.data, 2, exerciseData);
+          break;
         case "Mood" :
           this.setChartData(this.state.data, 3, moodData);
           break;
-        case "Sleep" :
-          this.setChartData(this.state.data, 6, sleepData);
-          break;
         case "Nutrition" :
           this.setChartData(this.state.data, 4, nutritionData);
+          break;
+        case "Sensory Regulation" :          
+          this.setChartData(this.state.data, 5, sensoryData);
+          break;
+        case "Sleep" :
+          this.setChartData(this.state.data, 6, sleepData);
           break;
         default:
           this.setChartData(this.state.data, 3, moodData);
           break;
       }
-      console.log(event.target.value);
     }
     
     render() {
@@ -182,9 +248,12 @@ export default class chart extends Component {
                       <div style={styles.select}>
                         <label style={styles.label} htmlFor="charts">Select chart:</label>
                         <Field component="select" name="charts" onClick={this.onClick}>
+                            <option value="Behavior">Behavior</option>
                             <option value="Mood">Mood</option>
                             <option value="Sleep">Sleep</option>
                             <option value="Nutrition">Nutrition</option>
+                            <option value="Exercise">Exercise</option>
+                            <option value="Sensory Regulation">Sensory Regulation</option>
                         </Field>
                       </div>
                   </Form>

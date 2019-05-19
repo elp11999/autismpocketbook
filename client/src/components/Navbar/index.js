@@ -31,6 +31,9 @@ function NavBar(props) {
                         <a className="nav-link" href="/resources">Resources</a>
                     </li>
                     <li className="nav-item">
+                        <a className="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li className="nav-item">
                         <a className="nav-link" href="/login">Login</a>
                     </li>
                 </ul>

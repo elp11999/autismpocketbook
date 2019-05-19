@@ -4,6 +4,10 @@
     margin-right: 5px;
 }
 
+.navbar {
+    padding: 0;
+}
+
 .navbar-bar-text {
     color: white;
     font-size: 30px;
