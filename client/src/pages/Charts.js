@@ -42,7 +42,7 @@ const moodData = {
   ],
   labels: ["Happy", "Calm", "Sad", "Frustrated"],
   colors: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56'],
-  percentages : [0, 0, 0, 0]
+  percentages: [0, 0, 0, 0]
 };
 
 const sleepData = {
@@ -54,7 +54,7 @@ const sleepData = {
   ],
   labels: ["Woke up", "Well rested", "Woke up several times"],
   colors: ['#ff6384', '#36a2eb', '#cc65fe'],
-  percentages: [0, 0, 0]
+  percentages: [0, 0, 0, 0]
 };
 
 const nutritionData = {
@@ -147,7 +147,7 @@ export default class chart extends Component {
         data: []
     };
     
-     setChartData = (data, index, target) => {
+    setChartData = (data, index, target) => {
       target.values.forEach((value) => {
         value.count = 0;
         value.percentage = 0;
@@ -167,7 +167,7 @@ export default class chart extends Component {
       this.setState({title: this.state.child + "'s " + target.name + " Chart"});
       chartData.labels = target.labels;
       chartData.datasets[0].backgroundColor = target.colors;
-      chartData.datasets[0].data =  target.percentages;
+      chartData.datasets[0].data = target.percentages;
     }
 
     componentDidMount() {
