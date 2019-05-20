@@ -136,7 +136,7 @@ module.exports = function(app) {
 
     // Route to get all child notes from database
     app.get("/api/getnotes/:id", function(req, res) {
-      console.log("getnotes parms=" + req.params.id);
+      //console.log("getnotes parms=" + req.params.id);
       // Find child by id
       db.Child.findOne({ firstname: req.params.id })
         // Get all notes for the child

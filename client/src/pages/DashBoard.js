@@ -32,13 +32,18 @@ const styles = {
       marginBottom: 10,      
       background: "#fafbfc",      
       width: "100%",
-      height: 60     
+      height: 60 ,      
+      display: "flex",
+      alignItems: "center"    
+    },
+    dashimage: {
+      marginLeft: 10,
+      borderRadius: "50%"
     },
     dashbutton: {
         fontSize: "0.9rem",
         backgroundColor: "#2C3E50",
         color: "white",
-        marginTop: 10,
         marginLeft: 10,
         padding: 8,
         borderRadius: 5, 
@@ -64,11 +69,18 @@ class DashBoard extends React.Component {
     
     // Set child's name   
     this.setState({child:apbSystem.child});
+  }
+  
+  handleEditOnClick = (event) => {
+    console.log("handleEditOnClick: entered.");
+  }
+
+  handleReportsOnClick = (event) => {
 
     // Get Notes
-    API.getNotes(apbSystem.child)
+    API.getNotes(this.state.child)
     .then(res =>  {
-        console.log(this.props);
+        console.log(this.state.child);
         if (res.data.length > 0) {
           res.data.sort((a, b) => (a.start < b.start) ? 1 : -1);
           res.data.forEach((note) => {
@@ -91,13 +103,6 @@ class DashBoard extends React.Component {
     .catch(err => {
         console.log(err);
     });
-  }
-  
-  handleEditOnClick = (event) => {
-    console.log("handleEditOnClick: entered.");
-  }
-
-  handleReportsOnClick = (event) => {
     this.setState({showReportButton: true});
   }
 
@@ -126,6 +131,7 @@ class DashBoard extends React.Component {
       <React.Fragment>
         {download}         
         <div style={styles.dashnav}>
+          <img style={ styles.dashimage } src="/Sam1.jpeg" alt="thumbnail" width="50" height="50"></img>
           <button style={styles.dashbutton} type="submit" onClick={this.handleEditOnClick}>Edit</button>
           <button style={styles.dashbutton} type="submit" onClick={this.handleReportsOnClick}>Reports</button>
           <button style={styles.dashbutton} type="submit" onClick={this.handleChartsOnClick}>Charts</button>
