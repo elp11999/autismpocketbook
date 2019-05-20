@@ -15,6 +15,9 @@ const path = require("path");
 // Load web token library
 const jwt = require('jsonwebtoken');
 
+// Import the Word Definition library
+const wd = require('word-definition');
+
 // Set token password
 const secret = 'mysecretsshhh';
 
@@ -148,7 +151,14 @@ module.exports = function(app) {
           console.log(err);
           res.json(err);
         });
-    });
+    });  
+
+    // Route to get word definition
+    app.get("/api/getdefinition/:id", function(req, res) {
+      wd.getDef(req.params.id, "en", null, function(definition) {
+        res.json(definition);
+      });
+    }); 
 
     // Use default react app if no api routes
     app.use(function(req, res){

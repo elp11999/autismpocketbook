@@ -43,5 +43,9 @@ export default {
   // Get all child notes
   getNotes: function(id) {
     return axios.get("/api/getnotes/" + id);
+  },
+  // Get definition for word
+  getDefinition: function(word) {
+    return axios.get("/api/getdefinition/" + word);
   }
 };

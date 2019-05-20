@@ -7,7 +7,14 @@
 // Import the React library
 import React from "react";
 
-import { MDBCol,  MDBIcon } from "mdbreact";
+// Import React-Bootstrap MD library
+import { MDBIcon } from "mdbreact";
+
+// Import the Modal UI component
+import Modal from "../components/Modal";
+
+// Import the API library
+import API from "../utils/API";
 
 // Inline CSS styles
 const styles = {
@@ -47,6 +54,9 @@ const styles = {
   resource: {
     display: "flex",
     alignItems: "center"
+  },
+  levelheader: {
+      fontWeight: 700
   }
 };
 
@@ -57,7 +67,7 @@ const autisimResources = [
   { id: 1,
     link: "https://www.helpguide.org/articles/autism-learning-disabilities/helping-your-child-with-autism-thrive.htm/",
     image: "/HelpGuide.png",
-    description: "Helping Your Child with Autism Thrive"
+    description: "Parenting Tips, Treatments, and Services That Can Help"
   },
   { id: 2,
     link: "http://www.autism-help.org/index.htm",
@@ -76,59 +86,81 @@ const autisimResources = [
   },
 ];
 
-// Function to construct Reports page of the UI
-function Resources() {
-  return (
-    
-    <React.Fragment>
-    
-      <hr style={ styles.hr } />
-      <div>
+ class Resources extends React.Component {
 
-          <div className="active-pink-3 active-pink-4 mb-4" style={ styles.searchdiv }>
-            <p style={ styles.search }>Need help with terminology?</p>
-            <form>
-              <MDBIcon icon="search" />
-              <input style={ styles.searchinput }type="text" placeholder="Search" aria-label="Search" />            
-            </form>
-          </div>
-      </div>
-      <ul style={styles.ul}>
-        {autisimResources.map(resource => (      
-          <li key={resource.id} style={ styles.li }>
-              <hr style={ styles.hr } />
-              <div className="cfix" style={ styles.resource }>
-                <a href={resource.link} rel="noopener noreferrer" target="_blank">
-                  <img style={ styles.image } src={resource.image} alt="thumbnail" width="100" height="60"></img>
-                </a>              
-                <a href={resource.link} rel="noopener noreferrer" target="_blank">
-                  <p><span style={ styles.description }>{resource.description}</span></p>
-                </a>
-              </div>
-            </li>
-        ))}
-      </ul>
-      <hr style={ styles.hr } />    
-    </React.Fragment>
-  );
+  state = {
+    searchValue: "",
+    definition: "",
+    showModal: false
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    console.log(this.state.searchValue);
+
+    // Get definition for word
+    API.getDefinition(this.state.searchValue)
+    .then(res =>  {
+      if (res.data.definition)
+        this.setState({definition: res.data.definition});
+      else
+        this.setState({definition: "oops... no results!!!"});
+      this.setState({showModal: true});
+    })
+    .catch(err => {
+        this.setState({definition: "oops..." + err});
+        this.setState({showModal: true});
+        console.log(err);
+    });
+  }
+
+  onChange = (event) => {
+    this.setState({searchValue: event.target.value});
+  }
+
+  toggleModal = (event) => {
+    this.setState({showModal: false});
+  }
+
+  render() {
+    return(
+      <React.Fragment>
+      
+        <Modal heading={this.state.searchValue} open={this.state.showModal} onClose={this.toggleModal}>
+          <br></br>
+          <p><span style={styles.levelheader}>Definition: </span><span>{this.state.definition}</span></p>
+        </Modal> 
+    
+        <hr style={ styles.hr } />
+        <div>
+            <div className="active-pink-3 active-pink-4 mb-4" style={ styles.searchdiv }>
+              <p style={ styles.search }>Need help with terminology?</p>
+              <form onSubmit={this.onSubmit}>
+                <MDBIcon icon="search" />
+                <input type="text" onChange={this.onChange} style={ styles.searchinput } placeholder="Search" aria-label="Search" />            
+              </form>
+            </div>
+        </div>
+        <ul style={styles.ul}>
+          {autisimResources.map(resource => (      
+            <li key={resource.id} style={ styles.li }>
+                <hr style={ styles.hr } />
+                <div className="cfix" style={ styles.resource }>
+                  <a href={resource.link} rel="noopener noreferrer" target="_blank">
+                    <img style={ styles.image } src={resource.image} alt="thumbnail" width="100" height="60"></img>
+                  </a>              
+                  <a href={resource.link} rel="noopener noreferrer" target="_blank">
+                    <p><span style={ styles.description }>{resource.description}</span></p>
+                  </a>
+                </div>
+              </li>
+          ))}
+        </ul>
+        <hr style={ styles.hr } />        
+      </React.Fragment>
+    )
+  }
 }
 
 // Export the Usage UI page
 export default Resources;
-
-/*
-import React from "react";
-import { MDBCol } from "mdbreact";
-
-const SearchPage = () => {
-  return (
-    <MDBCol md="6">
-      <div className="active-pink-3 active-pink-4 mb-4">
-        <input className="form-control" type="text" placeholder="Search" aria-label="Search" />
-      </div>
-    </MDBCol>
-  );
-}
-
-export default SearchPage;
-*/

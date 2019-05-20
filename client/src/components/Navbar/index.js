@@ -25,7 +25,7 @@ function NavBar(props) {
             <div className="collapse navbar-collapse" id="navbarText">
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <a className="nav-link" href="/usage">How it works</a>
+                        <a className="nav-link" href="/usage">Demo</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="/resources">Resources</a>

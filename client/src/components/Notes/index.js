@@ -10,7 +10,7 @@ import ReactDOM from "react-dom";
 
 // Import the Formik library
 //import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 // Import the API library
 import API from "../../utils/API";
@@ -40,11 +40,13 @@ const styles = {
       transform: "translate(-50%, -50%)",
       zIndex: 1
     },
+    errorMessageDiv: {
+        textAlign: "center",
+        marginTop: 10
+    },
     errorMessage: {
-        fontSize: "1rem",
-        color: 'red',
-        marginTop: 5,
-        marginBottom: 5
+        fontSize: "1.5rem",
+        color: 'red'
     },
     button: {
       fontSize: "1rem",
@@ -215,6 +217,8 @@ class Notes extends React.Component {
                                     }}
                     validate={values => {
                         let errors = {};
+                        if (!values.notes)
+                            errors.notes = 'Notes are required!!';
                         return errors;
                     }}
                     onSubmit={(values, { setSubmitting }) => {
@@ -251,9 +255,11 @@ class Notes extends React.Component {
                                         <option>Sad</option>
                                         <option>Anxious</option>
                                         <option>Happy</option>
-                                        <option>Frustrated</option>
-                                    
+                                        <option>Frustrated</option>                                    
                                     </Field>
+                                </div>
+
+                                <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="sleep">Sleep:</label>
                                     <Field component="select" style={styles.label} name="sleep">
                                         <option>Well rested</option>
@@ -326,6 +332,9 @@ class Notes extends React.Component {
                                 <div>
                                     <button style={styles.button} type="submit" disabled={isSubmitting}>Save</button>
                                 </div>
+                                <div style={styles.errorMessageDiv}>                                 
+                                    <ErrorMessage style={styles.errorMessage} name="notes" component="div" />
+                                </div>  
                             </Form>
                         </div>
                     )}

@@ -33,11 +33,13 @@ const styles = {
       padding: 20,
       maxWidth: 400
     },
+    errorMessageDiv: {
+        textAlign: "center",
+        marginTop: 10
+    },
     errorMessage: {
-        fontSize: "1rem",
-        color: 'red',
-        marginTop: 5,
-        marginBottom: 5
+        fontSize: "1.5rem",
+        color: 'red'
     },
     field: {
         background: "#e8f0fe",
@@ -87,14 +89,14 @@ class Login extends React.Component {
                         validate={values => {
                             let errors = {};
                             if (!values.email) {
-                                errors.email = 'Email required';
+                                errors.email = 'Email  address required!!';
                             } else if (
                                 !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                             ) {
-                                errors.email = 'Invalid email address';
+                                errors.email = 'Invalid email address!!';
                             }
-                            if (!values.password)
-                                errors.password = 'Password required';
+                            else if (!values.password)
+                                errors.password = 'Password required!!';
                             return errors;
                         }}
                         onSubmit={(values, { setSubmitting }) => {
@@ -141,16 +143,18 @@ class Login extends React.Component {
                                         <label style={styles.label} htmlFor="email">Email address</label>
                                     </div>
                                     <Field style={styles.field} type="email" name="email" />
-                                    <ErrorMessage style={styles.errorMessage} name="email" component="div" />
 
                                     <div>
                                         <label  style={styles.label} htmlFor="password">Password</label>
                                         <a style={styles.signup} href="/signup">Forgot password?</a>
                                     </div>
                                     <Field style={styles.field} type="password" name="password" />
-                                    <ErrorMessage style={styles.errorMessage} name="password" component="div" />
                                     <br />
                                     <button style={styles.button} type="submit" disabled={isSubmitting}>Sign in</button>
+                                    <div style={styles.errorMessageDiv}>
+                                        <ErrorMessage style={styles.errorMessage} name="email" component="div" />
+                                        <ErrorMessage style={styles.errorMessage} name="password" component="div" />
+                                    </div>
                                 </Form>
                             </div>
                         )}

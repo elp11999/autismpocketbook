@@ -45,11 +45,13 @@ const styles = {
       padding: 20,
       maxWidth: 700
     },
+    errorMessageDiv: {
+        textAlign: "center",
+        marginTop: 10
+    },
     errorMessage: {
-        fontSize: "1rem",
-        color: 'red',
-        marginTop: 5,
-        marginBottom: 5
+        fontSize: "1.5rem",
+        color: 'red'
     },
     field: {
         background: "#e8f0fe",
@@ -183,7 +185,7 @@ class AddChild extends React.Component {
                                     age: '', 
                                     dob: "",
                                     primarycareprovider: "",
-                                    interventions: "",
+                                    interventions: "Applied Behavior Analysis",
                                     med1: "",
                                     freq1: "",
                                     dos1: "",
@@ -214,18 +216,24 @@ class AddChild extends React.Component {
                                     med10: "",
                                     freq10: "",
                                     dos10: "",
-                                    autsimlevel: "",
-                                    cofactors: "",
-                                    schoolaccomodations: ""
+                                    autsimlevel: "Level 1",
+                                    cofactors: "ADD",
+                                    schoolaccomodations: "Visual schedule"
                                     }}
                     validate={values => {
                         let errors = {};
                         if (!values.firstname)
-                            errors.firstname = 'First name required';
-                        if (!values.middlename)
-                            errors.middlename = 'Middle name required';
-                        if (!values.lastname)
-                            errors.lastname = 'Last name required';
+                            errors.firstname = 'First name required!!';
+                        else if (!values.middlename)
+                            errors.middlename = 'Middle name required!!';
+                        else if (!values.lastname)
+                            errors.lastname = 'Last name required!!';
+                        else if (!values.age)
+                            errors.age = 'Age of autisim diagnosis required!!';
+                        else if (!values.dob)
+                            errors.dob = 'Date of birth required!!';
+                        else if (!values.primarycareprovider)
+                            errors.dob = 'Primary care provider required!!';
                         return errors;
                     }}
                     onSubmit={(values, { setSubmitting }) => {
@@ -258,25 +266,21 @@ class AddChild extends React.Component {
                                     <label style={styles.label} htmlFor="firstname">First name</label>
                                 </div>
                                 <Field style={styles.field} type="text" name="firstname" />
-                                <ErrorMessage style={styles.errorMessage} name="firstname" component="div" />
 
                                 <div>
                                     <label style={styles.label} htmlFor="middlename">Middle name</label>
                                 </div>
                                 <Field style={styles.field} type="text" name="middlename" />
-                                <ErrorMessage style={styles.errorMessage} name="middlename" component="div" />
 
                                 <div>
                                     <label  style={styles.label} htmlFor="lastname">Last name</label>
                                 </div>
                                 <Field style={styles.field} type="text" name="lastname" />
-                                <ErrorMessage style={styles.errorMessage} name="lastname" component="div" />
 
                                 <div>
                                     <label  style={styles.label} htmlFor="dob">Date of birth</label>
                                 </div>
                                 <Field style={styles.field} type="text" name="dob" />
-                                <ErrorMessage style={styles.errorMessage} name="dob" component="div" />
 
                                 <hr />
 
@@ -286,13 +290,11 @@ class AddChild extends React.Component {
                                     <label  style={styles.label} htmlFor="age">Age of autism diagnosis</label>
                                 </div>
                                 <Field style={styles.field} type="text" name="age" />
-                                <ErrorMessage style={styles.errorMessage} name="age" component="div" />
 
                                 <div>
                                     <label style={styles.label} htmlFor="primarycareprovider">Primary care provider</label>
                                 </div>
                                 <Field style={styles.field} type="text" name="primarycareprovider" />
-                                <ErrorMessage style={styles.errorMessage} name="primarycareprovider" component="div" />
                                 
                                 <div>
                                     <label style={styles.label} htmlFor="interventions">Current interventions</label>
@@ -459,6 +461,14 @@ class AddChild extends React.Component {
                                 <hr />
                                 
                                 <button style={styles.button} type="submit" disabled={isSubmitting}>Add Child</button>
+                                <div style={styles.errorMessageDiv}>
+                                    <ErrorMessage style={styles.errorMessage} name="firstname" component="div" />                                    
+                                    <ErrorMessage style={styles.errorMessage} name="middlename" component="div" />                                    
+                                    <ErrorMessage style={styles.errorMessage} name="lastname" component="div" />                                    
+                                    <ErrorMessage style={styles.errorMessage} name="dob" component="div" />
+                                    <ErrorMessage style={styles.errorMessage} name="age" component="div" />                                    
+                                    <ErrorMessage style={styles.errorMessage} name="primarycareprovider" component="div" />
+                                </div>
                             </Form>
                         </div>
                     )}
