@@ -47,5 +47,9 @@ export default {
   // Get definition for word
   getDefinition: function(word) {
     return axios.get("/api/getdefinition/" + word);
+  },
+  // Start demo
+  demo: function() {
+    return axios.post("/api/demo");
   }
 };

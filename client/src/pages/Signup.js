@@ -73,6 +73,10 @@ const styles = {
 // Function to construct Login page of the UI
 class Signup extends React.Component {
 
+    state = {
+        errorMessage: ""
+    };
+
     render = () => {
         let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
         return (
@@ -105,13 +109,17 @@ class Signup extends React.Component {
                             // Save parent to database
                             API.saveParent(values)
                             .then(res =>  {
-                                console.log(res.data);
+                                console.log(JSON.stringify(res.data));
                                 apbSystem.parent = res.data.parent;
                                 apbSystem.child = "";
                                 localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
-                                this.props.history.push("/addc");
+                                if (res.data.error)
+                                    this.setState({errorMessage: res.data.error});
+                                else
+                                    this.props.history.push("/addc");
                             })
                             .catch(err => {
+                                this.setState({errorMessage: "Unknown error has occurred"});
                                 console.log(err);
                             });
                             }, 400);
@@ -140,6 +148,7 @@ class Signup extends React.Component {
                                         <ErrorMessage style={styles.errorMessage} name="username" component="div" />
                                         <ErrorMessage style={styles.errorMessage} name="email" component="div" />
                                         <ErrorMessage style={styles.errorMessage} name="password" component="div" />
+                                        <p style={styles.errorMessage}>{this.state.errorMessage}</p>
                                     </div>
                                 </Form>
                             </div>

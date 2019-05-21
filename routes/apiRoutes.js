@@ -3,6 +3,7 @@
 //
 // apiRoutes.js - Parent Mongoose database schema
 //
+const { exec } = require('child_process');
 
 // Load Mongoose database schemas
 const db = require("../models");
@@ -31,14 +32,24 @@ module.exports = function(app) {
       parent.save(function(err) {
         if (err) {
           console.log("New parent not added!!! err=" + err);
-          res.status(500).send("Error registering new user please try again.");
+          let errCode = err.code;
+          switch (err.code) {
+            case 11000:
+              errorMessage = "User name already defined.";
+              break;
+            default:
+                errorMessage = "Create user failed. Error=" + err.code;
+              break;
+          }
+          console.log(errorMessage);
+          res.status(200).json({parent: username, error: errorMessage});
         } else { 
           // Issue token
           const payload = { email };
           const token = jwt.sign(payload, secret, {
             expiresIn: '1h',
           });
-          res.cookie('token', token, { httpOnly: true }).status(200).json({parent: username});
+          res.cookie('token', token, { httpOnly: true }).status(200).json({parent: username, error: null});
         }
       });
     });
@@ -48,15 +59,15 @@ module.exports = function(app) {
       const { email, password } = req.body;
       db.Parent.findOne({ email }, function(err, user) {
         if (err) {
-          res.status(500).json({error: 'Internal error please try again'});
+          res.status(200).json({parent: null, error: 'Internal error please try again'});
         } else if (!user) {
-          res.status(401).json({error: 'Incorrect email or password'});
+          res.status(200).json({parent: null, error: 'Incorrect email address'});
         } else {
           user.isCorrectPassword(password, function(err, same) {
             if (err) {
-              res.status(500).json({error: 'Internal error please try again'});
+              res.status(200).json({parent: null, error: 'Internal error please try again'});
             } else if (!same) {
-              res.status(401).json({error: 'Incorrect email or password'});
+              res.status(200).json({parent: null, error: 'Incorrect password'});
             } else {
               // Issue token
               const payload = { email };
@@ -158,6 +169,20 @@ module.exports = function(app) {
       wd.getDef(req.params.id, "en", null, function(definition) {
         res.json(definition);
       });
+    });
+
+    // Route to start demo
+    app.post("/api/demo", function(req, res) {
+      console.log("Demo: started...");
+      res.status(200).json("ok");
+      exec('demo.bat', (err, stdout, stderr) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log(stdout);
+      });
+      console.log("done!!!");
     }); 
 
     // Use default react app if no api routes

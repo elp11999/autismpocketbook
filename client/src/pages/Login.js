@@ -77,6 +77,10 @@ const styles = {
 // Function to construct Login page of the UI
 class Login extends React.Component {
 
+    state = {
+        errorMessage: ""
+    };
+
     render = () => {
         let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
         return (
@@ -107,30 +111,36 @@ class Login extends React.Component {
                             // Authenticate user
                             API.authenticateUser(values)
                             .then(res =>  {
-                                console.log(res.data); 
-                                apbSystem.parent = res.data.parent;
-                                apbSystem.child = "";
-                                console.log(apbSystem);
-                                localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
+                                console.log(res.data);
+                                
+                                if (res.data.error)
+                                    this.setState({errorMessage: res.data.error});
+                                else { 
+                                    apbSystem.parent = res.data.parent;
+                                    apbSystem.child = "";
+                                    console.log(apbSystem);
+                                    localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
 
-                                // Get children
-                                API.getChildren(apbSystem.parent)
-                                .then(res =>  {
-                                    console.log(res.data);
-                                    if (res.data.length > 0) {
-                                        apbSystem.child = res.data[0].firstname;
-                                        localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
-                                        this.props.history.push("/dashboard");
-                                    } else {
-                                        this.props.history.push("/addc");
-                                    }
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                });
+                                    // Get children
+                                    API.getChildren(apbSystem.parent)
+                                    .then(res =>  {
+                                        console.log(res.data);
+                                        if (res.data.length > 0) {
+                                            apbSystem.child = res.data[0].firstname;
+                                            localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
+                                            this.props.history.push("/dashboard");
+                                        } else {
+                                            this.props.history.push("/addc");
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                    });
+                                }
                             })
                             .catch(err => {
-                                console.log(err);
+                                console.log(err);                                
+                                this.setState({errorMessage: "Unknown error has occurred"});
                             });
 
                             }, 400);
@@ -154,6 +164,7 @@ class Login extends React.Component {
                                     <div style={styles.errorMessageDiv}>
                                         <ErrorMessage style={styles.errorMessage} name="email" component="div" />
                                         <ErrorMessage style={styles.errorMessage} name="password" component="div" />
+                                        <p style={styles.errorMessage}>{this.state.errorMessage}</p>
                                     </div>
                                 </Form>
                             </div>
