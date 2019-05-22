@@ -1,11 +1,14 @@
 //
-// Autism Notebook application
+// Autism Pocket Book application
 //
-// server.js - Entry point to the Google Search Book application
+// server.js - Entry point to the Autism Pocket Book application
 //
+
+require('dotenv').config();
 
 // Load Express libray
 const express = require("express");
+
 // Load Cookie parser library
 const cookieParser = require('cookie-parser');
 

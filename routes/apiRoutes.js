@@ -1,8 +1,10 @@
 //
 // Autism Notebook Application
 //
-// apiRoutes.js - Parent Mongoose database schema
+// apiRoutes.js - Express routes
 //
+
+// Load Child Process library
 const { exec } = require('child_process');
 
 // Load Mongoose database schemas
@@ -20,7 +22,7 @@ const jwt = require('jsonwebtoken');
 const wd = require('word-definition');
 
 // Set token password
-const secret = 'mysecretsshhh';
+const secret = process.env.TOKEN_SECRET;
 
 // Express routes
 module.exports = function(app) {
