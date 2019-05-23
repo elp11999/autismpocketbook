@@ -17,17 +17,19 @@ import API from "../utils/API";
  class Usage extends React.Component {
 
   state = {
+    message: "Please wait!!",
     state: false
   }
 
   // Component mount function
   componentDidMount() {
-    console.log("Demo: loading!!!");
     API.demo()
     .then(res =>  { 
       console.log(res);
+      this.setState({message: res.data.message});
     })
     .catch(err => {
+        this.setState({message: "System error occurred..."});
         console.log(err);
     });  
   }
@@ -35,7 +37,7 @@ import API from "../utils/API";
   render() {
     return (
       <JumboTron>
-          <h1>The demo is loading!</h1>
+          <h1>{this.state.message}</h1>
           <h1>
               <span role="img" aria-label="Face With Rolling Eyes Emoji">🙄</span>
           </h1>

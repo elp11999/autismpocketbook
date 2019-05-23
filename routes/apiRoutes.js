@@ -176,15 +176,19 @@ module.exports = function(app) {
     // Route to start demo
     app.post("/api/demo", function(req, res) {
       console.log("Demo: started...");
-      res.status(200).json("ok");
-      exec('demo.bat', (err, stdout, stderr) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        console.log(stdout);
-      });
-      console.log("done!!!");
+      if (process.env.NODE_ENV === "production") {
+        res.status(200).json({message: "Demo not available in production mode..."});
+      } else {
+        res.status(200).json({message: "Demo is now loading. Please wait..."});
+        exec('demo.bat', (err, stdout, stderr) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          console.log(stdout);
+        });
+        console.log("Demo done!!!");
+      }
     }); 
 
     // Use default react app if no api routes
