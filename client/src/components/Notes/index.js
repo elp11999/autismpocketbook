@@ -12,9 +12,6 @@ import ReactDOM from "react-dom";
 //import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-// Import the API library
-import API from "../../utils/API";
-
 // Inline styles for the Notes component
 const styles = {
     nav: {
@@ -74,146 +71,27 @@ const styles = {
     }
 }
 
-// Function to construct Note component  
-/*
-const Notes = ({heading, onCancel, onSave, onChange, open }) => {
-    return(
-        open
-        ? ReactDOM.createPortal(
-            <div style={styles.container}>            
-                <div style={styles.nav}><h1 style={styles.h1}>{heading}</h1></div>
-                <Formik>
-                    <div>
-                        <Form>
-                            <div>
-                            <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="mood">Mood:</label>
-                            <Field component="select" style={styles.label} name="mood">
-                                <option>Calm</option>
-                                <option>Sad</option>
-                                <option>Anxious</option>
-                                <option>Happy</option>
-                                <option>Frustrated</option>
-                            <ErrorMessage style={styles.errorMessage} name="mood" component="div" />
-                            
-                            </Field>
-                            <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="sleep">Sleep:</label>
-                            <Field component="select" style={styles.label} name="sleep">
-                                <option>Well rested</option>
-                                <option>Woke up</option>
-                                <option>Woke up several times</option>
-                            <ErrorMessage style={styles.errorMessage} name="sleep" component="div" />
-                            </Field>
-                            </div>
-                            <div>
-                            <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="nutrition">Nutrition:</label>
-                            <Field component="select" style={styles.label} name="nutrition">
-                                <option>Full Meals/Balanced Diet</option>
-                                <option>Skipped Meals</option>
-                                <option>Supplements taken</option>
-                                <option>Probiotic</option>
-                                <option>Prebiotic</option>
-                                <option>Regular Bowel Movements</option>
-                            </Field>
-                            <ErrorMessage style={styles.errorMessage} name="nutrition" component="div" />
-                            </div>
-
-                            <div>
-                            <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="behavior">Behavior:</label>
-                            <Field component="select" style={styles.label} name="behavior">
-                                <option>No issues</option>
-                                <option>On task</option>
-                                <option>Minor issues 2-3 a day</option>
-                                <option>Disruptive</option>
-                                <option>Motor/Verbal stimming</option>
-                                <option>Severe meltdown</option>
-                                <option>Elopement</option>
-                                <option>Property Destruction</option>
-                                <option>Self-Injurious Behavior</option>
-                            </Field>
-                            <ErrorMessage style={styles.errorMessage} name="behavior" component="div" />
-                            </div>
-                            
-                            <div>
-                            <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="sensoryregulation">Sensory Regulation:</label>
-                            <Field component="select" style={styles.label} name="sensoryregulation">
-                                <option>High</option>
-                                <option>Moderate</option>
-                                <option>Low</option>
-                            </Field>
-                            <ErrorMessage style={styles.errorMessage} name="sensoryregulation" component="div" />
-                            </div>
-                            
-                            <div>
-                            <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="exercise">Exercise:</label>
-                            <Field component="select" style={styles.label} name="exercise">
-                                <option>Low</option>
-                                <option>Moderate</option>
-                                <option>High</option>
-                            </Field>
-                            <ErrorMessage style={styles.errorMessage} name="exercise" component="div" />
-
-                            <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="weather">Weather:</label>
-                            <Field component="select" style={styles.label} name="weather">
-                                <option>Sunny</option>
-                                <option>Cloudy</option>
-                                <option>Rains/now</option>
-                            </Field>
-                            </div>
-
-                            <div>
-                            <ErrorMessage style={styles.errorMessage} name="weather" component="div" />
-                                <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="notes">Notes:</label>
-                                <textarea onChange={onChange} rows="5" cols="50" style={styles.notesarea} value="Sam is having a great day!!!" name="notes"></textarea>
-                                <ErrorMessage style={styles.errorMessage} name="notes" component="div" />
-                            </div>
-                            <div>
-                                <button style={styles.button} onClick={onCancel}>Cancel</button>
-                            </div>
-                            <div>
-                                <button style={styles.button} onClick={onSave}>Save</button>
-                            </div>
-                        </Form>
-                    </div>
-                </ Formik>
-            </div>,
-            document.querySelector("#modal")
-        )
-        : null
-    );
-
-}
-*/
-
 class Notes extends React.Component {
 
-    state = {
-        child: ""
-    }
-
-    componentDidMount() {
-  
-      // Load local storage
-      let apbSystem = JSON.parse(localStorage.getItem("apbSystem")); 
-      
-      // Set child's name   
-      this.setState({child:apbSystem.child});
-    }
-
     render() {
+        if (this.props.open) {
+            console.log("hello");
+            console.log(this.props.data);
+        }
       return ( 
         this.props.open
         ? ReactDOM.createPortal(
             <div style={styles.container}>            
                 <div style={styles.nav}><h1 style={styles.h1}>{this.props.heading}</h1></div>
-                <Formik
-                    initialValues={{ mood: 'Happy', 
-                                    sleep: 'Well Rested', 
-                                    nutrition: 'Full Meals/Balanced Diet', 
-                                    behavior: 'No issues', 
-                                    sensoryregulation: "High",
-                                    exercise: "High",
-                                    weather: "Sunny",
-                                    notes: "",
+                <Formik 
+                    initialValues={{ mood: this.props.data.mood, 
+                                    sleep: this.props.data.sleep, 
+                                    nutrition: this.props.data.nutrition, 
+                                    behavior: this.props.data.behavior, 
+                                    sensoryregulation: this.props.data.sensoryregulation,
+                                    exercise: this.props.data.exercise,
+                                    weather: this.props.data.weather,
+                                    notes: this.props.data.notes,
                                     }}
                     validate={values => {
                         let errors = {};
@@ -231,17 +109,8 @@ class Notes extends React.Component {
                         values.allDay = this.props.allDay; 
                         console.log(JSON.stringify(values, null, 2)); 
 
-                        // Save Note to database
-                        API.saveNote(this.state.child, values)
-                        .then(res =>  {
-                            console.log(res.data);
-                            this.props.onSave();
-                        })
-                        .catch(err => {
-                            console.log("Error adding a note!!!");
-                            console.log(err);
-                        });
-
+                        // Save note to database                        
+                        this.props.onSave(values);
                         }, 400);
                     }}
                     >
@@ -316,13 +185,13 @@ class Notes extends React.Component {
                                     <Field component="select" style={styles.label} name="weather">
                                         <option>Sunny</option>
                                         <option>Cloudy</option>
-                                        <option>Rains/now</option>
+                                        <option>Rain/Snow</option>
                                     </Field>
                                 </div>
 
                                 <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="notes">Notes:</label>
-                                    <Field component="textarea" rows="5" cols="50" style={styles.notesarea} name="notes"></Field>
+                                    <Field component="textarea" rows="5" cols="50" style={styles.notesarea} value={this.props.data.notes} name="notes"></Field>
                                 </div>
 
                                 <div>

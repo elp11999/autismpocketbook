@@ -37,21 +37,22 @@ module.exports = function(app) {
           let errCode = err.code;
           switch (err.code) {
             case 11000:
-              errorMessage = "User name already defined.";
+              errorMessage = "Email address already defined.";
               break;
             default:
                 errorMessage = "Create user failed. Error=" + err.code;
               break;
           }
           console.log(errorMessage);
-          res.status(200).json({parent: username, error: errorMessage});
+          res.status(200).json({pid: username, error: errorMessage});
         } else { 
           // Issue token
           const payload = { email };
           const token = jwt.sign(payload, secret, {
             expiresIn: '1h',
-          });
-          res.cookie('token', token, { httpOnly: true }).status(200).json({parent: username, error: null});
+          }); 
+          console.log(parent);    
+          res.cookie('token', token, { httpOnly: true }).status(200).json({pid: parent._id, error: null});
         }
       });
     });
@@ -61,29 +62,30 @@ module.exports = function(app) {
       const { email, password } = req.body;
       db.Parent.findOne({ email }, function(err, user) {
         if (err) {
-          res.status(200).json({parent: null, error: 'Internal error please try again'});
+          res.status(200).json({pid: null, error: 'Internal error please try again'});
         } else if (!user) {
-          res.status(200).json({parent: null, error: 'Incorrect email address'});
+          res.status(200).json({pid: null, error: 'Incorrect email address'});
         } else {
           user.isCorrectPassword(password, function(err, same) {
             if (err) {
-              res.status(200).json({parent: null, error: 'Internal error please try again'});
+              res.status(200).json({pid: null, error: 'Internal error please try again'});
             } else if (!same) {
-              res.status(200).json({parent: null, error: 'Incorrect password'});
+              res.status(200).json({pid: null, error: 'Incorrect password'});
             } else {
               // Issue token
               const payload = { email };
               const token = jwt.sign(payload, secret, {
                 expiresIn: '1h',
-              });           
-              res.cookie('token', token, { httpOnly: true }).status(200).json({parent: user.username});
+              }); 
+              console.log(user);          
+              res.cookie('token', token, { httpOnly: true }).status(200).json({pid: user._id});
             }
           });
         }
       });
     });   
 
-    // Route to add child to the database
+    // Route to authenticate
     app.get("/api/authenticate", withAuth, function(req, res) {
       res.status(200).send();
     }); 
@@ -93,15 +95,17 @@ module.exports = function(app) {
       let firstname = "";
       db.Child.create(req.body)
         .then(function(dbChild) {
-          // Save name of child
-          firstname = dbChild.firstname;
+          // Save child's name
+          name = dbChild.firstname;
+          // Save child's id
+          cid = dbChild._id;
           
           // Update parent with new child
-          return db.Parent.findOneAndUpdate({ username: req.params.id}, { $push: { children: dbChild._id } }, { new: true });            
+          return db.Parent.findOneAndUpdate({ _id: req.params.id}, { $push: { children: dbChild._id } }, { new: true });            
         })
         .then(function(dbParent) {
           // Send "ok" to client;            
-          res.status(200).json({child: firstname});
+          res.status(200).json({cid: cid, child: name});
         })
         .catch(function(err) {
           // Send error to client 
@@ -115,7 +119,7 @@ module.exports = function(app) {
       db.Note.create(req.body)
         .then(function(dbNote) {          
           // Update Child with new Note
-          return db.Child.findOneAndUpdate({ firstname: req.params.id}, { $push: { notes: dbNote._id } }, { new: true });            
+          return db.Child.findOneAndUpdate({ _id: req.params.id}, { $push: { notes: dbNote._id } }, { new: true });            
         })
         .then(function(dbChild) {
           // Send "ok" to client;            
@@ -124,6 +128,25 @@ module.exports = function(app) {
         .catch(function(err) {
           // Send error to client 
           console.log("oops... Did not create a Note...");
+          console.log(err);
+          res.json(err);
+        });
+    });   
+
+    // Route to a parent child count
+    app.get("/api/getchildrencount/:id", function(req, res) {
+      console.log("getchildrencount parms=" + req.params.id);
+      // Find Parent by id
+      db.Parent.findOne({ _id: req.params.id })
+        .then(function(dbParent) {
+          console.log(dbParent);
+          // Get children count
+          let count = dbParent.children.length;
+          res.status(200).json({count: count});
+        })
+        .catch(function(err) {
+          // Send error
+          console.log(err);
           res.json(err);
         });
     });    
@@ -132,7 +155,7 @@ module.exports = function(app) {
     app.get("/api/getchildren/:id", function(req, res) {
       console.log("getchildren parms=" + req.params.id);
       // Find Parent by id
-      db.Parent.findOne({ username: req.params.id })
+      db.Parent.findOne({ _id: req.params.id })
         // Get all the children
         .populate("children")
         .then(function(dbParent) {
@@ -151,7 +174,7 @@ module.exports = function(app) {
     app.get("/api/getnotes/:id", function(req, res) {
       //console.log("getnotes parms=" + req.params.id);
       // Find child by id
-      db.Child.findOne({ firstname: req.params.id })
+      db.Child.findOne({ "_id": req.params.id })
         // Get all notes for the child
         .populate("notes")
         .then(function(dbChild) {
@@ -189,10 +212,30 @@ module.exports = function(app) {
         });
         console.log("Demo done!!!");
       }
-    }); 
+    });    
+
+    // Route to get a single child note based on start date from database
+    app.post("/api/getnote/:id", function(req, res) {
+      console.log("getnote parms=" + req.params.id);
+      console.log(req.body);
+      // Find child by id
+      db.Child.findOne({ _id: req.params.id })
+        // Get all notes for the child
+        .populate("notes", null, { "start": req.body.date })
+        .then(function(dbChild) {
+          // Return just the notes for the child
+          console.log(dbChild.notes);
+          res.json(dbChild.notes);
+        })
+        .catch(function(err) {
+          // Send error
+          console.log(err);
+          res.json(err);
+        });
+    });   
 
     // Use default react app if no api routes
     app.use(function(req, res){
       res.sendFile(path.join(__dirname, "../client/build/index.html"));
-    });   
+    });  
 };

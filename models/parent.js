@@ -43,7 +43,7 @@ var ParentSchema = new Schema({
 });
 
 // Set unique indexes
-ParentSchema.index({ username: 1, email: 1 }, { unique: true});
+ParentSchema.index({ email: 1 }, { unique: true});
 
 // Set function to encrypt password
 ParentSchema.pre('save', function(next) {

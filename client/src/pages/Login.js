@@ -116,18 +116,13 @@ class Login extends React.Component {
                                 if (res.data.error)
                                     this.setState({errorMessage: res.data.error});
                                 else { 
-                                    apbSystem.parent = res.data.parent;
-                                    apbSystem.child = "";
-                                    console.log(apbSystem);
+                                    apbSystem.pid = res.data.pid;
                                     localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
-
-                                    // Get children
-                                    API.getChildren(apbSystem.parent)
-                                    .then(res =>  {
-                                        console.log(res.data);
-                                        if (res.data.length > 0) {
-                                            apbSystem.child = res.data[0].firstname;
-                                            localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
+                                    
+                                    // Get children count
+                                    API.getChildrenCount(apbSystem.pid)
+                                    .then(res =>  {                                     
+                                        if (res.data.count > 0)  {
                                             this.props.history.push("/dashboard");
                                         } else {
                                             this.props.history.push("/addc");

@@ -36,6 +36,10 @@ export default {
   authenticate: function() {
     return axios.get("/api/authenticate");
   },
+  // Get children count
+  getChildrenCount: function(id) {
+    return axios.get("/api/getchildrencount/" + id);
+  },
   // Get all children
   getChildren: function(id) {
     return axios.get("/api/getchildren/" + id);
@@ -43,6 +47,10 @@ export default {
   // Get all child notes
   getNotes: function(id) {
     return axios.get("/api/getnotes/" + id);
+  },
+  // Get child note by start date
+  getNote: function(id, noteDate) {
+    return axios.post("/api/getnote/" + id, noteDate);
   },
   // Get definition for word
   getDefinition: function(word) {

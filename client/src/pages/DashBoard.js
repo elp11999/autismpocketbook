@@ -57,18 +57,40 @@ const styles = {
 class DashBoard extends React.Component {
 
   state = {
+      id: "",
       child: "",
       showReportButton: false,
+      showCalendar: false,
       multiDataSet: []
   }
 
   componentDidMount() {
 
     // Load local storage
-    let apbSystem = JSON.parse(localStorage.getItem("apbSystem")); 
-    
-    // Set child's name   
-    this.setState({child:apbSystem.child});
+    let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
+
+    // Get all children
+    API.getChildren(apbSystem.pid)
+    .then(res =>  {
+        console.log(res.data);
+        if (res.data.length > 0) {
+          // Set child's id
+          apbSystem.cid = res.data[0]._id;
+          this.setState({id: res.data[0]._id});
+
+          // Update local storage
+          localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
+
+          // Set child's name   
+          this.setState({child: res.data[0].firstname});
+
+          // Show calendar        
+          this.setState({showCalendar: true});
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    });
   }
   
   handleEditOnClick = (event) => {
@@ -78,7 +100,7 @@ class DashBoard extends React.Component {
   handleReportsOnClick = (event) => {
 
     // Get Notes
-    API.getNotes(this.state.child)
+    API.getNotes(this.state.id)
     .then(res =>  {
         console.log(this.state.child);
         if (res.data.length > 0) {
@@ -115,7 +137,8 @@ class DashBoard extends React.Component {
   }
     
   render = () => {
-    let download = null;    
+    let download = null;
+    let calendar = null;    
 
     if (this.state.showReportButton) {
       download = 
@@ -125,6 +148,9 @@ class DashBoard extends React.Component {
             </ExcelSheet>
 
         </ExcelFile>;
+    }
+    if (this.state.showCalendar) {
+      calendar = <Calendar child={this.state.child} />
     }
 
     return (
@@ -136,7 +162,7 @@ class DashBoard extends React.Component {
           <button style={styles.dashbutton} type="submit" onClick={this.handleReportsOnClick}>Reports</button>
           <button style={styles.dashbutton} type="submit" onClick={this.handleChartsOnClick}>Charts</button>
         </div>
-        <Calendar />
+        {calendar}
       </React.Fragment> 
     );
   }

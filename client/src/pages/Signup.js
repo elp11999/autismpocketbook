@@ -110,8 +110,8 @@ class Signup extends React.Component {
                             API.saveParent(values)
                             .then(res =>  {
                                 console.log(JSON.stringify(res.data));
-                                apbSystem.parent = res.data.parent;
-                                apbSystem.child = "";
+                                apbSystem.pid = res.data.pid;
+                                apbSystem.cid = "";
                                 localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
                                 if (res.data.error)
                                     this.setState({errorMessage: res.data.error});

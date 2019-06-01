@@ -16,10 +16,22 @@ import "@fullcalendar/timegrid/main.css";
 import "./styles.css";
 import Notes from "../Notes";
 
+const defNoteData = {
+    mood:  'Happy', 
+    sleep: 'Well Rested', 
+    nutrition: 'Full Meals/Balanced Diet', 
+    behavior: 'No issues', 
+    sensoryregulation: "High",
+    exercise: "High",
+    weather: "Sunny",
+    notes: ""
+}
+
 class Calendar extends React.Component {
   calendarComponentRef = React.createRef();
 
   state = {
+    id: "",
     child: "",
     value: "",
     showModal: false,
@@ -29,6 +41,9 @@ class Calendar extends React.Component {
     title: "",
     start: null,
     allDay: true,
+    handleOnSave: null,
+    data: defNoteData,
+    notes: null,
     calendarEvents: [
       // initial event data
       //{ title: "Note", start: new Date(), allDay: true }
@@ -45,21 +60,24 @@ class Calendar extends React.Component {
     // Load local storage
     let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
 
-
-    if (apbSystem.child === "") {
+    if (apbSystem.cid === "") {
       console.log("No child here!!!");
     } else {
+      console.log(this.props.child);
 
+      // Set child's id
+      this.setState({id: apbSystem.cid});
       // Set child's name   
-      this.setState({child:apbSystem.child});
+      this.setState({child: this.props.child});
 
-      // Get Notes
-      console.log(apbSystem.child);
-      API.getNotes(apbSystem.child)
+      // Get All Notes
+      API.getNotes(apbSystem.cid)
       .then(res =>  {
         console.log(res.data);
           if (res.data.length > 0) {
             res.data.forEach((note) => {
+              console.log(new Date(note.start));
+              console.log(new Date());
               this.setState({
                 // Add event data
                 calendarEvents: this.state.calendarEvents.concat({
@@ -77,13 +95,66 @@ class Calendar extends React.Component {
     }
   }
 
-  handleOnChange = (event) => {
-    console.log("handleOnChange: entered...");
-     this.setState({value: event.target.value});
+  handleDateClick = (arg) => {
+    console.log("handleDateClick");
+    this.setState({ title: this.state.child + "'s note"});  
+    this.setState({ start: arg.date}); 
+    this.setState({ allDay: arg.allDay});
+
+    let noteDate = {
+      "date" : arg.date
+    }    
+
+    // Get note for this day
+    console.log(noteDate);
+    API.getNote(this.state.id, noteDate)
+    .then(res =>  {
+      console.log(res.data);
+        if (res.data.length > 0) {
+          this.setState({ data: res.data[0] });
+          this.setState({ handleOnSave: this.handleOnUpdate}); 
+        } else {
+          this.setState({ data: defNoteData });
+          this.setState({ handleOnSave: this.handleOnSave}); 
+        }
+        this.setState({ showModal: !this.state.showModal});
+    })
+    .catch(err => {
+        console.log(err);
+    }); 
   }
 
   handleEventClick = (arg) => {
-    console.log("handleEventClick" , arg);
+    console.log("handleEventClick");
+    this.setState({ title: "Update " + this.state.child + "'s note"}); 
+    this.setState({ start: arg.date}); 
+    this.setState({ allDay: arg.allDay});
+    this.setState({ handleOnSave: this.handleOnUpdate});
+
+    let noteDate = {
+      "date" : arg.event.start
+    }
+
+    // Get note for this day
+    API.getNote(this.state.id, noteDate)
+    .then(res =>  {
+      console.log(res.data);
+        if (res.data.length > 0) {
+          this.setState({ data: res.data[0] });
+        } else {
+          this.setState({ data: defNoteData });
+        }
+        console.log("Showing modal...");
+        this.setState({ showModal: !this.state.showModal});
+    })
+    .catch(err => {
+        console.log(err);
+    });
+  }
+
+  handleOnChange = (event) => {
+    console.log("handleOnChange: entered...");
+     this.setState({value: event.target.value});
   }
 
   handleOnCancel = (event) => {
@@ -91,26 +162,36 @@ class Calendar extends React.Component {
     this.setState({ showModal: !this.state.showModal});
   }
 
-  handleOnSave = (event) => { 
+  handleOnSave = (notes) => { 
     console.log("handleOnSave"); 
     this.setState({ showModal: !this.state.showModal});
-    this.setState({
-      // add new event data
-      calendarEvents: this.state.calendarEvents.concat({
-        // creates a new array
-        title:  this.state.title,
-        start: this.state.start,
-        allDay: this.state.allDay
-      })
-    });  
+    let now = new Date();
+    console.log("now=" + now);
+
+    // Save new Note to database
+    API.saveNote(this.state.id, notes)
+    .then(res =>  {
+        console.log(res.data);
+        this.setState({
+          // add new event data
+          calendarEvents: this.state.calendarEvents.concat({
+            // creates a new array
+            title:  this.state.title,
+            start: this.state.start,
+            allDay: this.state.allDay
+          })
+        });
+    })
+    .catch(err => {
+        console.log("Error adding a note!!!");
+        console.log(err);
+    });
   }
 
-  handleDateClick = (arg) => {
-    console.log(arg);
-    this.setState({ title: this.state.child + "'s note"});  
-    this.setState({ start: arg.date}); 
-    this.setState({ allDay: arg.allDay}); 
-    this.setState({ showModal: !this.state.showModal});
+  handleOnUpdate = (notes) => { 
+    console.log("handleOnUpdate");
+    console.log(notes.mood);
+    this.setState({ showModal: !this.state.showModal}); 
   }
 
   render() {
@@ -135,12 +216,13 @@ class Calendar extends React.Component {
             />
           </div>
         </div>
-        <Notes heading={"Notes for " + this.state.child}
+        <Notes heading={this.state.title}
           title={this.state.title}
           start={this.state.start}
           allDay={this.state.allDay}
+          data={this.state.data}
           open={this.state.showModal}
-          onSave={this.handleOnSave}
+          onSave={this.state.handleOnSave}
           onCancel={this.handleOnCancel}
           onChange={this.handleOnChange}
         />

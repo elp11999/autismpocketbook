@@ -16,7 +16,7 @@ import API from "./utils/API";
 
 // Create local storage
 if (!localStorage.getItem("apbSystem"))
-  localStorage.setItem("apbSystem", JSON.stringify({ parent: "", child: "" }));
+  localStorage.setItem("apbSystem", JSON.stringify({ pid: "", cid: "" }));
 
 class PrivateRoute extends React.Component {
   state = {

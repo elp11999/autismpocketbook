@@ -243,12 +243,12 @@ class AddChild extends React.Component {
                         console.log("addchild: props=" + this.props);
                                         
                         // Save Child to database
-                        API.saveChild(apbSystem.parent, values)
+                        API.saveChild(apbSystem.pid, values)
                         .then(res =>  {
                             console.log(res.data);
-                                console.log(res.data);
-                                apbSystem.child = res.data.child;
-                                localStorage.setItem("apbSystem", JSON.stringify(apbSystem));                                
+                            console.log("id=" + res.data.cid);
+                            apbSystem.cid = res.data.cid;
+                            localStorage.setItem("apbSystem", JSON.stringify(apbSystem));                                
                             this.props.history.push("/dashboard");
                         })
                         .catch(err => {
