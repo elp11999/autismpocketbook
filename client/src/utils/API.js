@@ -52,6 +52,10 @@ export default {
   getNote: function(id, noteDate) {
     return axios.post("/api/getnote/" + id, noteDate);
   },
+  // Update child note
+  updateNote: function(id, noteDate) {
+    return axios.post("/api/updatenote/" + id, noteDate);
+  },
   // Get definition for word
   getDefinition: function(word) {
     return axios.get("/api/getdefinition/" + word);

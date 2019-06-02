@@ -175,17 +175,14 @@ export default class chart extends Component {
 
         // Load local storage
         let apbSystem = JSON.parse(localStorage.getItem("apbSystem")); 
-        
-        // Set child's name   
-        this.setState({child: apbSystem.child}); 
     
         // Get Child notes
-        API.getNotes(apbSystem.child)
+        API.getNotes(apbSystem.cid)
         .then(res =>  {          
-            if (res.data.length > 0) {
+            if (res.data.notes.length > 0) {
               let childData = [];
-              res.data.sort((a, b) => (a.start < b.start) ? 1 : -1);
-              res.data.forEach((note) => {
+              res.data.notes.sort((a, b) => (a.start < b.start) ? 1 : -1);
+              res.data.notes.forEach((note) => {
                 childData.push([
                     {value: note.start},
                     {value: note.behavior},
@@ -198,7 +195,10 @@ export default class chart extends Component {
                     {value: note.notes}
                 ]);
                 this.setState({data: childData});
-              });
+              });              
+        
+              // Set child's name   
+              this.setState({child: res.data.child}); 
               this.setChartData(this.state.data, 1, behaviorData);
               this.setState({showChart: true});
             }

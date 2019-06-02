@@ -9,7 +9,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // Import the Formik library
-//import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 // Inline styles for the Notes component
@@ -74,10 +73,7 @@ const styles = {
 class Notes extends React.Component {
 
     render() {
-        if (this.props.open) {
-            console.log("hello");
-            console.log(this.props.data);
-        }
+
       return ( 
         this.props.open
         ? ReactDOM.createPortal(
@@ -191,7 +187,7 @@ class Notes extends React.Component {
 
                                 <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="notes">Notes:</label>
-                                    <Field component="textarea" rows="5" cols="50" style={styles.notesarea} value={this.props.data.notes} name="notes"></Field>
+                                    <Field component="textarea" rows="5" cols="50" style={styles.notesarea} name="notes"></Field>
                                 </div>
 
                                 <div>

@@ -63,19 +63,16 @@ class Calendar extends React.Component {
     if (apbSystem.cid === "") {
       console.log("No child here!!!");
     } else {
-      console.log(this.props.child);
 
       // Set child's id
       this.setState({id: apbSystem.cid});
-      // Set child's name   
-      this.setState({child: this.props.child});
 
       // Get All Notes
       API.getNotes(apbSystem.cid)
       .then(res =>  {
         console.log(res.data);
-          if (res.data.length > 0) {
-            res.data.forEach((note) => {
+          if (res.data.notes.length > 0) {
+            res.data.notes.forEach((note) => {
               console.log(new Date(note.start));
               console.log(new Date());
               this.setState({
@@ -87,6 +84,8 @@ class Calendar extends React.Component {
                 })
               });
             });
+            // Set child's name   
+            this.setState({child: res.data.child});
           }
       })
       .catch(err => {
@@ -152,11 +151,6 @@ class Calendar extends React.Component {
     });
   }
 
-  handleOnChange = (event) => {
-    console.log("handleOnChange: entered...");
-     this.setState({value: event.target.value});
-  }
-
   handleOnCancel = (event) => {
     console.log("handleOnCancel"); 
     this.setState({ showModal: !this.state.showModal});
@@ -165,8 +159,6 @@ class Calendar extends React.Component {
   handleOnSave = (notes) => { 
     console.log("handleOnSave"); 
     this.setState({ showModal: !this.state.showModal});
-    let now = new Date();
-    console.log("now=" + now);
 
     // Save new Note to database
     API.saveNote(this.state.id, notes)
@@ -190,8 +182,17 @@ class Calendar extends React.Component {
 
   handleOnUpdate = (notes) => { 
     console.log("handleOnUpdate");
-    console.log(notes.mood);
-    this.setState({ showModal: !this.state.showModal}); 
+    this.setState({ showModal: !this.state.showModal});
+
+    // Update Note to database
+    API.updateNote(this.state.data._id, notes)
+    .then(res =>  {
+        console.log(res.data);
+    })
+    .catch(err => {
+        console.log("Error Update a note!!!");
+        console.log(err);
+    }); 
   }
 
   render() {
@@ -203,9 +204,11 @@ class Calendar extends React.Component {
             <FullCalendar
               defaultView="dayGridMonth"
               header={{
-                left: "prev,next today",
+                left: "prev,next",
+                //left: "prev,next today",
                 center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+                right: "listWeek"
+                //right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
               }}
               plugins={this.state.plugins}
               ref={this.calendarComponentRef}
@@ -217,14 +220,13 @@ class Calendar extends React.Component {
           </div>
         </div>
         <Notes heading={this.state.title}
-          title={this.state.title}
+          title={this.state.child + 's  note'}
           start={this.state.start}
           allDay={this.state.allDay}
           data={this.state.data}
           open={this.state.showModal}
           onSave={this.state.handleOnSave}
           onCancel={this.handleOnCancel}
-          onChange={this.handleOnChange}
         />
 
       </React.Fragment>

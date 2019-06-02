@@ -131,6 +131,22 @@ module.exports = function(app) {
           console.log(err);
           res.json(err);
         });
+    });
+
+    // Route to update note to the database
+    app.post("/api/updatenote/:id", function(req, res) {
+      db.Note.findOneAndUpdate({ _id: req.params.id}, { $set: req.body }, { new: true })
+        .then(function(dbNote) {
+          // Send "ok" to client;  
+          console.log("Note Update good...");          
+          res.status(200).json("ok");
+        })
+        .catch(function(err) {
+          // Send error to client 
+          console.log("oops... Did not Update a Note...");
+          console.log(err);
+          res.json(err);
+        });
     });   
 
     // Route to a parent child count
@@ -172,7 +188,7 @@ module.exports = function(app) {
 
     // Route to get all child notes from database
     app.get("/api/getnotes/:id", function(req, res) {
-      //console.log("getnotes parms=" + req.params.id);
+      console.log("getnotes parms=" + req.params.id);
       // Find child by id
       db.Child.findOne({ "_id": req.params.id })
         // Get all notes for the child
@@ -180,7 +196,11 @@ module.exports = function(app) {
         .then(function(dbChild) {
           // Return just the notes for the child
           //console.log(dbChild);
-          res.json(dbChild.notes);
+          let response = {
+            child: dbChild.firstname,
+            notes: dbChild.notes
+          }
+          res.json(response);
         })
         .catch(function(err) {
           // Send error
@@ -194,24 +214,6 @@ module.exports = function(app) {
       wd.getDef(req.params.id, "en", null, function(definition) {
         res.json(definition);
       });
-    });
-
-    // Route to start demo
-    app.post("/api/demo", function(req, res) {
-      console.log("Demo: started...");
-      if (process.env.NODE_ENV === "production") {
-        res.status(200).json({message: "Demo not available in production mode..."});
-      } else {
-        res.status(200).json({message: "Demo is now loading. Please wait..."});
-        exec('demo.bat', (err, stdout, stderr) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          console.log(stdout);
-        });
-        console.log("Demo done!!!");
-      }
     });    
 
     // Route to get a single child note based on start date from database
@@ -232,6 +234,24 @@ module.exports = function(app) {
           console.log(err);
           res.json(err);
         });
+    });
+
+    // Route to start demo
+    app.post("/api/demo", function(req, res) {
+      console.log("Demo: started...");
+      if (process.env.NODE_ENV === "production") {
+        res.status(200).json({message: "Demo not available in production mode..."});
+      } else {
+        res.status(200).json({message: "Demo is now loading. Please wait..."});
+        exec('demo.bat', (err, stdout, stderr) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          console.log(stdout);
+        });
+        console.log("Demo done!!!");
+      }
     });   
 
     // Use default react app if no api routes

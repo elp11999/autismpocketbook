@@ -13,6 +13,9 @@ import ReactExport from "react-export-excel";
 // Import Calendar component
 import Calendar from "../components/Calendar";
 
+// Import Profile component
+import Profile from "../pages/AddChild";
+
 // Import the API library
 import API from "../utils/API";
 
@@ -59,7 +62,10 @@ class DashBoard extends React.Component {
   state = {
       id: "",
       child: "",
+      data: "",
       showReportButton: false,
+      showDashboardButtons: false,
+      showProfile: false,
       showCalendar: false,
       multiDataSet: []
   }
@@ -77,12 +83,16 @@ class DashBoard extends React.Component {
           // Set child's id
           apbSystem.cid = res.data[0]._id;
           this.setState({id: res.data[0]._id});
+          this.setState({data: res.data[0]});
 
           // Update local storage
           localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
 
           // Set child's name   
           this.setState({child: res.data[0].firstname});
+
+          // Show Dashboard buttons        
+          this.setState({showDashboardButtons: true});
 
           // Show calendar        
           this.setState({showCalendar: true});
@@ -94,7 +104,10 @@ class DashBoard extends React.Component {
   }
   
   handleEditOnClick = (event) => {
-    console.log("handleEditOnClick: entered.");
+    console.log("handleEditOnClick: entered.");      
+    this.setState({showDashboardButtons: false});
+    this.setState({showCalendar: false});
+    this.setState({showProfile: true});
   }
 
   handleReportsOnClick = (event) => {
@@ -102,10 +115,9 @@ class DashBoard extends React.Component {
     // Get Notes
     API.getNotes(this.state.id)
     .then(res =>  {
-        console.log(this.state.child);
-        if (res.data.length > 0) {
-          res.data.sort((a, b) => (a.start < b.start) ? 1 : -1);
-          res.data.forEach((note) => {
+        if (res.data.notes.length > 0) {
+          res.data.notes.sort((a, b) => (a.start < b.start) ? 1 : -1);
+          res.data.notes.forEach((note) => {
             multiDataSet[0].data.push([
                 {value: note.start},
                 {value: note.behavior},
@@ -119,7 +131,7 @@ class DashBoard extends React.Component {
             ]);
             this.setState({multiDataSet: multiDataSet});
           });          
-          console.log(multiDataSet);
+          //console.log(multiDataSet);
         }
     })
     .catch(err => {
@@ -138,7 +150,9 @@ class DashBoard extends React.Component {
     
   render = () => {
     let download = null;
-    let calendar = null;    
+    let calendar = null;
+    let dashBoardButtons = null;
+    let profile = null;     
 
     if (this.state.showReportButton) {
       download = 
@@ -149,20 +163,31 @@ class DashBoard extends React.Component {
 
         </ExcelFile>;
     }
+    
     if (this.state.showCalendar) {
-      calendar = <Calendar child={this.state.child} />
+      calendar = <Calendar />
     }
 
-    return (
-      <React.Fragment>
-        {download}         
+    if (this.state.showDashboardButtons) {
+      dashBoardButtons =         
         <div style={styles.dashnav}>
           <img style={ styles.dashimage } src="/Sam1.jpeg" alt="thumbnail" width="50" height="50"></img>
           <button style={styles.dashbutton} type="submit" onClick={this.handleEditOnClick}>Edit</button>
           <button style={styles.dashbutton} type="submit" onClick={this.handleReportsOnClick}>Reports</button>
           <button style={styles.dashbutton} type="submit" onClick={this.handleChartsOnClick}>Charts</button>
         </div>
+    }
+
+    if (this.state.showProfile) {
+      profile = <Profile data={this.state.data} />
+    }
+
+    return (
+      <React.Fragment>
+        {download}
+        {dashBoardButtons}
         {calendar}
+        {profile}
       </React.Fragment> 
     );
   }

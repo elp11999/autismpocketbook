@@ -133,6 +133,49 @@ const styles = {
     }
   }
 
+const defaultProfileData = { 
+    firstname: '', 
+    middlename: '', 
+    lastname: '', 
+    age: '', 
+    dob: "",
+    primarycareprovider: "",
+    interventions: "Applied Behavior Analysis",
+    med1: "",
+    freq1: "",
+    dos1: "",
+    med2: "",
+    freq2: "",
+    dos2: "",
+    med3: "",
+    freq3: "",
+    dos3: "",
+    med4: "",
+    freq4: "",
+    dos4: "",
+    med5: "",
+    freq5: "",
+    dos5: "",
+    med6: "",
+    freq6: "",
+    dos6: "",
+    med7: "",
+    freq7: "",
+    dos7: "",
+    med8: "",
+    freq8: "",
+    dos8: "",
+    med9: "",
+    freq9: "",
+    dos9: "",
+    med10: "",
+    freq10: "",
+    dos10: "",
+    autsimlevel: "Level 1",
+    cofactors: "ADD",
+    schoolaccomodations: "Visual schedule"
+}
+
 const levels = [
     {
         heading: "Level 1: Requiring Support",
@@ -155,7 +198,8 @@ const levels = [
 class AddChild extends React.Component {
     state = {
         showModal: false,
-        level: 0
+        level: 0,
+        data: ""
     }
     toggleModal = () => {
         this.setState({ showModal: !this.state.showModal});
@@ -166,7 +210,7 @@ class AddChild extends React.Component {
     }
 
     render = () => {
-        let apbSystem = JSON.parse(localStorage.getItem("apbSystem")); 
+        let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
         return (
             <React.Fragment>
                 <Modal heading={levels[this.state.level].heading} open={this.state.showModal} onClose={this.toggleModal}>
@@ -179,46 +223,46 @@ class AddChild extends React.Component {
             <p style={styles.header}>Add a child</p>         
             <div style={styles.container}>
                 <Formik
-                    initialValues={{ firstname: '', 
-                                    middlename: '', 
-                                    lastname: '', 
-                                    age: '', 
-                                    dob: "",
-                                    primarycareprovider: "",
+                    initialValues={{ firstname: this.props.data.firstname, 
+                                    middlename: this.props.data.middlename, 
+                                    lastname: this.props.data.lastname, 
+                                    age: this.props.data.age, 
+                                    dob: this.props.data.dob,
+                                    primarycareprovider: this.props.data.dob,
                                     interventions: "Applied Behavior Analysis",
-                                    med1: "",
-                                    freq1: "",
-                                    dos1: "",
-                                    med2: "",
-                                    freq2: "",
-                                    dos2: "",
-                                    med3: "",
-                                    freq3: "",
-                                    dos3: "",
-                                    med4: "",
-                                    freq4: "",
-                                    dos4: "",
-                                    med5: "",
-                                    freq5: "",
-                                    dos5: "",
-                                    med6: "",
-                                    freq6: "",
-                                    dos6: "",
-                                    med7: "",
-                                    freq7: "",
-                                    dos7: "",
-                                    med8: "",
-                                    freq8: "",
-                                    dos8: "",
-                                    med9: "",
-                                    freq9: "",
-                                    dos9: "",
-                                    med10: "",
-                                    freq10: "",
-                                    dos10: "",
-                                    autsimlevel: "Level 1",
-                                    cofactors: "ADD",
-                                    schoolaccomodations: "Visual schedule"
+                                    med1: this.props.data.med1,
+                                    freq1: this.props.data.freq1,
+                                    dos1: this.props.data.dos1,
+                                    med2: this.props.data.med2,
+                                    freq2: this.props.data.freq2,
+                                    dos2: this.props.data.dos2,
+                                    med3: this.props.data.med3,
+                                    freq3: this.props.data.freq3,
+                                    dos3: this.props.data.dos3,
+                                    med4: this.props.data.med4,
+                                    freq4: this.props.data.freq4,
+                                    dos4: this.props.data.dos4,
+                                    med5: this.props.data.med5,
+                                    freq5: this.props.data.freq5,
+                                    dos5: this.props.data.dos5,
+                                    med6: this.props.data.med6,
+                                    freq6: this.props.data.freq6,
+                                    dos6: this.props.data.dos6,
+                                    med7: this.props.data.med7,
+                                    freq7: this.props.data.freq7,
+                                    dos7: this.props.data.dos7,
+                                    med8: this.props.data.med8,
+                                    freq8: this.props.data.freq8,
+                                    dos8: this.props.data.dos8,
+                                    med9: this.props.data.med9,
+                                    freq9: this.props.data.freq9,
+                                    dos9: this.props.data.dos9,
+                                    med10: this.props.data.med10,
+                                    freq10: this.props.data.freq10,
+                                    dos10: this.props.data.dos10,
+                                    autsimlevel: this.props.data.autsimlevel,
+                                    cofactors: this.props.data.cofactors,
+                                    schoolaccomodations: this.props.data.schoolaccomodations
                                     }}
                     validate={values => {
                         let errors = {};
