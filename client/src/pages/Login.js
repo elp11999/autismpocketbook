@@ -10,6 +10,9 @@ import React from "react";
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+// Import Profile component
+import Profile from "../pages/AddChild";
+
 // Import the API library
 import API from "../utils/API";
 
@@ -73,105 +76,133 @@ const styles = {
       color: "blue"
     }
   }
+  
+let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
 
 // Function to construct Login page of the UI
 class Login extends React.Component {
 
-    state = {
+    state = {   
+        showProfile: false,     
+        data: {},
         errorMessage: ""
     };
 
+    handleOnProfileSave = (profile) => {
+                                            
+        // Save Child to database
+        API.saveChild(apbSystem.pid, profile)
+        .then(res =>  {
+            apbSystem.cid = res.data.cid;
+            localStorage.setItem("apbSystem", JSON.stringify(apbSystem));                                
+            this.props.history.push("/dashboard");
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+    }
+
     render = () => {
-        let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
-        return (
-            <React.Fragment>
-                
-                <p style={styles.header}>Sign in to Autism Pocket Book</p>         
-                <div style={styles.container}>
-                    <Formik
-                        initialValues={{ email: '', password: '' }}
-                        validate={values => {
-                            let errors = {};
-                            if (!values.email) {
-                                errors.email = 'Email  address required!!';
-                            } else if (
-                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                            ) {
-                                errors.email = 'Invalid email address!!';
-                            }
-                            else if (!values.password)
-                                errors.password = 'Password required!!';
-                            return errors;
-                        }}
-                        onSubmit={(values, { setSubmitting }) => {
-                            setTimeout(() => {
-                            console.log(JSON.stringify(values, null, 2));
-                            setSubmitting(false);                                     
 
-                            // Authenticate user
-                            API.authenticateUser(values)
-                            .then(res =>  {
-                                console.log(res.data);
-                                
-                                if (res.data.error)
-                                    this.setState({errorMessage: res.data.error});
-                                else { 
-                                    apbSystem.pid = res.data.pid;
-                                    localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
-                                    
-                                    // Get children count
-                                    API.getChildrenCount(apbSystem.pid)
-                                    .then(res =>  {                                     
-                                        if (res.data.count > 0)  {
-                                            this.props.history.push("/dashboard");
-                                        } else {
-                                            this.props.history.push("/addc");
-                                        }
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                    });
+        if (this.state.showProfile) {
+            return (
+                <Profile 
+                    header="Add a child"
+                    buttonLabel="Add Child"
+                    data={this.state.data}
+                    onProfileSave={this.handleOnProfileSave}
+                />
+            );
+
+        } else {
+            return (
+                <React.Fragment>
+                    
+                    <p style={styles.header}>Sign in to Autism Pocket Book</p>         
+                    <div style={styles.container}>
+                        <Formik
+                            initialValues={{ email: '', password: '' }}
+                            validate={values => {
+                                let errors = {};
+                                if (!values.email) {
+                                    errors.email = 'Email  address required!!';
+                                } else if (
+                                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                                ) {
+                                    errors.email = 'Invalid email address!!';
                                 }
-                            })
-                            .catch(err => {
-                                console.log(err);                                
-                                this.setState({errorMessage: "Unknown error has occurred"});
-                            });
+                                else if (!values.password)
+                                    errors.password = 'Password required!!';
+                                return errors;
+                            }}
+                            onSubmit={(values, { setSubmitting }) => {
+                                setTimeout(() => {
+                                setSubmitting(false);                                     
 
-                            }, 400);
-                        }}
-                        >
-                        {({ isSubmitting }) => (
-                            <div>
-                                <Form>
-                                    <div>
-                                        <label style={styles.label} htmlFor="email">Email address</label>
-                                    </div>
-                                    <Field style={styles.field} type="email" name="email" />
+                                // Authenticate user
+                                API.authenticateUser(values)
+                                .then(res =>  {                                    
+                                    if (res.data.error)
+                                        this.setState({errorMessage: res.data.error});
+                                    else { 
+                                        apbSystem.pid = res.data.pid;
+                                        localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
+                                        
+                                        // Get children count
+                                        API.getChildrenCount(apbSystem.pid)
+                                        .then(res =>  {                                     
+                                            if (res.data.count > 0)  {
+                                                this.props.history.push("/dashboard");
+                                            } else {
+                                                this.setState({showProfile: true});
+                                            }
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        });
+                                    }
+                                })
+                                .catch(err => {
+                                    console.log(err);                                
+                                    this.setState({errorMessage: "Unknown error has occurred"});
+                                });
 
-                                    <div>
-                                        <label  style={styles.label} htmlFor="password">Password</label>
-                                        <a style={styles.signup} href="/signup">Forgot password?</a>
-                                    </div>
-                                    <Field style={styles.field} type="password" name="password" />
-                                    <br />
-                                    <button style={styles.button} type="submit" disabled={isSubmitting}>Sign in</button>
-                                    <div style={styles.errorMessageDiv}>
-                                        <ErrorMessage style={styles.errorMessage} name="email" component="div" />
-                                        <ErrorMessage style={styles.errorMessage} name="password" component="div" />
-                                        <p style={styles.errorMessage}>{this.state.errorMessage}</p>
-                                    </div>
-                                </Form>
-                            </div>
-                        )}
-                    </Formik>
-                </div>
-                <div style={styles.container}>
-                <span>New to Autism Pocket Book?</span>
-                <a style={styles.signup} href="/signup">Create Account.</a>
-                </div>
-            </React.Fragment> 
-        );
+                                }, 400);
+                            }}
+                            >
+                            {({ isSubmitting }) => (
+                                <div>
+                                    <Form>
+                                        <div>
+                                            <label style={styles.label} htmlFor="email">Email address</label>
+                                        </div>
+                                        <Field style={styles.field} type="email" name="email" />
+
+                                        <div>
+                                            <label  style={styles.label} htmlFor="password">Password</label>
+                                            <a style={styles.signup} href="/signup">Forgot password?</a>
+                                        </div>
+                                        <Field style={styles.field} type="password" name="password" />
+                                        <br />
+                                        <button style={styles.button} type="submit" disabled={isSubmitting}>Sign in</button>
+                                        <div style={styles.errorMessageDiv}>
+                                            <ErrorMessage style={styles.errorMessage} name="email" component="div" />
+                                            <ErrorMessage style={styles.errorMessage} name="password" component="div" />
+                                            <p style={styles.errorMessage}>{this.state.errorMessage}</p>
+                                        </div>
+                                    </Form>
+                                </div>
+                            )}
+                        </Formik>
+                    </div>
+                    <div style={styles.container}>
+                    <span>New to Autism Pocket Book?</span>
+                    <a style={styles.signup} href="/signup">Create Account.</a>
+                    </div>
+                </React.Fragment> 
+            );
+        }
     }
 }
 

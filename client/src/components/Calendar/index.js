@@ -70,11 +70,9 @@ class Calendar extends React.Component {
       // Get All Notes
       API.getNotes(apbSystem.cid)
       .then(res =>  {
-        console.log(res.data);
+          console.log(res.data);
           if (res.data.notes.length > 0) {
             res.data.notes.forEach((note) => {
-              console.log(new Date(note.start));
-              console.log(new Date());
               this.setState({
                 // Add event data
                 calendarEvents: this.state.calendarEvents.concat({
@@ -84,9 +82,9 @@ class Calendar extends React.Component {
                 })
               });
             });
-            // Set child's name   
-            this.setState({child: res.data.child});
           }
+          // Set child's name   
+          this.setState({child: res.data.child});
       })
       .catch(err => {
           console.log(err);
@@ -220,7 +218,7 @@ class Calendar extends React.Component {
           </div>
         </div>
         <Notes heading={this.state.title}
-          title={this.state.child + 's  note'}
+          title={this.state.child + "'s note"}
           start={this.state.start}
           allDay={this.state.allDay}
           data={this.state.data}

@@ -92,6 +92,7 @@ module.exports = function(app) {
 
     // Route to add child to the database
     app.post("/api/child/:id", function(req, res) {
+      console.log("adding a new child...");
       let firstname = "";
       db.Child.create(req.body)
         .then(function(dbChild) {
@@ -110,6 +111,23 @@ module.exports = function(app) {
         .catch(function(err) {
           // Send error to client 
           console.log("Error creating child err=" + err);
+          res.json(err);
+        });
+    });
+
+    // Route to update child to the database
+    app.post("/api/updatechild/:id", function(req, res) {
+      console.log("updating a child id=" + req.params.id);
+      db.Child.findOneAndUpdate({ _id: req.params.id}, { $set: req.body }, { new: true })
+        .then(function(dbNote) {
+          // Send "ok" to client;  
+          console.log("Child Update good...");          
+          res.status(200).json("ok");
+        })
+        .catch(function(err) {
+          // Send error to client 
+          console.log("oops... Did not Update a Child...");
+          console.log(err);
           res.json(err);
         });
     });

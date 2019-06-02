@@ -133,49 +133,6 @@ const styles = {
     }
   }
 
-const defaultProfileData = { 
-    firstname: '', 
-    middlename: '', 
-    lastname: '', 
-    age: '', 
-    dob: "",
-    primarycareprovider: "",
-    interventions: "Applied Behavior Analysis",
-    med1: "",
-    freq1: "",
-    dos1: "",
-    med2: "",
-    freq2: "",
-    dos2: "",
-    med3: "",
-    freq3: "",
-    dos3: "",
-    med4: "",
-    freq4: "",
-    dos4: "",
-    med5: "",
-    freq5: "",
-    dos5: "",
-    med6: "",
-    freq6: "",
-    dos6: "",
-    med7: "",
-    freq7: "",
-    dos7: "",
-    med8: "",
-    freq8: "",
-    dos8: "",
-    med9: "",
-    freq9: "",
-    dos9: "",
-    med10: "",
-    freq10: "",
-    dos10: "",
-    autsimlevel: "Level 1",
-    cofactors: "ADD",
-    schoolaccomodations: "Visual schedule"
-}
-
 const levels = [
     {
         heading: "Level 1: Requiring Support",
@@ -198,29 +155,31 @@ const levels = [
 class AddChild extends React.Component {
     state = {
         showModal: false,
-        level: 0,
+        levelID: 0,
+        autsimlevel: "",
         data: ""
     }
+
     toggleModal = () => {
         this.setState({ showModal: !this.state.showModal});
     }
   
-    handleClick = (event) =>{
-        this.setState({ level: event.target.id, showModal: true});
+    handleClick = (event) => {
+        this.setState({ levelID: event.target.id, showModal: true});
     }
 
     render = () => {
-        let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
+        JSON.stringify(this.props, null, 2);
         return (
             <React.Fragment>
-                <Modal heading={levels[this.state.level].heading} open={this.state.showModal} onClose={this.toggleModal}>
+                <Modal heading={levels[this.state.levelID].heading} open={this.state.showModal} onClose={this.toggleModal}>
                     <br></br>
-                    <p><span style={styles.levelheader}>Social: </span><span>{levels[this.state.level].social}</span></p>
+                    <p><span style={styles.levelheader}>Social: </span><span>{levels[this.state.levelID].social}</span></p>
                     <br></br>
-                    <p><span style={styles.levelheader}>Behavior/Interest: </span><span>{levels[this.state.level].behavior}</span></p>
+                    <p><span style={styles.levelheader}>Behavior/Interest: </span><span>{levels[this.state.levelID].behavior}</span></p>
                 </Modal> 
             
-            <p style={styles.header}>Add a child</p>         
+            <p style={styles.header}>{this.props.header}</p>         
             <div style={styles.container}>
                 <Formik
                     initialValues={{ firstname: this.props.data.firstname, 
@@ -282,22 +241,23 @@ class AddChild extends React.Component {
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
-                        console.log(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                        console.log("addchild: props=" + this.props);
-                                        
-                        // Save Child to database
-                        API.saveChild(apbSystem.pid, values)
-                        .then(res =>  {
-                            console.log(res.data);
-                            console.log("id=" + res.data.cid);
-                            apbSystem.cid = res.data.cid;
-                            localStorage.setItem("apbSystem", JSON.stringify(apbSystem));                                
-                            this.props.history.push("/dashboard");
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
+                            setSubmitting(false);
+                            /*
+                                            
+                            // Save Child to database
+                            API.saveChild(apbSystem.pid, values)
+                            .then(res =>  {
+                                console.log(res.data);
+                                console.log("id=" + res.data.cid);
+                                apbSystem.cid = res.data.cid;
+                                localStorage.setItem("apbSystem", JSON.stringify(apbSystem));                                
+                                this.props.history.push("/dashboard");
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            });
+                            */
+                            this.props.onProfileSave(values);
 
                         }, 400);
                     }}
@@ -433,7 +393,8 @@ class AddChild extends React.Component {
                                                 id="0"
                                                 type="radio"
                                                 value="Level 1"
-                                                onClick={this.handleClick}
+                                                checked={this.props.data.autsimlevel === "Level 1"}
+                                                onChange={this.handleClick}
                                             />
                                             Level 1: Requiring Support Social
                                         </label>
@@ -445,8 +406,9 @@ class AddChild extends React.Component {
                                                 name="autsimlevel"
                                                 id="1"
                                                 type="radio"
-                                                value="level 2"
-                                                onClick={this.handleClick}
+                                                value="Level 2"
+                                                checked={this.props.data.autsimlevel === "Level 2"}
+                                                onChange={this.handleClick}
                                             />
                                             Level 2: Requiring Substantial Support Social
                                         </label>
@@ -459,7 +421,8 @@ class AddChild extends React.Component {
                                                 id="2"
                                                 type="radio"
                                                 value="Level 3"
-                                                onClick={this.handleClick}
+                                                checked={this.props.data.autsimlevel === "Level 3"}
+                                                onChange={this.handleClick}
                                             />
                                             Level 3: Requiring Very Substantial Support Social
                                         </label>
@@ -504,7 +467,7 @@ class AddChild extends React.Component {
 
                                 <hr />
                                 
-                                <button style={styles.button} type="submit" disabled={isSubmitting}>Add Child</button>
+                                <button style={styles.button} type="submit" disabled={isSubmitting}>{this.props.buttonLabel}</button>
                                 <div style={styles.errorMessageDiv}>
                                     <ErrorMessage style={styles.errorMessage} name="firstname" component="div" />                                    
                                     <ErrorMessage style={styles.errorMessage} name="middlename" component="div" />                                    

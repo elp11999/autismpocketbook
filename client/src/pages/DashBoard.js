@@ -56,6 +56,9 @@ const styles = {
     }
 }
 
+// Load local storage
+let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
+
 // Function to construct Login page of the UI
 class DashBoard extends React.Component {
 
@@ -65,15 +68,13 @@ class DashBoard extends React.Component {
       data: "",
       showReportButton: false,
       showDashboardButtons: false,
-      showProfile: false,
+      showAddProfile: false,
+      showUpdateProfile: false,
       showCalendar: false,
       multiDataSet: []
   }
 
   componentDidMount() {
-
-    // Load local storage
-    let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
 
     // Get all children
     API.getChildren(apbSystem.pid)
@@ -96,6 +97,17 @@ class DashBoard extends React.Component {
 
           // Show calendar        
           this.setState({showCalendar: true});
+        } else {
+
+          // Hide Dashboard buttons        
+          this.setState({showDashboardButtons: false});
+
+          // Hide calendar        
+          this.setState({showCalendar: false});
+
+          // Show add profile
+          this.setState({showAddProfile: true});
+
         }
     })
     .catch(err => {
@@ -107,7 +119,62 @@ class DashBoard extends React.Component {
     console.log("handleEditOnClick: entered.");      
     this.setState({showDashboardButtons: false});
     this.setState({showCalendar: false});
-    this.setState({showProfile: true});
+    this.setState({showUpdateProfile: true});
+  }
+
+  handleOnAddProfile = (profile) => {
+    console.log("handleOnAddProfile"); 
+                                            
+    // Save Child to database
+    API.saveChild(apbSystem.pid, profile)
+    .then(res =>  {
+        // Save child id
+        this.setState({id: res.data.cid, child: res.data.child});
+        apbSystem.cid = res.data.cid;
+        localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
+        
+        // Set new profile data        
+        this.setState({data: profile});
+
+        // Set new profile data        
+        this.setState({data: profile});
+        
+        // Disable add profile component      
+        this.setState({showAddProfile: false});
+    
+        // Show Dashboard buttons        
+        this.setState({showDashboardButtons: true});
+    
+        // Show calendar        
+        this.setState({showCalendar: true});
+    })
+    .catch(err => {
+        console.log(err);
+    });
+  }
+
+  handleOnUpdateProfile = (profile) => {
+    console.log("handleOnUpdateProfile"); 
+
+    // Update child' profile
+    API.updateChild(this.state.id, profile)
+    .then(res =>  {
+        // Set new profile data        
+        this.setState({data: profile});
+        
+        // Disable edit profile component      
+        this.setState({showUpdateProfile: false});
+    
+        // Show Dashboard buttons        
+        this.setState({showDashboardButtons: true});
+    
+        // Show calendar        
+        this.setState({showCalendar: true});
+    })
+    .catch(err => {
+        console.log(err);
+    });
+
   }
 
   handleReportsOnClick = (event) => {
@@ -131,13 +198,13 @@ class DashBoard extends React.Component {
             ]);
             this.setState({multiDataSet: multiDataSet});
           });          
-          //console.log(multiDataSet);
+          console.log(multiDataSet);
+          this.setState({showReportButton: true});
         }
     })
     .catch(err => {
         console.log(err);
     });
-    this.setState({showReportButton: true});
   }
 
   handleDownloadOnClick = (event) => {
@@ -152,7 +219,8 @@ class DashBoard extends React.Component {
     let download = null;
     let calendar = null;
     let dashBoardButtons = null;
-    let profile = null;     
+    let addProfile = null;     
+    let updateProfile = null;     
 
     if (this.state.showReportButton) {
       download = 
@@ -178,8 +246,20 @@ class DashBoard extends React.Component {
         </div>
     }
 
-    if (this.state.showProfile) {
-      profile = <Profile data={this.state.data} />
+    if (this.state.showAddProfile) {
+      addProfile = <Profile 
+          header={"Add a child"}
+          buttonLabel="Add Child"
+          data={this.state.data}
+          onProfileSave={this.handleOnAddProfile} />
+    }
+
+    if (this.state.showUpdateProfile) {
+      updateProfile = <Profile 
+          header={"Update " + this.state.child + "'s profile"}
+          buttonLabel="Update Profile"
+          data={this.state.data}
+          onProfileSave={this.handleOnUpdateProfile} />
     }
 
     return (
@@ -187,7 +267,8 @@ class DashBoard extends React.Component {
         {download}
         {dashBoardButtons}
         {calendar}
-        {profile}
+        {addProfile}
+        {updateProfile}
       </React.Fragment> 
     );
   }

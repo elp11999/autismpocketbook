@@ -24,6 +24,10 @@ export default {
   saveChild: function(id, childData) {
     return axios.post("/api/child/" + id, childData);
   },
+  // Updates a child to the database
+  updateChild: function(id, childData) {
+    return axios.post("/api/updatechild/" + id, childData);
+  },
   // Saves a note to the database
   saveNote: function(id, noteData) {
     return axios.post("/api/note/" + id, noteData);
