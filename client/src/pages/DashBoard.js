@@ -56,9 +56,6 @@ const styles = {
     }
 }
 
-// Load local storage
-let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
-
 // Function to construct Login page of the UI
 class DashBoard extends React.Component {
 
@@ -75,6 +72,9 @@ class DashBoard extends React.Component {
   }
 
   componentDidMount() {
+
+    // Load local storage
+    let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
 
     // Get all children
     API.getChildren(apbSystem.pid)
@@ -124,6 +124,9 @@ class DashBoard extends React.Component {
 
   handleOnAddProfile = (profile) => {
     console.log("handleOnAddProfile"); 
+
+    // Load local storage
+    let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
                                             
     // Save Child to database
     API.saveChild(apbSystem.pid, profile)
@@ -155,6 +158,9 @@ class DashBoard extends React.Component {
 
   handleOnUpdateProfile = (profile) => {
     console.log("handleOnUpdateProfile"); 
+
+    // Load local storage
+    let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
 
     // Update child' profile
     API.updateChild(this.state.id, profile)
