@@ -157,7 +157,7 @@ class DashBoard extends React.Component {
   }
 
   handleOnUpdateProfile = (profile) => {
-    console.log("handleOnUpdateProfile"); 
+    console.log("handleOnUpdateProfile");
 
     // Load local storage
     let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));

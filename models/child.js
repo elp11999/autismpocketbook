@@ -43,8 +43,8 @@ var ChildSchema = new Schema({
         required: true
     },
     // Interventions
-    primarycareprovider: {
-        type: String,
+    interventions: {
+        type: Array,
         required: true
     },
     // Medication 1
@@ -174,12 +174,12 @@ var ChildSchema = new Schema({
     },
     // Cofactors
     cofactors: {
-        type: String,
+        type: Array,
         required: true
     },
     // School accomodations
     schoolaccomodations: {
-        type: String,
+        type: Array,
         required: true
     },  
     // Set up a notes assocation
