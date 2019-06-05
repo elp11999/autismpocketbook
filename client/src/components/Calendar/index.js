@@ -19,7 +19,7 @@ import Notes from "../Notes";
 const defNoteData = {
     mood:  'Happy', 
     sleep: 'Well Rested', 
-    nutrition: 'Full Meals/Balanced Diet', 
+    nutrition: ['Full Meals/Balanced Diet'], 
     behavior: 'No issues', 
     sensoryregulation: "High",
     exercise: "High",

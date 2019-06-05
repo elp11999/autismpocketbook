@@ -39,12 +39,12 @@ var NoteSchema = new Schema({
     },
     // Nutrition
     nutrition: {
-        type: String,
+        type: Array,
         required: true
     },
     // Behavior
     behavior: {
-        type: String,
+        type: Array,
         required: true
     },
     // Sensory regulation

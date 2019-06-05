@@ -193,10 +193,10 @@ class DashBoard extends React.Component {
           res.data.notes.forEach((note) => {
             multiDataSet[0].data.push([
                 {value: note.start},
-                {value: note.behavior},
+                {value: note.behavior.join(",")},
                 {value: note.exercise},
                 {value: note.mood},
-                {value: note.nutrition},
+                {value: note.nutrition.join(",")},
                 {value: note.sensoryregulation},
                 {value: note.sleep},
                 {value: note.weather},

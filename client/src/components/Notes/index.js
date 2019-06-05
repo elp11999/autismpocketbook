@@ -70,9 +70,69 @@ const styles = {
     }
 }
 
+const moodList = [
+    "Calm",
+    "Sad",
+    "Anxious",
+    "Happy",
+    "Frustrated"
+];
+
+const sleepList = [
+    "Well rested",
+    "Woke up",
+    "Woke up several times"
+];
+
+const nutritionList = [
+    "Full Meals/Balanced Diet",
+    "Skipped Meals",
+    "Supplements taken",
+    "Probiotic",
+    "Prebiotic",
+    "Regular Bowel Movements"
+];
+
+const behaviorList = [
+    "No issues",
+    "On task",
+    "Minor issues 2-3 a day",
+    "Disruptive",
+    "Motor/Verbal stimming",
+    "Severe meltdown",
+    "Elopement",
+    "Property Destruction",
+    "Self-Injurious Behavior"
+];
+
+const sensoryregulationList = [
+    "High",
+    "Moderate",
+    "Low"
+];
+
+const exerciseList = [
+    "High",
+    "Moderate",
+    "Low"
+];
+
+const weatherList = [
+    "Sunny",
+    "Cloudy",
+    "Rain/Snow"
+];
+
+let nutritionSelection = [];
+let behaviorSelection = [];
+
+
 class Notes extends React.Component {
 
     render() {
+
+      nutritionSelection = this.props.data.nutrition;
+      behaviorSelection = this.props.data.behavior;
 
       return ( 
         this.props.open
@@ -82,8 +142,8 @@ class Notes extends React.Component {
                 <Formik 
                     initialValues={{ mood: this.props.data.mood, 
                                     sleep: this.props.data.sleep, 
-                                    nutrition: this.props.data.nutrition, 
-                                    behavior: this.props.data.behavior, 
+                                    nutrition: nutritionSelection, 
+                                    behavior: behaviorSelection, 
                                     sensoryregulation: this.props.data.sensoryregulation,
                                     exercise: this.props.data.exercise,
                                     weather: this.props.data.weather,
@@ -110,78 +170,127 @@ class Notes extends React.Component {
                         }, 400);
                     }}
                     >
-                    {({ isSubmitting }) => (
+                    {({ prop, values, isSubmitting, setFieldValue }) => (
                         <div>
                             <Form>
                                 <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="mood">Mood:</label>
-                                    <Field component="select" style={styles.label} name="mood">
-                                        <option>Calm</option>
-                                        <option>Sad</option>
-                                        <option>Anxious</option>
-                                        <option>Happy</option>
-                                        <option>Frustrated</option>                                    
+                                    <Field
+                                        component="select"
+                                        style={styles.label}
+                                        name="mood"
+                                        >
+                                        {moodList.map(s => (
+                                            <option key={s} value={s}>
+                                            {s}
+                                            </option>
+                                        ))}
                                     </Field>
                                 </div>
 
                                 <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="sleep">Sleep:</label>
-                                    <Field component="select" style={styles.label} name="sleep">
-                                        <option>Well rested</option>
-                                        <option>Woke up</option>
-                                        <option>Woke up several times</option>
+                                    <Field
+                                        component="select"
+                                        style={styles.label}
+                                        name="sleep"
+                                        >
+                                        {sleepList.map(s => (
+                                            <option key={s} value={s}>
+                                            {s}
+                                            </option>
+                                        ))}
                                     </Field>
                                 </div>
 
                                 <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="nutrition">Nutrition:</label>
-                                    <Field component="select" style={styles.label} name="nutrition">
-                                        <option>Full Meals/Balanced Diet</option>
-                                        <option>Skipped Meals</option>
-                                        <option>Supplements taken</option>
-                                        <option>Probiotic</option>
-                                        <option>Prebiotic</option>
-                                        <option>Regular Bowel Movements</option>
+                                    <Field
+                                        component="select"
+                                        style={styles.label}
+                                        name="nutrition"
+                                        onChange={evt =>
+                                            setFieldValue(
+                                            "nutrition",
+                                            [].slice
+                                                .call(evt.target.selectedOptions)
+                                                .map(option => option.value)
+                                            )
+                                        }
+                                        multiple={false}
+                                        >
+                                        {nutritionList.map(s => (
+                                            <option key={s} value={s}>
+                                            {s}
+                                            </option>
+                                        ))}
                                     </Field>
                                 </div>
 
                                 <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="behavior">Behavior:</label>
-                                    <Field component="select" style={styles.label} name="behavior">
-                                        <option>No issues</option>
-                                        <option>On task</option>
-                                        <option>Minor issues 2-3 a day</option>
-                                        <option>Disruptive</option>
-                                        <option>Motor/Verbal stimming</option>
-                                        <option>Severe meltdown</option>
-                                        <option>Elopement</option>
-                                        <option>Property Destruction</option>
-                                        <option>Self-Injurious Behavior</option>
+                                    <Field
+                                        component="select"
+                                        style={styles.label}
+                                        name="behavior"
+                                        onChange={evt =>
+                                            setFieldValue(
+                                            "behavior",
+                                            [].slice
+                                                .call(evt.target.selectedOptions)
+                                                .map(option => option.value)
+                                            )
+                                        }
+                                        multiple={false}
+                                        >
+                                        {behaviorList.map(s => (
+                                            <option key={s} value={s}>
+                                            {s}
+                                            </option>
+                                        ))}
                                     </Field>
                                 </div>
                                 
                                 <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="sensoryregulation">Sensory Regulation:</label>
-                                    <Field component="select" style={styles.label} name="sensoryregulation">
-                                        <option>High</option>
-                                        <option>Moderate</option>
-                                        <option>Low</option>
+                                    <Field
+                                        component="select"
+                                        style={styles.label}
+                                        name="sensoryregulation"
+                                        >
+                                        {sensoryregulationList.map(s => (
+                                            <option key={s} value={s}>
+                                            {s}
+                                            </option>
+                                        ))}
                                     </Field>
                                 </div>
                                 
                                 <div>
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="exercise">Exercise:</label>
-                                    <Field component="select" style={styles.label} name="exercise">
-                                        <option>Low</option>
-                                        <option>Moderate</option>
-                                        <option>High</option>
+                                    <Field
+                                        component="select"
+                                        style={styles.label}
+                                        name="exercise"
+                                        >
+                                        {exerciseList.map(s => (
+                                            <option key={s} value={s}>
+                                            {s}
+                                            </option>
+                                        ))}
                                     </Field>
 
                                     <label style={Object.assign({}, styles.label, styles.moodlabel)} htmlFor="weather">Weather:</label>
-                                    <Field component="select" style={styles.label} name="weather">
-                                        <option>Sunny</option>
-                                        <option>Cloudy</option>
-                                        <option>Rain/Snow</option>
+                                    <Field
+                                        component="select"
+                                        style={styles.label}
+                                        name="weather"
+                                        >
+                                        {weatherList.map(s => (
+                                            <option key={s} value={s}>
+                                            {s}
+                                            </option>
+                                        ))}
                                     </Field>
                                 </div>
 

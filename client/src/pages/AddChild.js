@@ -193,12 +193,12 @@ const cofactorsList = [
 let schoolAccomodationsSelection = [];
 let interventionsSelection = [];
 let cofactorsSelection = [];
+let autismSelection;
 
 class AddChild extends React.Component {
     state = {
         showModal: false,
         levelID: 0,
-        autsimlevel: "",
         data: ""
     }
 
@@ -207,6 +207,7 @@ class AddChild extends React.Component {
     }
   
     handleClick = (event) => {
+        autismSelection = event.target.value;
         this.setState({ levelID: event.target.id, showModal: true});
     }
 
@@ -215,6 +216,7 @@ class AddChild extends React.Component {
         schoolAccomodationsSelection = this.props.data.schoolaccomodations;
         interventionsSelection = this.props.data.interventions;
         cofactorsSelection = this.props.data.cofactors;
+        autismSelection = this.props.data.autsimlevel;
 
         return (
             <React.Fragment>
@@ -268,7 +270,7 @@ class AddChild extends React.Component {
                             med10: this.props.data.med10,
                             freq10: this.props.data.freq10,
                             dos10: this.props.data.dos10,
-                            autsimlevel: this.props.data.autsimlevel,
+                            autsimlevel: autismSelection,
                             cofactors: cofactorsSelection,
                             schoolaccomodations: schoolAccomodationsSelection
                         }}
@@ -437,7 +439,7 @@ class AddChild extends React.Component {
                                                 id="0"
                                                 type="radio"
                                                 value="Level 1"
-                                                checked={this.props.data.autsimlevel === "Level 1"}
+                                                checked={autismSelection === "Level 1"}
                                                 onChange={this.handleClick}
                                             />
                                             Level 1: Requiring Support Social
@@ -451,7 +453,7 @@ class AddChild extends React.Component {
                                                 id="1"
                                                 type="radio"
                                                 value="Level 2"
-                                                checked={this.props.data.autsimlevel === "Level 2"}
+                                                checked={autismSelection === "Level 2"}
                                                 onChange={this.handleClick}
                                             />
                                             Level 2: Requiring Substantial Support Social
@@ -465,7 +467,7 @@ class AddChild extends React.Component {
                                                 id="2"
                                                 type="radio"
                                                 value="Level 3"
-                                                checked={this.props.data.autsimlevel === "Level 3"}
+                                                checked={autismSelection === "Level 3"}
                                                 onChange={this.handleClick}
                                             />
                                             Level 3: Requiring Very Substantial Support Social
