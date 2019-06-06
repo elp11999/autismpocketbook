@@ -159,7 +159,7 @@ export default class chart extends Component {
           //console.log("searchValue=" + searchValue + "  value="  + value.title);
           if (value.title === searchValue) {
             value.count++;
-            target.percentages[index] = (value.count * 100 / data.length)
+            target.percentages[index] = (value.count * 100 / data.length).toFixed(2);
           }
         });
       });
