@@ -11,7 +11,7 @@ import React from "react";
 import './styles.css';
 
 // Function to construct the Footer component of the UI
-function Footer(props) {
+function Footer() {
     return (
         <footer className="page-footer font-small special-color-dark pt-4">  
             <div className="container"> 

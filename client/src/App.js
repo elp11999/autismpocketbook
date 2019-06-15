@@ -11,8 +11,11 @@ import AddChild from './pages/AddChild';
 import NoMatch from "./pages/NoMatch";
 import DashBoard from './pages/DashBoard';
 import Charts from './pages/Charts';
-import './App.css';
+import ForumFolders from './components/ForumFolders';
+import ForumTopics from './components/ForumTopics';
+import ForumPosts from './components/ForumPosts';
 import API from "./utils/API";
+import './App.css';
 
 // Create local storage
 if (!localStorage.getItem("apbSystem"))
@@ -59,6 +62,9 @@ function App() {
           <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute exact path="/addc" component={AddChild} />
           <PrivateRoute exact path="/charts" component={Charts} />
+          <Route exact path="/forum" component={ForumFolders} />
+          <Route exact path="/forum/topic" component={ForumTopics} />
+          <Route exact path="/forum/listposts" component={ForumPosts} />
           <Route component={NoMatch} />
         </Switch>
         <Footer />

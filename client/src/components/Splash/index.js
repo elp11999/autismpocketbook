@@ -15,7 +15,7 @@ function Splash(props) {
     //console.log(props);
     return (
         <div className="home-header">
-            <img className="home-header-image" src="/Sam.jpeg" alt="pic"></img>
+            <img className="home-header-image" src="/Samx.jpg" alt="pic"></img>
             <h1 className="home-header-text">
                 Using the Autism Pocketbook will make it possible to gain insight into what triggers behaviors and can assist families into developing strategies for their children.
             </h1>
