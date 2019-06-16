@@ -1,19 +1,3 @@
-/*
-  {
-      category: "AutsimPocketBook.com",
-      cid: 0,
-      folders : [        
-        {
-          title: 'AutismPocketBook News',
-          description: 'Website news and updates are posted here.',
-          tid: 0,
-          topics: '40',
-          replies: 15,
-          lastPost: '08-11-2018 07:12:46 a.m.'
-        }
-      ]
-  }
-  */
 //
 // Autism Notebook Application
 //
@@ -35,14 +19,16 @@ var CategorySchema = new Schema({
     },
     // ID
     cid: {
-        type: String,
+        type: Number,
         required: true
-    },
-    // Folders
-    folders: {
-        type: Array,
-        required: true
-    }
+    }, 
+    // Set up a folders assocation
+    folders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Folder"
+      }
+    ]
 });
 
 // Create the Category model
