@@ -270,7 +270,21 @@ module.exports = function(app) {
         });
         console.log("Demo done!!!");
       }
-    });   
+    });  
+
+    // Route to get all forum categories
+    app.get("/api/getcategories", function(req, res) {
+      db.Category.findAll({})
+        .then(function(dbCategories) {
+          console.log(dbCategories);
+          res.status(200).json(dbCategories);
+        })
+        .catch(function(err) {
+          // Send error
+          console.log(err);
+          res.json(err);
+        });
+    });    
 
     // Use default react app if no api routes
     app.use(function(req, res){

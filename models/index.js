@@ -7,5 +7,6 @@
 module.exports = {
     Parent: require("./parent"),
     Child: require("./child"),
-    Note: require("./note")
+    Note: require("./note"),    
+    Category: require("./category")
 };
