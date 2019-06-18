@@ -30,7 +30,7 @@ class FoldersTable extends React.Component {
             <ReactTable
                 columns={[
                     {
-                        Header: data.category,
+                        Header: data.title,
                         accessor: "folder",
                         headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                         Cell: row => (
@@ -53,7 +53,7 @@ class FoldersTable extends React.Component {
                         Cell: row => (
                         <div className="table-cell">
                             <span className="table-info-text">
-                                {row.original.topics}
+                                {row.original.topicCount}
                             </span>
                         </div>
                         ),
@@ -66,7 +66,7 @@ class FoldersTable extends React.Component {
                         Cell: row => (
                         <div className="table-cell">
                             <span className="table-info-text">
-                                {row.original.replies}
+                                {row.original.replyCount}
                             </span>
                         </div>
                         ),

@@ -79,6 +79,6 @@ ParentSchema.methods.isCorrectPassword = function(password, callback) {
 // Create the Parent model
 var Parent = mongoose.model("Parent", ParentSchema);
 
-// Export the Parent model
-module.exports = mongoose.model('Parent', ParentSchema);
+// Export the Parent modelx
+module.exports = Parent;
 

@@ -72,5 +72,5 @@ var NoteSchema = new Schema({
 // Create the Note model
 var Note = mongoose.model("Note", NoteSchema);
 
-// Export the Parent model
+// Export the Note model
 module.exports = Note;

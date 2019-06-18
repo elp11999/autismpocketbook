@@ -13,6 +13,9 @@ import _ from "lodash";
 // Import Table component
 import FoldersTable from  "../FoldersTable";
 
+// Import the API library
+import API from "../../utils/API";
+
 // Import Custom css
 import "./index.css";
 
@@ -131,16 +134,35 @@ const requestData = (pageSize, page, sorted, filtered) => {
 class ForumFolders extends React.Component {
   constructor() {
     super();
-    // Load local storage
+    
     this.state = {
-      data: testData,
+      data: null,
       pages: null,
       loading: true,
+      showForum: false,
       apbSystem: JSON.parse(localStorage.getItem("apbSystem"))
     };
+    
     this.fetchData = this.fetchData.bind(this);
+    this.fetchData();
   }
-  fetchData(state, instance) {
+
+  fetchData() {
+    
+    // Get forum categories
+    API.getCategories()
+    .then(res =>  {
+      //console.log(res);
+      this.setState({showForum: true, data: res.data });
+    })
+    .catch(err => {
+        console.log(err);
+    });
+    return testData;
+  }
+
+
+  fetchDataxx(state, instance) {
     // Whenever the table model changes, or the user sorts or changes pages, this method gets called and passed the current table model.
     // You can set the `loading` prop of the table to true to use the built-in one or show you're own loading bar if you want.
     this.setState({ loading: true });
@@ -164,19 +186,22 @@ class ForumFolders extends React.Component {
     //const { data, pages, loading } = this.state;
     const { data } = this.state;
     let key = 1;
-    return (
-      <React.Fragment>
-          <div className="forum-header">
-              <img className="forum-image" src="/Forum1.png" alt="forum"></img>             
-              <h1 className="forum-title">Forum</h1>
+    if (this.state.showForum) {
+      return (
+        <React.Fragment>
+            <div className="forum-header">
+                <img className="forum-image" src="/Forum1.png" alt="forum"></img>             
+                <h1 className="forum-title">Forum</h1>
+            </div>
+          <div className="forum-container"> 
+            {data.map(cellData => (
+              <FoldersTable data={cellData} key={key++}/>
+            ))}
           </div>
-        <div className="forum-container"> 
-          {data.map(cellData => (
-            <FoldersTable data={cellData} key={key++}/>
-          ))}
-        </div>
-      </React.Fragment>
-    );
+        </React.Fragment>
+      );
+    } else
+      return null;
   }
 }
 

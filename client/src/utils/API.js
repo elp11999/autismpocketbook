@@ -67,5 +67,9 @@ export default {
   // Start demo
   demo: function() {
     return axios.post("/api/demo");
-  }
+  },
+  // Get forum categories
+  getCategories: function() {
+    return axios.get("/api/getcategories/");
+  },
 };

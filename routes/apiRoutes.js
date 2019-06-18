@@ -274,10 +274,12 @@ module.exports = function(app) {
 
     // Route to get all forum categories
     app.get("/api/getcategories", function(req, res) {
-      db.Category.findAll({})
+      db.Category.find()
+        // Get all notes for the child
+        .populate("folders")
         .then(function(dbCategories) {
           console.log(dbCategories);
-          res.status(200).json(dbCategories);
+          res.json(dbCategories);
         })
         .catch(function(err) {
           // Send error
