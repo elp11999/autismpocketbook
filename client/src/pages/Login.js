@@ -93,9 +93,10 @@ class Login extends React.Component {
         // Save Child to database
         API.saveChild(apbSystem.pid, profile)
         .then(res =>  {
+            console.log(res);
             apbSystem.cid = res.data.cid;
             localStorage.setItem("apbSystem", JSON.stringify(apbSystem));                                
-            this.props.history.push("/dashboard");
+            //this.props.history.push("/dashboard");
         })
         .catch(err => {
             console.log(err);
@@ -145,8 +146,10 @@ class Login extends React.Component {
                                 .then(res =>  {                                    
                                     if (res.data.error)
                                         this.setState({errorMessage: res.data.error});
-                                    else { 
+                                    else {
+                                        console.log(res); 
                                         apbSystem.pid = res.data.pid;
+                                        apbSystem.user = res.data.username;
                                         localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
                                         
                                         // Get children count

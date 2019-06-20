@@ -38,7 +38,7 @@ class FoldersTable extends React.Component {
                             <a className="table-icon" href="/"><Folder /></a>                    
                             <div className="table-header">
                                 <span>
-                                    <a className="forum-a" href={"/forum/topic?tid=" + row.original.tid}>{row.original.title}</a>
+                                    <a className="forum-a" href={"/forum/topic?fid=" + row.original._id}>{row.original.title}</a>
                                 </span>
                                 <p className="table-info-text">{row.original.description}</p>
                             </div>

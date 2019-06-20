@@ -52,7 +52,7 @@ module.exports = function(app) {
             expiresIn: '1h',
           }); 
           console.log(parent);    
-          res.cookie('token', token, { httpOnly: true }).status(200).json({pid: parent._id, error: null});
+          res.cookie('token', token, { httpOnly: true }).status(200).json({pid: parent._id, username: parent.username, error: null});
         }
       });
     });
@@ -78,7 +78,7 @@ module.exports = function(app) {
                 expiresIn: '1h',
               }); 
               console.log(user);          
-              res.cookie('token', token, { httpOnly: true }).status(200).json({pid: user._id});
+              res.cookie('token', token, { httpOnly: true }).status(200).json({pid: user._id, username: user.username});
             }
           });
         }
@@ -278,7 +278,7 @@ module.exports = function(app) {
         // Get all notes for the child
         .populate("folders")
         .then(function(dbCategories) {
-          console.log(dbCategories);
+          //console.log(dbCategories);
           res.json(dbCategories);
         })
         .catch(function(err) {
@@ -286,7 +286,62 @@ module.exports = function(app) {
           console.log(err);
           res.json(err);
         });
-    });    
+    }); 
+
+    // Route to get all topics for a specified folder
+    app.get("/api/gettopics/:id", function(req, res) {
+      //console.log("gettopics: id=" + req.params.id);
+      db.Folder.findOne({ "_id": req.params.id })
+        // Get all topics for the folder
+        .populate("topics")
+        .then(function(dbFolder) {
+          //console.log(dbFolder);
+          res.json(dbFolder);
+        })
+        .catch(function(err) {
+          // Send error
+          console.log(err);
+          res.json(err);
+        });
+    }); 
+
+    // Route to get all posts for a specified topic
+    app.get("/api/getposts/:id", function(req, res) {
+      console.log("getposts: id=" + req.params.id);
+      db.Topic.findOne({ "_id": req.params.id })
+        // Get all posts for the topic
+        .populate("posts")
+        .then(function(dbTopic) {
+          //console.log(dbTopic);
+          res.json(dbTopic);
+        })
+        .catch(function(err) {
+          // Send error
+          console.log(err);
+          res.json(err);
+        });
+    });
+    
+
+    // Route to add post to the database
+    app.post("/api/post/:id", function(req, res) {
+      console.log("new post: id=" + req.params.id);
+      db.Post.create(req.body)
+        .then(function(dbPost) {          
+          // Update Topic with new Post
+          return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id } }, { new: true });            
+        })
+        .then(function(dbPost) {
+          // Send "ok" to client;            
+          res.status(200).json("ok");
+        })
+        .catch(function(err) {
+          // Send error to client 
+          console.log("oops... Did not create a Post...");
+          console.log(err);
+          res.json(err);
+        });
+    });   
 
     // Use default react app if no api routes
     app.use(function(req, res){

@@ -72,4 +72,16 @@ export default {
   getCategories: function() {
     return axios.get("/api/getcategories/");
   },
+  // Get forum topics
+  getTopics: function(fid) {
+    return axios.get("/api/gettopics/"+ fid);
+  },
+  // Get forum posts
+  getPosts: function(tid) {
+    return axios.get("/api/getposts/"+ tid);
+  },
+  // Saves a post to the database
+  savePost: function(id, postData) {
+    return axios.post("/api/post/" + id, postData);
+  },
 };

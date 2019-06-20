@@ -37,7 +37,7 @@ class TopicsTable extends React.Component {
                         <a className="table-icon" href="/"><Book /></a>                    
                         <div className="table-header">
                             <span>
-                                <a className="forum-a" href={"/forum/listposts?tid=" + row.original.tid}>{row.original.title}</a>
+                                <a className="forum-a" href={"/forum/listposts?tid=" + row.original._id}>{row.original.title}</a>
                             </span>
                             <p className="table-info-text">{"Author: " + row.original.author}</p>
                         </div>
@@ -52,7 +52,7 @@ class TopicsTable extends React.Component {
                     Cell: row => (
                     <div className="table-cell">
                         <span className="table-info-text">
-                            {row.original.replies}
+                            {row.original.replyCount}
                         </span>
                     </div>
                     ),
@@ -65,7 +65,7 @@ class TopicsTable extends React.Component {
                     Cell: row => (
                     <div className="table-cell">
                         <span className="table-info-text">
-                            {row.original.views}
+                            {row.original.viewCount}
                         </span>
                     </div>
                     ),

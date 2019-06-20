@@ -14,6 +14,9 @@ import TopicsTable from  "../TopicsTable";
 // Import Table component
 import NewForumTopic from  "../NewForumTopic";
 
+// Import the API library
+import API from "../../utils/API";
+
 // Import Custom css
 import "./index.css";
 
@@ -88,6 +91,7 @@ class ForumTopics extends React.Component {
       this.state = {
         data: testData,
         showNewTopic: false,
+        showTopics: false,
         pages: null,
         loading: true
       };
@@ -96,7 +100,8 @@ class ForumTopics extends React.Component {
     
     componentDidMount() {
         const values = queryString.parse(this.props.location.search);
-        console.log("Forum Topics: tid=" + values.tid);
+        console.log("Forum Topics: fid=" + values.fid);
+        this.fetchData(values.fid);
     }
 
     handleNewTopicOnClick = (evt) => {
@@ -114,7 +119,21 @@ class ForumTopics extends React.Component {
       this.setState({showNewTopic: false});
     }
 
-    fetchData(state, instance) {
+    fetchData(fid) {
+      
+      // Get forum topics for a given folder
+      API.getTopics(fid)
+      .then(res =>  {
+        console.log(res);
+        this.setState({showTopics: true, data: res.data });
+      })
+      .catch(err => {
+          console.log(err);
+      });
+      return testData;
+    }
+
+    fetchDataXXX(state, instance) {
       // Whenever the table model changes, or the user sorts or changes pages, this method gets called and passed the current table model.
       // You can set the `loading` prop of the table to true to use the built-in one or show you're own loading bar if you want.
       this.setState({ loading: true });
@@ -137,27 +156,31 @@ class ForumTopics extends React.Component {
     render() {
       const { data, pages, loading } = this.state;
       //console.log(data);
-      return (
-        <React.Fragment>
-            <div className="forum-header">
-                <img className="forum-image" src="/Forum1.png" alt="forum"></img>                 
-                <h1 className="forum-title">Forum: {data.folder}</h1>              
+      if (this.state.showTopics) {
+        return (
+          <React.Fragment>
+              <div className="forum-header">
+                  <img className="forum-image" src="/Forum1.png" alt="forum"></img>                 
+                  <h1 className="forum-title">Forum: {data.folder}</h1>              
+                  <button className="post-button" onClick={this.handleNewTopicOnClick}>New Topic</button>
+              </div>
+              <div className="forum-container">
+                <TopicsTable data={data.topics} />
+              </div>
+              <div className="forum-header">              
                 <button className="post-button" onClick={this.handleNewTopicOnClick}>New Topic</button>
-            </div>
-            <div className="forum-container">
-              <TopicsTable data={data.topics} />
-            </div>
-            <div className="forum-header">              
-              <button className="post-button" onClick={this.handleNewTopicOnClick}>New Topic</button>
-            </div>
-            
-            <NewForumTopic 
-              open={this.state.showNewTopic}
-              onSave={this.handleNewTopicOnSaveClick}
-              onCancel={this.handleONewTopicOnCancelClick}
-            />
-          </React.Fragment>
-      );
+              </div>
+              
+              <NewForumTopic 
+                open={this.state.showNewTopic}
+                onSave={this.handleNewTopicOnSaveClick}
+                onCancel={this.handleONewTopicOnCancelClick}
+              />
+            </React.Fragment>
+        );
+      } else {
+        return null;
+      }
     }
   }
   

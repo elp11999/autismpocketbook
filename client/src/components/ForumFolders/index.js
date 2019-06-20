@@ -152,7 +152,7 @@ class ForumFolders extends React.Component {
     // Get forum categories
     API.getCategories()
     .then(res =>  {
-      //console.log(res);
+      console.log(res);
       this.setState({showForum: true, data: res.data });
     })
     .catch(err => {

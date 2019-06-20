@@ -27,13 +27,13 @@ var TopicSchema = new Schema({
         type: String,
         required: true
     },
-    // Number of topics
-    topicCount: {
+    // Number of replies
+    replyCount: {
         type: Number,
         required: true
     },
-    // Number of replies
-    replyCount: {
+    // Number of views
+    viewCount: {
         type: Number,
         required: true
     },

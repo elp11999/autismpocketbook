@@ -13,6 +13,9 @@ import PostTable from  "../PostTable";
 // Import Table component
 import NewForumPost from  "../NewForumPost";
 
+// Import the API library
+import API from "../../utils/API";
+
 // Import Custom css
 import "./index.css";
 
@@ -83,16 +86,21 @@ class ForumPosts extends React.Component {
       super();
       this.state = {
         data: testData,
+        tid: null,
         showNewPost: false,
+        showPosts: false,
         pages: null,
-        loading: true
+        loading: true,
+        apbSystem: JSON.parse(localStorage.getItem("apbSystem"))
       };
       this.fetchData = this.fetchData.bind(this);
     }
     
     componentDidMount() {
         const values = queryString.parse(this.props.location.search);
-        console.log("ForumPost: tid=" + values.tid);
+        console.log("ForumPost: tid=" + values.tid);      
+        this.setState({tid: values.tid});
+        this.fetchData(values.tid);
     }
 
     handleNewPostOnClick = (evt) => {
@@ -100,9 +108,29 @@ class ForumPosts extends React.Component {
       this.setState({showNewPost: true});
     }
 
-    handleNewPostOnSaveClick = (evt) => {
-      console.log("ForumPost: New Post save clicked.");      
-      this.setState({showNewPost: false});
+    handleNewPostOnSaveClick = (values) => {
+      console.log("ForumPost: New Post save clicked.");
+
+      let postData = {
+        title: this.state.data.title,
+        author: this.state.apbSystem.user,
+        pid: 12,
+        data: values.notes,
+        postDate: new Date()
+      }       
+      console.log(postData);
+
+      // Save Child to database
+      API.savePost(this.state.tid, postData)
+      .then(res =>  {
+          console.log(res.data);  
+          this.setState({showNewPost: false}); 
+          this.fetchData(this.state.tid);
+      })
+      .catch(err => {
+          console.log(err);  
+          this.setState({showNewPost: false});
+      });
     }
 
     handleONewPostOnCancelClick = (evt) => {
@@ -110,7 +138,21 @@ class ForumPosts extends React.Component {
       this.setState({showNewPost: false});
     }
 
-    fetchData(state, instance) {
+    fetchData(tid) {
+      
+      // Get forum posts for a given topic
+      API.getPosts(tid)
+      .then(res =>  {
+        console.log(res);
+        this.setState({showPosts: true, data: res.data });
+      })
+      .catch(err => {
+          console.log(err);
+      });
+      return testData;
+    }
+
+    fetchDataXXX(state, instance) {
       console.log("ForumPost: fetching data!!!");
       // Whenever the table model changes, or the user sorts or changes pages, this method gets called and passed the current table model.
       // You can set the `loading` prop of the table to true to use the built-in one or show you're own loading bar if you want.
@@ -136,30 +178,33 @@ class ForumPosts extends React.Component {
       const { data } = this.state;
       let key = 1;
       //console.log(data);
-      return(
-        <React.Fragment>
-        <div className="forum-header">
-            <img className="forum-image" src="/Forum1.png" alt="forum"></img>                
-            <h1 className="forum-title">{data.topic}</h1>                
+      if (this.state.showPosts) {
+        return(
+          <React.Fragment>
+          <div className="forum-header">
+              <img className="forum-image" src="/Forum1.png" alt="forum"></img>                
+              <h1 className="forum-title">{data.title}</h1>                
+              <button className="post-button" onClick={this.handleNewPostOnClick}>Post Reply</button>
+          </div>
+          <div className="forum-container">  
+            {data.posts.map(cellData => (
+              <PostTable data={cellData} key={key++}/>
+            ))}
+          </div>
+          <div className="forum-header">               
             <button className="post-button" onClick={this.handleNewPostOnClick}>Post Reply</button>
-        </div>
-        <div className="forum-container">  
-          {data.posts.map(cellData => (
-            <PostTable data={cellData} key={key++}/>
-          ))}
-        </div>
-        <div className="forum-header">               
-          <button className="post-button" onClick={this.handleNewPostOnClick}>Post Reply</button>
-        </div>
-        
-            
-        <NewForumPost 
-              open={this.state.showNewPost}
-              onSave={this.handleNewPostOnSaveClick}
-              onCancel={this.handleONewPostOnCancelClick}
-        /> 
-        </React.Fragment>
-      );
+          </div>          
+              
+          <NewForumPost 
+                open={this.state.showNewPost}
+                onSave={this.handleNewPostOnSaveClick}
+                onCancel={this.handleONewPostOnCancelClick}
+          /> 
+          </React.Fragment>
+        );
+      } else {
+        return null;
+      }
     }
   }
   

@@ -10,5 +10,6 @@ module.exports = {
     Note: require("./note"),    
     Category: require("./category"),    
     Folder: require("./folder"),   
-    Topic: require("./topic")
+    Topic: require("./topic"),      
+    Post: require("./post")
 };
