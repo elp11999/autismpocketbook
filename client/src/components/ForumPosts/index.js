@@ -112,6 +112,7 @@ class ForumPosts extends React.Component {
       console.log("ForumPost: New Post save clicked.");
 
       let postData = {
+        newTopic: false,
         title: this.state.data.title,
         author: this.state.apbSystem.user,
         pid: 12,
@@ -120,7 +121,7 @@ class ForumPosts extends React.Component {
       }       
       console.log(postData);
 
-      // Save Child to database
+      // Save Post to database
       API.savePost(this.state.tid, postData)
       .then(res =>  {
           console.log(res.data);  

@@ -29,12 +29,12 @@ var FolderSchema = new Schema({
     },
     // Number of topicss
     topicCount: {
-        type: String,
+        type: Number,
         required: true
     },
     // Number of replies
     replyCount: {
-        type: String,
+        type: Number,
         required: true
     },
     // Last post date

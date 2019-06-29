@@ -22,7 +22,7 @@ var TopicSchema = new Schema({
         type: String,
         required: true
     },
-    // Folder id
+    // Topic id
     tid: {
         type: String,
         required: true

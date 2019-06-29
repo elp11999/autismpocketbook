@@ -320,8 +320,32 @@ module.exports = function(app) {
           console.log(err);
           res.json(err);
         });
-    });
-    
+    });    
+
+    // Route to add topic to the database
+    app.post("/api/topic/:id", function(req, res) {
+      console.log("new topic: fid=" + req.params.id);
+      let tid = 0;
+      db.Topic.create(req.body)
+        .then(function(dbTopic) {
+          console.log(dbTopic);
+          // Save Topic's id
+          tid = dbTopic._id;         
+          // Update Folder with new Topic
+          return db.Folder.findOneAndUpdate({ _id: req.params.id}, { $push: { topics: dbTopic._id }, $inc: { topicCount: 1 } }, { new: true });            
+        })
+        .then(function(dbFolder) {
+          console.log(dbFolder);
+          console.log("New topic id=" + tid);
+          res.status(200).json({tid: tid});
+        })
+        .catch(function(err) {
+          // Send error to client 
+          console.log("oops... Did not create a Topic...");
+          console.log(err);
+          res.json(err);
+        });
+    });     
 
     // Route to add post to the database
     app.post("/api/post/:id", function(req, res) {
@@ -329,7 +353,11 @@ module.exports = function(app) {
       db.Post.create(req.body)
         .then(function(dbPost) {          
           // Update Topic with new Post
-          return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id } }, { new: true });            
+          //console.log("req.body.newTopic=" + req.body.newTopic);
+          if (req.body.newTopic == true)
+            return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id }, $set: {"lastPost": req.body.postDate } }, { new: true });
+          else
+            return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id }, $inc: { replyCount: 1 }, $set: {"lastPost": req.body.postDate } }, { new: true });           
         })
         .then(function(dbPost) {
           // Send "ok" to client;            

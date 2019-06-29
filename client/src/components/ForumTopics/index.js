@@ -90,17 +90,20 @@ class ForumTopics extends React.Component {
       super();
       this.state = {
         data: testData,
+        fid: null,
         showNewTopic: false,
         showTopics: false,
         pages: null,
-        loading: true
+        loading: true,
+        apbSystem: JSON.parse(localStorage.getItem("apbSystem"))
       };
       this.fetchData = this.fetchData.bind(this);
     }
     
     componentDidMount() {
         const values = queryString.parse(this.props.location.search);
-        console.log("Forum Topics: fid=" + values.fid);
+        console.log("Forum Topics: fid=" + values.fid);    
+        this.setState({fid: values.fid});
         this.fetchData(values.fid);
     }
 
@@ -109,9 +112,55 @@ class ForumTopics extends React.Component {
       this.setState({showNewTopic: true});
     }
 
-    handleNewTopicOnSaveClick = (evt) => {
-      console.log("ForumTopics: New Topic save clicked.");      
-      this.setState({showNewTopic: false});
+    handleNewTopicOnSaveClick = (values) => {
+      console.log("ForumTopics: New Topic save clicked.");
+      console.log(values);      
+      //this.setState({showNewTopic: false});
+
+      let topicData = {
+        title: values.topic,
+        author: this.state.apbSystem.user,
+        tid: 12,
+        replyCount: 0,
+        viewCount: 0,
+        lastPost: new Date()
+      }       
+      console.log(topicData);
+
+      // Save Topic to database
+      API.saveTopic(this.state.fid, topicData)
+      .then(res =>  {
+          console.log(res.data); 
+          //this.setState({showNewTopic: false}); 
+          //this.fetchData(this.state.fid);
+
+          let postData = {
+            newTopic: true,
+            title: values.topic,
+            author: this.state.apbSystem.user,
+            pid: 12,
+            data: values.notes,
+            postDate: new Date()
+          }       
+          console.log(postData);
+
+          // Save Post to database
+          API.savePost(res.data.tid, postData)
+          .then(res =>  {
+              console.log(res.data);  
+              this.setState({showNewTopic: false}); 
+              this.fetchData(this.state.fid); 
+          })
+          .catch(err => {
+              console.log(err);  
+              this.setState({showNewTopic: false});
+          });
+
+      })
+      .catch(err => {
+          console.log(err);  
+          this.setState({showNewTopic: false});
+      });
     }
 
     handleONewTopicOnCancelClick = (evt) => {

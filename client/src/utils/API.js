@@ -84,4 +84,8 @@ export default {
   savePost: function(id, postData) {
     return axios.post("/api/post/" + id, postData);
   },
+  // Saves a topic to the database
+  saveTopic: function(id, topicData) {
+    return axios.post("/api/topic/" + id, topicData);
+  }
 };
