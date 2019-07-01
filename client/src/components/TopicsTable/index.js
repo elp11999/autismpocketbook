@@ -34,7 +34,7 @@ class TopicsTable extends React.Component {
                     headerStyle: {textAlign: 'center', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                     Cell: row => (
                     <div>
-                        <a className="table-icon" href="/"><Book /></a>                    
+                        <a className="table-icon" href={"/forum/listposts?tid=" + row.original._id}><Book /></a>                    
                         <div className="table-header">
                             <span>
                                 <a className="forum-a" href={"/forum/listposts?tid=" + row.original._id}>{row.original.title}</a>

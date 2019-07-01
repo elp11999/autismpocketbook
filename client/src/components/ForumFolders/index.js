@@ -142,7 +142,6 @@ class ForumFolders extends React.Component {
       showForum: false,
       apbSystem: JSON.parse(localStorage.getItem("apbSystem"))
     };
-    
     this.fetchData = this.fetchData.bind(this);
     this.fetchData();
   }
@@ -195,7 +194,8 @@ class ForumFolders extends React.Component {
             </div>
           <div className="forum-container"> 
             {data.map(cellData => (
-              <FoldersTable data={cellData} key={key++}/>
+              <FoldersTable data={cellData} key={key++}
+              />
             ))}
           </div>
         </React.Fragment>

@@ -22,8 +22,8 @@ var TopicSchema = new Schema({
         type: String,
         required: true
     },
-    // Topic id
-    tid: {
+    // Folder id
+    fid: {
         type: String,
         required: true
     },
@@ -36,6 +36,11 @@ var TopicSchema = new Schema({
     viewCount: {
         type: Number,
         required: true
+    },
+    // Last updated by
+    lastUpdateBy: {
+        type: String,
+        required: false
     },
     // Last post date
     lastPost: {

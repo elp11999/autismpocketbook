@@ -13,9 +13,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 // Import the Modal UI component
 import Modal from "../components/Modal";
 
-// Import the API library
-import API from "../utils/API";
-
 const styles = {
     header: {
       fontSize: "2rem",

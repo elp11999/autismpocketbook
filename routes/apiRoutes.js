@@ -290,12 +290,12 @@ module.exports = function(app) {
 
     // Route to get all topics for a specified folder
     app.get("/api/gettopics/:id", function(req, res) {
-      //console.log("gettopics: id=" + req.params.id);
+      console.log("gettopics: id=" + req.params.id);
       db.Folder.findOne({ "_id": req.params.id })
         // Get all topics for the folder
         .populate("topics")
         .then(function(dbFolder) {
-          //console.log(dbFolder);
+          console.log(dbFolder);
           res.json(dbFolder);
         })
         .catch(function(err) {
@@ -324,7 +324,8 @@ module.exports = function(app) {
 
     // Route to add topic to the database
     app.post("/api/topic/:id", function(req, res) {
-      console.log("new topic: fid=" + req.params.id);
+      console.log("==================> New topic: fid=" + req.params.id);
+      console.log(req.body);
       let tid = 0;
       db.Topic.create(req.body)
         .then(function(dbTopic) {
@@ -332,11 +333,12 @@ module.exports = function(app) {
           // Save Topic's id
           tid = dbTopic._id;         
           // Update Folder with new Topic
-          return db.Folder.findOneAndUpdate({ _id: req.params.id}, { $push: { topics: dbTopic._id }, $inc: { topicCount: 1 } }, { new: true });            
+          console.log(dbTopic);
+          return db.Folder.findOneAndUpdate({ _id: req.params.id}, { $push: { topics: dbTopic._id }, $inc: { topicCount: 1 }, $set: {"lastPost": req.body.lastPost } }, { new: true });            
         })
         .then(function(dbFolder) {
           console.log(dbFolder);
-          console.log("New topic id=" + tid);
+          console.log("New topic id=" + tid + " added ok...");
           res.status(200).json({tid: tid});
         })
         .catch(function(err) {
@@ -349,17 +351,29 @@ module.exports = function(app) {
 
     // Route to add post to the database
     app.post("/api/post/:id", function(req, res) {
-      console.log("new post: id=" + req.params.id);
+      console.log("==================> New post: id=" + req.params.id);
+      console.log(req.body);
       db.Post.create(req.body)
-        .then(function(dbPost) {          
+        .then(function(dbPost) {
+          //console.log(dbPost);          
           // Update Topic with new Post
-          //console.log("req.body.newTopic=" + req.body.newTopic);
           if (req.body.newTopic == true)
             return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id }, $set: {"lastPost": req.body.postDate } }, { new: true });
           else
-            return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id }, $inc: { replyCount: 1 }, $set: {"lastPost": req.body.postDate } }, { new: true });           
+            return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id }, $inc: { replyCount: 1 }, $set: {"lastPost": req.body.postDate }, $set: {"lastUpdateBy": "by " + req.body.author } }, { new: true });           
         })
-        .then(function(dbPost) {
+        .then(function(dbTopic) {
+          //console.log(dbTopic);
+          console.log("New post: fid=" + dbTopic.fid);
+          console.log("New post: lastPost=" + req.body.postDate);
+          if (req.body.newTopic == true)
+            return db.Folder.findOneAndUpdate({ _id: dbTopic.fid}, { $set: {"lastPost": req.body.postDate }, $set: {"lastUpdateBy": "by " + req.body.author } }, { new: true });
+          else
+            return db.Folder.findOneAndUpdate({ _id: dbTopic.fid}, { $inc: { replyCount: 1 }, $set: {"lastPost": req.body.postDate }, $set: {"lastUpdateBy": "by " + req.body.author } }, { new: true });
+        })
+        .then(function(dbFolder) {
+          console.log("New post completed!!!");
+          //console.log(dbFolder);
           // Send "ok" to client;            
           res.status(200).json("ok");
         })
@@ -369,7 +383,24 @@ module.exports = function(app) {
           console.log(err);
           res.json(err);
         });
-    });   
+    });      
+
+    // Route to update forum view count
+    app.post("/api/topicviews/:id", function(req, res) {
+      console.log("topicviews: id=" + req.params.id);
+      db.Topic.findOneAndUpdate({ _id: req.params.id}, { $inc: { viewCount: 1 } }, { new: true })
+        .then(function(Topic) {
+          // Send "ok" to client;  
+          console.log("Topic view update completed!!!");          
+          res.status(200).json("ok");
+        })
+        .catch(function(err) {
+          // Send error to client 
+          console.log("oops... Did not Update a Topic...");
+          console.log(err);
+          res.json(err);
+        });
+    });  
 
     // Use default react app if no api routes
     app.use(function(req, res){

@@ -7,7 +7,6 @@ import ReactTable from "react-table";
 // Import Material icons
 import { Folder } from "@material-ui/icons";
 
-
 // Import React-Table css
 import "react-table/react-table.css";
 
@@ -25,7 +24,7 @@ class FoldersTable extends React.Component {
 
     render() {
         const { data } = this.props;
-        //console.log(data);
+        console.log(data);
         return(
             <ReactTable
                 columns={[
@@ -35,7 +34,7 @@ class FoldersTable extends React.Component {
                         headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                         Cell: row => (
                         <div>
-                            <a className="table-icon" href="/"><Folder /></a>                    
+                            <a className="table-icon" href={"/forum/topic?fid=" + row.original._id}><Folder /></a>                    
                             <div className="table-header">
                                 <span>
                                     <a className="forum-a" href={"/forum/topic?fid=" + row.original._id}>{row.original.title}</a>
@@ -81,6 +80,7 @@ class FoldersTable extends React.Component {
                             <span className="table-info-text">
                                 {row.original.lastPost}
                             </span>
+                            <p className="table-info-text">{row.original.lastUpdateBy}</p>
                         </div>
                         ),
                         width: 248

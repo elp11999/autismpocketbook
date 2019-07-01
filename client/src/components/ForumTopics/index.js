@@ -5,6 +5,9 @@ import React from "react";
 // Import Lodash library
 import _ from "lodash";
 
+// Import Moment library
+import moment from "moment";
+
 // Import QueryString library
 import queryString from 'query-string';
 
@@ -103,7 +106,7 @@ class ForumTopics extends React.Component {
     componentDidMount() {
         const values = queryString.parse(this.props.location.search);
         console.log("Forum Topics: fid=" + values.fid);    
-        this.setState({fid: values.fid});
+        this.setState({fid: values.fid, loading: true});
         this.fetchData(values.fid);
     }
 
@@ -117,30 +120,31 @@ class ForumTopics extends React.Component {
       console.log(values);      
       //this.setState({showNewTopic: false});
 
+      let currentDate = moment().format("MM-DD-YYYY h:mm:ss a");
+
       let topicData = {
         title: values.topic,
         author: this.state.apbSystem.user,
-        tid: 12,
+        fid: this.state.fid,
+        lastUpdateBy: "",
         replyCount: 0,
         viewCount: 0,
-        lastPost: new Date()
+        lastPost: currentDate
       }       
       console.log(topicData);
 
       // Save Topic to database
       API.saveTopic(this.state.fid, topicData)
       .then(res =>  {
-          console.log(res.data); 
-          //this.setState({showNewTopic: false}); 
-          //this.fetchData(this.state.fid);
+          console.log(res.data);
 
           let postData = {
             newTopic: true,
             title: values.topic,
             author: this.state.apbSystem.user,
-            pid: 12,
+            tid: res.data.tid,
             data: values.notes,
-            postDate: new Date()
+            postDate: currentDate
           }       
           console.log(postData);
 
@@ -169,6 +173,8 @@ class ForumTopics extends React.Component {
     }
 
     fetchData(fid) {
+
+      console.log("ForumTopic: getting topics");
       
       // Get forum topics for a given folder
       API.getTopics(fid)
@@ -179,7 +185,6 @@ class ForumTopics extends React.Component {
       .catch(err => {
           console.log(err);
       });
-      return testData;
     }
 
     fetchDataXXX(state, instance) {
@@ -203,8 +208,10 @@ class ForumTopics extends React.Component {
     }
     
     render() {
-      const { data, pages, loading } = this.state;
-      //console.log(data);
+      //const { data, pages, loading } = this.state;
+      const { data } = this.state;
+      console.log(data);
+      console.log(data.folder);
       if (this.state.showTopics) {
         return (
           <React.Fragment>

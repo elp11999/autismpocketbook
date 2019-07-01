@@ -4,6 +4,9 @@ import React from "react";
 // Import Lodash library
 import _ from "lodash";
 
+// Import Moment library
+import moment from "moment";
+
 // Import QueryString library
 import queryString from 'query-string';
 
@@ -86,6 +89,7 @@ class ForumPosts extends React.Component {
       super();
       this.state = {
         data: testData,
+        fid: null,
         tid: null,
         showNewPost: false,
         showPosts: false,
@@ -100,6 +104,7 @@ class ForumPosts extends React.Component {
         const values = queryString.parse(this.props.location.search);
         console.log("ForumPost: tid=" + values.tid);      
         this.setState({tid: values.tid});
+        this.updateViews(values.tid);
         this.fetchData(values.tid);
     }
 
@@ -111,13 +116,15 @@ class ForumPosts extends React.Component {
     handleNewPostOnSaveClick = (values) => {
       console.log("ForumPost: New Post save clicked.");
 
+      let currentDate = moment().format("MM-DD-YYYY h:mm:ss a");
+
       let postData = {
         newTopic: false,
         title: this.state.data.title,
         author: this.state.apbSystem.user,
-        pid: 12,
+        tid: this.state.tid,
         data: values.notes,
-        postDate: new Date()
+        postDate: currentDate
       }       
       console.log(postData);
 
@@ -139,12 +146,27 @@ class ForumPosts extends React.Component {
       this.setState({showNewPost: false});
     }
 
+    updateViews = (tid) => {
+      
+      // Update view count for given topic
+      API.saveTopicViews(tid)
+      .then(res =>  {
+        console.log(res);
+      })
+      .catch(err => {
+          console.log(err);
+      });
+
+    }
+
     fetchData(tid) {
       
       // Get forum posts for a given topic
       API.getPosts(tid)
       .then(res =>  {
         console.log(res);
+        if (res.data.length > 0)
+          this.setState({fid: res.data[0].fid});
         this.setState({showPosts: true, data: res.data });
       })
       .catch(err => {

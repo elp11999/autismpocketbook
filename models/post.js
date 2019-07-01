@@ -22,8 +22,8 @@ var PostSchema = new Schema({
         type: String,
         required: true
     },
-    // Post id
-    pid: {
+    // Topic id
+    tid: {
         type: String,
         required: true
     },

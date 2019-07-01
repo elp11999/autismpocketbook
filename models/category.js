@@ -16,11 +16,6 @@ var CategorySchema = new Schema({
     title: {
         type: String,
         required: true
-    },
-    // ID
-    cid: {
-        type: Number,
-        required: true
     }, 
     // Set up a folders assocation
     folders: [

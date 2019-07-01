@@ -87,5 +87,9 @@ export default {
   // Saves a topic to the database
   saveTopic: function(id, topicData) {
     return axios.post("/api/topic/" + id, topicData);
+  },
+  // Saves topic views to the database
+  saveTopicViews: function(id) {
+    return axios.post("/api/topicviews/" + id);
   }
 };

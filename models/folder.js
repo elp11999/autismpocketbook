@@ -22,12 +22,12 @@ var FolderSchema = new Schema({
         type: String,
         required: true
     },
-    // Folder id
-    fid: {
+    // Category id
+    cid: {
         type: String,
         required: true
     },
-    // Number of topicss
+    // Number of topic's
     topicCount: {
         type: Number,
         required: true
@@ -37,10 +37,15 @@ var FolderSchema = new Schema({
         type: Number,
         required: true
     },
+    // Last updated by
+    lastUpdateBy: {
+        type: String,
+        required: false
+    },
     // Last post date
     lastPost: {
         type: String,
-        required: true
+        required: false
     }, 
     // Set up a topics assocation
     topics: [
