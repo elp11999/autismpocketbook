@@ -324,8 +324,8 @@ module.exports = function(app) {
 
     // Route to add topic to the database
     app.post("/api/topic/:id", function(req, res) {
-      console.log("==================> New topic: fid=" + req.params.id);
-      console.log(req.body);
+      console.log("New topic: fid=" + req.params.id);
+      //console.log(req.body);
       let tid = 0;
       db.Topic.create(req.body)
         .then(function(dbTopic) {
@@ -351,8 +351,8 @@ module.exports = function(app) {
 
     // Route to add post to the database
     app.post("/api/post/:id", function(req, res) {
-      console.log("==================> New post: id=" + req.params.id);
-      console.log(req.body);
+      console.log("New post: id=" + req.params.id);
+      //console.log(req.body);
       db.Post.create(req.body)
         .then(function(dbPost) {
           //console.log(dbPost);          
@@ -360,16 +360,14 @@ module.exports = function(app) {
           if (req.body.newTopic == true)
             return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id }, $set: {"lastPost": req.body.postDate } }, { new: true });
           else
-            return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id }, $inc: { replyCount: 1 }, $set: {"lastPost": req.body.postDate }, $set: {"lastUpdateBy": "by " + req.body.author } }, { new: true });           
+            return db.Topic.findOneAndUpdate({ _id: req.params.id}, { $push: { posts: dbPost._id }, $inc: { "replyCount": 1 }, $set: { "lastPost": req.body.postDate, "lastUpdateBy": "by " + req.body.author } });           
         })
         .then(function(dbTopic) {
           //console.log(dbTopic);
-          console.log("New post: fid=" + dbTopic.fid);
-          console.log("New post: lastPost=" + req.body.postDate);
           if (req.body.newTopic == true)
-            return db.Folder.findOneAndUpdate({ _id: dbTopic.fid}, { $set: {"lastPost": req.body.postDate }, $set: {"lastUpdateBy": "by " + req.body.author } }, { new: true });
+            return db.Folder.findOneAndUpdate({ _id: dbTopic.fid}, { $set: {"lastPost": req.body.postDate, "lastUpdateBy": "by " + req.body.author } }, { new: true });
           else
-            return db.Folder.findOneAndUpdate({ _id: dbTopic.fid}, { $inc: { replyCount: 1 }, $set: {"lastPost": req.body.postDate }, $set: {"lastUpdateBy": "by " + req.body.author } }, { new: true });
+            return db.Folder.findOneAndUpdate({ _id: dbTopic.fid}, { $inc: { "replyCount": 1 }, $set: {"lastPost": req.body.postDate ,"lastUpdateBy": "by " + req.body.author } });
         })
         .then(function(dbFolder) {
           console.log("New post completed!!!");

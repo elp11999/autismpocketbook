@@ -105,19 +105,19 @@ class ForumTopics extends React.Component {
     
     componentDidMount() {
         const values = queryString.parse(this.props.location.search);
-        console.log("Forum Topics: fid=" + values.fid);    
+        //console.log("Forum Topics: fid=" + values.fid);    
         this.setState({fid: values.fid, loading: true});
         this.fetchData(values.fid);
     }
 
     handleNewTopicOnClick = (evt) => {
-      console.log("ForumTopics: New button clicked.");      
+      //console.log("ForumTopics: New button clicked.");      
       this.setState({showNewTopic: true});
     }
 
     handleNewTopicOnSaveClick = (values) => {
-      console.log("ForumTopics: New Topic save clicked.");
-      console.log(values);      
+      //console.log("ForumTopics: New Topic save clicked.");
+      //console.log(values);      
       //this.setState({showNewTopic: false});
 
       let currentDate = moment().format("MM-DD-YYYY h:mm:ss a");
@@ -131,12 +131,12 @@ class ForumTopics extends React.Component {
         viewCount: 0,
         lastPost: currentDate
       }       
-      console.log(topicData);
+      //console.log(topicData);
 
       // Save Topic to database
       API.saveTopic(this.state.fid, topicData)
       .then(res =>  {
-          console.log(res.data);
+          //console.log(res.data);
 
           let postData = {
             newTopic: true,
@@ -146,12 +146,12 @@ class ForumTopics extends React.Component {
             data: values.notes,
             postDate: currentDate
           }       
-          console.log(postData);
+          //console.log(postData);
 
           // Save Post to database
           API.savePost(res.data.tid, postData)
           .then(res =>  {
-              console.log(res.data);  
+              //console.log(res.data);  
               this.setState({showNewTopic: false}); 
               this.fetchData(this.state.fid); 
           })
@@ -168,18 +168,18 @@ class ForumTopics extends React.Component {
     }
 
     handleONewTopicOnCancelClick = (evt) => {
-      console.log("ForumTopics: New Topic cancel clicked.");      
+      //console.log("ForumTopics: New Topic cancel clicked.");      
       this.setState({showNewTopic: false});
     }
 
     fetchData(fid) {
 
-      console.log("ForumTopic: getting topics");
+      //console.log("ForumTopic: getting topics");
       
       // Get forum topics for a given folder
       API.getTopics(fid)
       .then(res =>  {
-        console.log(res);
+        //console.log(res);
         this.setState({showTopics: true, data: res.data });
       })
       .catch(err => {
@@ -208,16 +208,15 @@ class ForumTopics extends React.Component {
     }
     
     render() {
-      //const { data, pages, loading } = this.state;
-      const { data } = this.state;
-      console.log(data);
-      console.log(data.folder);
       if (this.state.showTopics) {
+        //const { data, pages, loading } = this.state;
+        const { data } = this.state;
+        //console.log(data);
         return (
           <React.Fragment>
               <div className="forum-header">
                   <img className="forum-image" src="/Forum1.png" alt="forum"></img>                 
-                  <h1 className="forum-title">Forum: {data.folder}</h1>              
+                  <h1 className="forum-title">Forum: {data.title}</h1>              
                   <button className="post-button" onClick={this.handleNewTopicOnClick}>New Topic</button>
               </div>
               <div className="forum-container">

@@ -24,7 +24,7 @@ class TopicsTable extends React.Component {
 
     render() {
         const { data } = this.props;
-        console.log(data);
+        //console.log(data);
         return(
             <ReactTable
                 columns={[
@@ -80,6 +80,7 @@ class TopicsTable extends React.Component {
                         <span className="table-info-text">
                             {row.original.lastPost}
                         </span>
+                        <p className="table-info-text">{row.original.lastUpdateBy}</p>
                     </div>
                     ),
                     width:238

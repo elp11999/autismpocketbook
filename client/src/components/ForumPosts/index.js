@@ -43,7 +43,7 @@ const testData = {
 const rawData = testData;
 
 const requestData = (pageSize, page, sorted, filtered) => {
-  console.log("pageSize=" + pageSize);
+  //console.log("pageSize=" + pageSize);
   return new Promise((resolve, reject) => {
     // You can retrieve your data however you want, in this case, we will just use some local data.
     let filteredData = rawData;
@@ -102,19 +102,19 @@ class ForumPosts extends React.Component {
     
     componentDidMount() {
         const values = queryString.parse(this.props.location.search);
-        console.log("ForumPost: tid=" + values.tid);      
+        //console.log("ForumPost: tid=" + values.tid);      
         this.setState({tid: values.tid});
         this.updateViews(values.tid);
         this.fetchData(values.tid);
     }
 
     handleNewPostOnClick = (evt) => {
-      console.log("ForumPost: New button clicked.");      
+      //console.log("ForumPost: New button clicked.");      
       this.setState({showNewPost: true});
     }
 
     handleNewPostOnSaveClick = (values) => {
-      console.log("ForumPost: New Post save clicked.");
+      //console.log("ForumPost: New Post save clicked.");
 
       let currentDate = moment().format("MM-DD-YYYY h:mm:ss a");
 
@@ -126,12 +126,12 @@ class ForumPosts extends React.Component {
         data: values.notes,
         postDate: currentDate
       }       
-      console.log(postData);
+      //console.log(postData);
 
       // Save Post to database
       API.savePost(this.state.tid, postData)
       .then(res =>  {
-          console.log(res.data);  
+          //console.log(res.data);  
           this.setState({showNewPost: false}); 
           this.fetchData(this.state.tid);
       })
@@ -142,7 +142,7 @@ class ForumPosts extends React.Component {
     }
 
     handleONewPostOnCancelClick = (evt) => {
-      console.log("ForumPost: New Post cancel clicked.");      
+      //console.log("ForumPost: New Post cancel clicked.");      
       this.setState({showNewPost: false});
     }
 
@@ -151,7 +151,7 @@ class ForumPosts extends React.Component {
       // Update view count for given topic
       API.saveTopicViews(tid)
       .then(res =>  {
-        console.log(res);
+        //console.log(res);
       })
       .catch(err => {
           console.log(err);
@@ -164,7 +164,7 @@ class ForumPosts extends React.Component {
       // Get forum posts for a given topic
       API.getPosts(tid)
       .then(res =>  {
-        console.log(res);
+        //console.log(res);
         if (res.data.length > 0)
           this.setState({fid: res.data[0].fid});
         this.setState({showPosts: true, data: res.data });
@@ -176,7 +176,7 @@ class ForumPosts extends React.Component {
     }
 
     fetchDataXXX(state, instance) {
-      console.log("ForumPost: fetching data!!!");
+      //console.log("ForumPost: fetching data!!!");
       // Whenever the table model changes, or the user sorts or changes pages, this method gets called and passed the current table model.
       // You can set the `loading` prop of the table to true to use the built-in one or show you're own loading bar if you want.
       this.setState({ loading: true });
