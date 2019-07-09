@@ -181,8 +181,6 @@ class LineCharts extends React.Component {
 
     // componentDidMount method
     componentDidMount() {
-                
-        console.log("componentDidMount...");
 
         // Load local storage
         let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
@@ -192,7 +190,7 @@ class LineCharts extends React.Component {
         
         // Get chart name to display
         const values = queryString.parse(document.location.search);
-        console.log(values);
+        //console.log(values);
         if (values.chart == null) {
             this.setState({chartName: "Behavior", chartInfo: behaviorInfo});
         } else {
@@ -234,8 +232,6 @@ class LineCharts extends React.Component {
                 // Set notes
                 this.setState({dbNotes: res.data.notes});
         
-                // Create chart data        
-        
                 // Show the chart
                 this.setState({showChart: true});
             }
@@ -259,9 +255,14 @@ class LineCharts extends React.Component {
     
         // Create chart line data for each category
         chartInfo.categories.forEach(category => {
-            let lineData = this.createChartLineData(notesByYear, chartInfo.name, category); 
-            if (lineData != null)       
+            let lineValues = this.createChartLineData(notesByYear, chartInfo.name, category); 
+            if (lineValues != null) {
+                let lineData = { 
+                    key: category,
+                    values: lineValues
+                }       
                 chartData.push(lineData);
+            }
         });
     
         // Return chart data
@@ -270,14 +271,13 @@ class LineCharts extends React.Component {
 
     // Create chart line data
     createChartLineData = (notes, name, category) => {
-    
-        let tempLineData = [
-        ];
+
+        let lineValues = [];
     
         let currentDate = new Date();
         let currentMonth = currentDate.getMonth();
         for (let i = 0; i <= currentMonth; i++) {
-            tempLineData.push({x: months[i], y: 0});
+            lineValues.push({x: months[i], y: 0});
             notes.forEach(note => {
                 var date = new Date(note.start);
                 let noteMonth = date.getMonth();
@@ -286,31 +286,17 @@ class LineCharts extends React.Component {
                     if (Array.isArray(note[name])) {
                         note[name].forEach(value => {
                             if (value === category)
-                            tempLineData[noteMonth].y++;
+                            lineValues[noteMonth].y++;
                         });
                     } else if (note[name] === category)
-                        tempLineData[noteMonth].y++;
+                        lineValues[noteMonth].y++;
                 }     
             });
            
-        }
+        } 
 
-        let lineData = { 
-            key: category,
-            values: []
-        }
-        lineData.values = tempLineData.filter((month) => {
-            return (month.y > 0);
-        });
-
-        lineData.values = tempLineData;
-        console.log(tempLineData);
-
-        if (lineData.values.length > 0) {
-            console.log(JSON.stringify(lineData, null, 2));    
-            return lineData;
-        } else
-            return null;
+        // Return line data
+        return lineValues;
     }
 
     // Get all notes by specifed year
@@ -353,6 +339,8 @@ class LineCharts extends React.Component {
                         useColorScale={true}
                         colorScale={colorScale}
                         margin={margin}
+                        noDataMessage={"Sorry, no chart data available for year " + this.state.year}
+                        
                     />
                 </div>
               </div>              
