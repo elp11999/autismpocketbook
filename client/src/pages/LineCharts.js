@@ -44,6 +44,22 @@ const colorScale = {
     to:   '#7040f5'
 }
 
+// List of months
+const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+];
+
 // Axis controls for charts
 const axisConfig = {
     showXAxis: true,
@@ -242,60 +258,26 @@ class LineCharts extends React.Component {
         let notesByYear = this.getNotesByYear(dbNotes, year);
     
         // Create chart line data for each category
-        chartInfo.categories.forEach(category => {        
-            chartData.push(this.createChartLineData(notesByYear, chartInfo.name, category));
+        chartInfo.categories.forEach(category => {
+            let lineData = this.createChartLineData(notesByYear, chartInfo.name, category); 
+            if (lineData != null)       
+                chartData.push(lineData);
         });
     
         // Return chart data
         return chartData;
     }
-    
+
     // Create chart line data
     createChartLineData = (notes, name, category) => {
     
-        let lineData = { 
-            key: category,
-            values: [ 
-              { x: 'Jan', 
-                y: 0 
-              },
-              { x: 'Feb',
-                y: 0
-              },
-              { x: 'Mar',
-                y: 0
-              }, 
-              { x: 'Apr',
-                y: 0
-              }, 
-              { x: 'May',
-                y: 0
-              }, 
-              { x: 'Jun',
-                y: 0
-              }, 
-              { x: 'Jul',
-                y: 0
-              }, 
-              { x: 'Aug',
-                y: 0
-              }, 
-              { x: 'Sep',
-                y: 0
-              }, 
-              { x: 'Oct',
-                y: 0
-              }, 
-              { x: 'Nov',
-                y: 0
-              }, 
-              { x: 'Dec',
-                y: 0
-              }
-            ]
-        }
+        let tempLineData = [
+        ];
     
-        for (let i = 0; i < 12; i++) {
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        for (let i = 0; i <= currentMonth; i++) {
+            tempLineData.push({x: months[i], y: 0});
             notes.forEach(note => {
                 var date = new Date(note.start);
                 let noteMonth = date.getMonth();
@@ -304,16 +286,31 @@ class LineCharts extends React.Component {
                     if (Array.isArray(note[name])) {
                         note[name].forEach(value => {
                             if (value === category)
-                                lineData.values[i].y++;
+                            tempLineData[noteMonth].y++;
                         });
                     } else if (note[name] === category)
-                        lineData.values[i].y++;
+                        tempLineData[noteMonth].y++;
                 }     
             });
            
         }
-    
-        return lineData;
+
+        let lineData = { 
+            key: category,
+            values: []
+        }
+        lineData.values = tempLineData.filter((month) => {
+            return (month.y > 0);
+        });
+
+        lineData.values = tempLineData;
+        console.log(tempLineData);
+
+        if (lineData.values.length > 0) {
+            console.log(JSON.stringify(lineData, null, 2));    
+            return lineData;
+        } else
+            return null;
     }
 
     // Get all notes by specifed year
