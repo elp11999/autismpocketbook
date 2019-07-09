@@ -79,7 +79,7 @@ const moodList = [
 ];
 
 const sleepList = [
-    "Well rested",
+    "Well Rested",
     "Woke up",
     "Woke up several times"
 ];

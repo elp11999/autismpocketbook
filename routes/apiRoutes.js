@@ -218,6 +218,7 @@ module.exports = function(app) {
             child: dbChild.firstname,
             notes: dbChild.notes
           }
+          //console.log(JSON.stringify(dbChild.notes));
           res.json(response);
         })
         .catch(function(err) {

@@ -11,6 +11,7 @@ import AddChild from './pages/AddChild';
 import NoMatch from "./pages/NoMatch";
 import DashBoard from './pages/DashBoard';
 import Charts from './pages/Charts';
+import LineCharts from './pages/LineCharts';
 import ForumFolders from './components/ForumFolders';
 import ForumTopics from './components/ForumTopics';
 import ForumPosts from './components/ForumPosts';
@@ -62,6 +63,7 @@ function App() {
           <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute exact path="/addc" component={AddChild} />
           <PrivateRoute exact path="/charts" component={Charts} />
+          <PrivateRoute exact path="/linecharts" component={LineCharts} />
           <Route exact path="/forum" component={ForumFolders} />
           <Route exact path="/forum/topic" component={ForumTopics} />
           <Route exact path="/forum/listposts" component={ForumPosts} />

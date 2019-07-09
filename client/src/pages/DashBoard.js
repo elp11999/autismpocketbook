@@ -220,6 +220,10 @@ class DashBoard extends React.Component {
   handleChartsOnClick = (event) => {
     this.props.history.push("/charts");
   }
+
+  handleLineChartsOnClick = (event) => {
+    this.props.history.push("/linecharts");
+  }
     
   render = () => {
     let download = null;
@@ -249,6 +253,7 @@ class DashBoard extends React.Component {
           <button style={styles.dashbutton} type="submit" onClick={this.handleEditOnClick}>Edit</button>
           <button style={styles.dashbutton} type="submit" onClick={this.handleReportsOnClick}>Reports</button>
           <button style={styles.dashbutton} type="submit" onClick={this.handleChartsOnClick}>Charts</button>
+          <button style={styles.dashbutton} type="submit" onClick={this.handleLineChartsOnClick}>LineCharts</button>
         </div>
     }
 
