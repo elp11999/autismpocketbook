@@ -27,3 +27,4 @@ demo.md
 reset.bat
 dump
 *.7z
+client/debug.log

@@ -187,6 +187,7 @@ class LineCharts extends React.Component {
         
         // Get current year
         this.setState({year: new Date().getFullYear()});
+        this.setState({year: 2018});
         
         // Get chart name to display
         const values = queryString.parse(document.location.search);
@@ -275,8 +276,10 @@ class LineCharts extends React.Component {
         let lineValues = [];
     
         let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
         let currentMonth = currentDate.getMonth();
-        for (let i = 0; i <= currentMonth; i++) {
+        let numberOfMonths = (currentYear == this.state.year) ? currentMonth: 11;
+        for (let i = 0; i <= numberOfMonths; i++) {
             lineValues.push({x: months[i], y: 0});
             notes.forEach(note => {
                 var date = new Date(note.start);
@@ -316,7 +319,7 @@ class LineCharts extends React.Component {
           axisConfig.xLabel = "Year - " + this.state.year;
 
           // Create chart title
-          let title = this.state.child + "'s " + this.state.chartName + " Chart";
+          let title = this.state.child + "'s " + this.state.year + " " + this.state.chartName + " Chart";
 
           // Create chart data
           let chartData = this.createChartData(this.state.dbNotes, this.state.year, this.state.chartInfo);

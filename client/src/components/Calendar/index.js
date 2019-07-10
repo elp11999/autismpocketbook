@@ -124,8 +124,8 @@ class Calendar extends React.Component {
   handleEventClick = (arg) => {
     console.log("handleEventClick");
     this.setState({ title: "Update " + this.state.child + "'s note"}); 
-    this.setState({ start: arg.date}); 
-    this.setState({ allDay: arg.allDay});
+    this.setState({ start: arg.event.start}); 
+    this.setState({ allDay: true});
     this.setState({ handleOnSave: this.handleOnUpdate});
 
     let noteDate = {
