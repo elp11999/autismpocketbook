@@ -88,11 +88,6 @@ const moodInfo = {
         "Calm",
         "Sad",
         "Anxious",
-        "Frustrated",
-        "Frustrated",
-        "Frustrated",
-        "Frustrated",
-        "Frustrated",
         "Frustrated"
     ]
 }
@@ -198,7 +193,7 @@ class LineCharts extends React.Component {
         const values = queryString.parse(document.location.search);
         //console.log(values);
         if (values.chart == null) {
-            this.setState({chartName: "Mood", chartInfo: moodInfo});
+            this.setState({chartName: "Behavior", chartInfo: behaviorInfo});
         } else {
             axisConfig.xLabel = values.chart;
             switch (values.chart) {

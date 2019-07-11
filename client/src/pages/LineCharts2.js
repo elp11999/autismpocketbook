@@ -77,10 +77,6 @@ const moodInfo = {
         {
             name: "Frustrated",
             color: "black"
-        },
-        {
-            name: "Frustrated",
-            color: "yellow"
         }
     ]
 }
@@ -89,38 +85,92 @@ const moodInfo = {
 const sleepInfo = {
     name : "sleep",
     categories : [ 
-        "Well Rested",
-        "Woke up",
-        "Woke up several times"
+        {
+            name:"Well Rested",
+            color: "blue"
+        },
+        {
+            name: "Woke up",
+            color: "green"
+        },
+        {
+            name: "Woke up several times",
+            color: "red"
+        }
     ]
 }
 
 // Nutrition info
 const nutritionInfo = {
     name : "nutrition",
-    categories : [ 
-        "Full Meals/Balanced Diet",
-        "Skipped Meals",
-        "Supplements taken",
-        "Probiotic",
-        "Prebiotic",
-        "Regular Bowel Movements"
+    categories : [
+        {
+            name: "Full Meals/Balanced Diet",
+            color: "blue"
+        },
+        {
+            name: "Skipped Meals",
+            color: "red"
+        },
+        {
+            name: "Supplements taken",
+            color: "green"
+        },
+        {
+            name: "Probiotic",
+            color: "orange"
+        },
+        {
+            name: "Prebiotic",
+            color: "brown"
+        },
+        {
+            name: "Regular Bowel Movements",
+            color: "yellow"
+        }
     ]
 }
 
 // Behavior info
 const behaviorInfo = {
     name : "behavior",
-    categories : [ 
-        "No issues",
-        "On task",
-        "Minor issues 2-3 a day",
-        "Disruptive",
-        "Motor/Verbal stimming",
-        "Severe meltdown",
-        "Elopement",
-        "Property Destruction",
-        "Self-Injurious Behavior"
+    categories : [
+        {
+            name: "No issues",
+            color: "blue"
+        },
+        {
+            name: "On task",
+            color: "red"
+        },
+        {
+            name: "Minor issues 2-3 a day",
+            color: "green"
+        },
+        {
+            name: "Disruptive",
+            color: "orange"
+        },
+        {
+            name: "Motor/Verbal stimming",
+            color: "brown"
+        },
+        {
+            name: "Severe meltdown",
+            color: "yellow"
+        },
+        {
+            name: "Elopement",
+            color: "purple"
+        },
+        {
+            name: "Property Destruction",
+            color: "brown"
+        },
+        {
+            name: "Self-Injurious Behavior",
+            color: "indigo"
+        }
     ]
 }
 
@@ -128,9 +178,18 @@ const behaviorInfo = {
 const sensoryRegulationInfo = {
     name : "sensoryregulation",
     categories : [ 
-        "High",
-        "Moderate",
-        "Low"
+        {
+            name:"High",
+            color: "blue"
+        },
+        {
+            name: "Moderate",
+            color: "green"
+        },
+        {
+            name: "Low",
+            color: "red"
+        }
     ]
 }
 
@@ -138,20 +197,38 @@ const sensoryRegulationInfo = {
 const exerciseInfo = {
     name : "exercise",
     categories : [ 
-        "High",
-        "Moderate",
-        "Low"
-    ],
+        {
+            name:"High",
+            color: "blue"
+        },
+        {
+            name: "Moderate",
+            color: "green"
+        },
+        {
+            name: "Low",
+            color: "red"
+        }
+    ]
 }
 
 // Weather info
 const weatherInfo= {
     name : "weather",
     categories : [ 
-        "Sunny",
-        "Cloudy",
-        "Rain/Snow"
-    ],
+        {
+            name:"Sunny",
+            color: "blue"
+        },
+        {
+            name: "Cloudy",
+            color: "green"
+        },
+        {
+            name: "Rain/Snow",
+            color: "red"
+        }
+    ]
 }
 
 // LineCharts class
@@ -186,7 +263,7 @@ class LineCharts2 extends React.Component {
         const values = queryString.parse(document.location.search);
         //console.log(values);
         if (values.chart == null) {
-            this.setState({chartName: "Mood", chartInfo: moodInfo});
+            this.setState({chartName: "Behavior", chartInfo: behaviorInfo});
         } else {
             //axisConfig.xLabel = values.chart;
             switch (values.chart) {
