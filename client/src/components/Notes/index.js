@@ -209,6 +209,7 @@ class Notes extends React.Component {
                                         component="select"
                                         style={styles.label}
                                         name="nutrition"
+                                        size="2"
                                         onChange={evt =>
                                             setFieldValue(
                                             "nutrition",
@@ -217,7 +218,7 @@ class Notes extends React.Component {
                                                 .map(option => option.value)
                                             )
                                         }
-                                        multiple={false}
+                                        multiple={true}
                                         >
                                         {nutritionList.map(s => (
                                             <option key={s} value={s}>
@@ -233,6 +234,7 @@ class Notes extends React.Component {
                                         component="select"
                                         style={styles.label}
                                         name="behavior"
+                                        size="2"
                                         onChange={evt =>
                                             setFieldValue(
                                             "behavior",
@@ -241,7 +243,7 @@ class Notes extends React.Component {
                                                 .map(option => option.value)
                                             )
                                         }
-                                        multiple={false}
+                                        multiple={true}
                                         >
                                         {behaviorList.map(s => (
                                             <option key={s} value={s}>
