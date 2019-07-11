@@ -1,5 +1,5 @@
 //
-// Add Child page
+// Add/Update Child page
 //
 // AddChild.js
 //
@@ -436,7 +436,7 @@ class AddChild extends React.Component {
                                                 id="0"
                                                 type="radio"
                                                 value="Level 1"
-                                                checked={autismSelection === "Level 1"}
+                                                defaultChecked={autismSelection === "Level 1"}
                                                 onChange={this.handleClick}
                                             />
                                             Level 1: Requiring Support Social
@@ -450,7 +450,7 @@ class AddChild extends React.Component {
                                                 id="1"
                                                 type="radio"
                                                 value="Level 2"
-                                                checked={autismSelection === "Level 2"}
+                                                defaultChecked={autismSelection === "Level 2"}
                                                 onChange={this.handleClick}
                                             />
                                             Level 2: Requiring Substantial Support Social
@@ -464,7 +464,7 @@ class AddChild extends React.Component {
                                                 id="2"
                                                 type="radio"
                                                 value="Level 3"
-                                                checked={autismSelection === "Level 3"}
+                                                defaultChecked={autismSelection === "Level 3"}
                                                 onChange={this.handleClick}
                                             />
                                             Level 3: Requiring Very Substantial Support Social
