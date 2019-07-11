@@ -4,8 +4,8 @@ import React from 'react';
 // Import QueryString library
 import queryString from 'query-string';
 
-// Import React-D3 library
-import { LineChart  } from 'react-charts-d3';
+// Import React-chartjs-2 library
+import { Line } from 'react-chartjs-2';
 
 // Import the Formik library
 import { Formik, Form, Field } from 'formik';
@@ -38,12 +38,6 @@ const styles = {
     }
 }
 
-// Chart line colors
-const colorScale = {
-    from: '#c43333',
-    to:   '#7040f5'
-}
-
 // List of months
 const months = [
     "Jan",
@@ -60,40 +54,34 @@ const months = [
     "Dec"
 ];
 
-// Axis controls for charts
-const axisConfig = {
-    showXAxis: true,
-    showXAxisLabel: true,
-    xLabel: 'Sam\'s Mood Chart for Year - 2019',
-    xLabelPosition: 'left',
-    showYAxis: true,
-    showYAxisLabel: true,
-    yLabel: 'Level',
-    yLabelPosition: 'top',
-};
-
-// Margin controls for charts
-const margin = {
-    top: 20, 
-    bottom: 30, 
-    left: 60,
-    right: 40
-};
-
 // Mood chart info
 const moodInfo = {
     name : "mood",
     categories : [    
-        "Happy",
-        "Calm",
-        "Sad",
-        "Anxious",
-        "Frustrated",
-        "Frustrated",
-        "Frustrated",
-        "Frustrated",
-        "Frustrated",
-        "Frustrated"
+        {
+            name: "Happy",
+            color: "blue"
+        },
+        { 
+            name: "Calm",
+            color: "green"
+        },
+        {
+            name: "Sad",
+            color: "red"
+        },
+        {
+            name: "Anxious",
+            color: "purple"
+        },
+        {
+            name: "Frustrated",
+            color: "black"
+        },
+        {
+            name: "Frustrated",
+            color: "yellow"
+        }
     ]
 }
 
@@ -167,7 +155,7 @@ const weatherInfo= {
 }
 
 // LineCharts class
-class LineCharts extends React.Component {
+class LineCharts2 extends React.Component {
 
     constructor() {
         super();
@@ -200,7 +188,7 @@ class LineCharts extends React.Component {
         if (values.chart == null) {
             this.setState({chartName: "Mood", chartInfo: moodInfo});
         } else {
-            axisConfig.xLabel = values.chart;
+            //axisConfig.xLabel = values.chart;
             switch (values.chart) {
                 case "Mood" :
                     this.setState({chartName: values.chart, chartInfo: moodInfo});
@@ -249,25 +237,25 @@ class LineCharts extends React.Component {
 
     // onChange handler for the chart dropdown list
     onChange = (event) => {
-        document.location = "/linecharts?chart=" + event.target.value;
+        document.location = "/linecharts2?chart=" + event.target.value;
     }
 
     // Create chart data
     createChartData = (dbNotes, year, chartInfo) => {
-        let chartData = [];        
+        
+        const chartData = {
+            labels: [],
+            datasets: []
+        };
       
         // Get notes by year
         let notesByYear = this.getNotesByYear(dbNotes, year);
     
         // Create chart line data for each category
         chartInfo.categories.forEach(category => {
-            let lineValues = this.createChartLineData(notesByYear, chartInfo.name, category); 
-            if (lineValues != null) {
-                let lineData = { 
-                    key: category,
-                    values: lineValues
-                }       
-                chartData.push(lineData);
+            let dataset = this.createChartLineData(chartData, notesByYear, chartInfo.name, category); 
+            if (dataset != null) {
+                chartData.datasets.push(dataset);
             }
         });
     
@@ -276,17 +264,40 @@ class LineCharts extends React.Component {
     }
 
     // Create chart line data
-    createChartLineData = (notes, name, category) => {
+    createChartLineData = (chartData, notes, name, category) => {
 
-        let lineValues = [];
-        let haveLineData = false;
-    
+        let dataset = {
+          label: category.name,
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: category.color,
+          borderColor: category.color,
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: category.color,
+          pointBackgroundColor: "white",
+          pointBorderWidth: 1,
+          pointHoverRadius: 4,
+          pointHoverBackgroundColor: category.color,
+          pointHoverBorderColor: category.color,
+          pointHoverBorderWidth: 2,
+          pointRadius: 3,
+          pointHitRadius: 3,
+          data: [],
+          borderWidth: 2,
+        };
+
+        let haveLineData = false;    
         let currentDate = new Date();
         let currentYear = currentDate.getFullYear();
         let currentMonth = currentDate.getMonth();
         let numberOfMonths = (currentYear === this.state.year) ? currentMonth: 11;
         for (let i = 0; i <= numberOfMonths; i++) {
-            lineValues.push({x: months[i], y: 0});
+            if (chartData.labels.length === 0 || chartData.labels.length < i+1)
+                chartData.labels.push(months[i]);
+            dataset.data.push(0);
             notes.forEach(note => {
                 var date = new Date(note.start);
                 let noteMonth = date.getMonth();
@@ -294,22 +305,22 @@ class LineCharts extends React.Component {
                     //console.log("note.mood=" + note.mood + " category=" + category + " i=" + i + " noteMonth=" + noteMonth);
                     if (Array.isArray(note[name])) {
                         note[name].forEach(value => {
-                            if (value === category)
-                                lineValues[noteMonth].y++;
+                            if (value === category.name)
+                            dataset.data[noteMonth]++;
                         });
-                    } else if (note[name] === category)
-                        lineValues[noteMonth].y++;
+                    } else if (note[name] === category.name)
+                    dataset.data[noteMonth]++;
                 }
             });
             
             // Check for any line data
-            if (lineValues[i].y > 0)
+            if (dataset.data[i] > 0)
                 haveLineData = true;
            
         } 
 
         // Return line data
-        return (haveLineData === true) ?  lineValues :  null;
+        return (haveLineData === true) ?  dataset :  null;
     }
 
     // Get all notes by specifed year
@@ -325,9 +336,6 @@ class LineCharts extends React.Component {
     render() {
         if (this.state.showChart) {
 
-          // Set year on X-axis          
-          axisConfig.xLabel = "Year - " + this.state.year;
-
           // Create chart title
           let title = this.state.child + "'s " + this.state.year + " " + this.state.chartName + " Chart";
 
@@ -340,20 +348,11 @@ class LineCharts extends React.Component {
               <div>
                 <p style={styles.header}>{title}</p>
                 <div className="line-chart">
-                    <LineChart 
-                        data={chartData}
-                        showLegend={true}
-                        width={600}
-                        height={400}
-                        axisConfig={axisConfig}
-                        showGrid={true}
-                        pointSize={4}
-                        strokeWidth={1.5}
-                        useColorScale={true}
-                        colorScale={colorScale}
-                        margin={margin}
-                        noDataMessage={"Sorry, no chart data available for year " + this.state.year}
-                        
+                    <Line ref="chart"
+                          data={chartData} 
+                          width={600}
+                          height={400}
+                          options={{ maintainAspectRatio: false }}
                     />
                 </div>
               </div>              
@@ -387,4 +386,4 @@ class LineCharts extends React.Component {
 }
 
 // Export the LineCharts UI page
-export default LineCharts;
+export default LineCharts2;
