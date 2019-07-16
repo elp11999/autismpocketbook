@@ -24,5 +24,7 @@ textarea {
     border-style: none;
     border-color: Transparent;
     overflow: auto;
-    outline: none;      
+    outline: none;
+    min-height: 5vh;
+    height: unset;
 }

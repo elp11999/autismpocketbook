@@ -23,6 +23,13 @@ class PostTable extends React.Component {
     }
 
     render() {
+
+        /*
+        {(row.original.data.split("\n").length > 0) ? row.original.data.split("\n").length + 1 : 1}
+
+
+        */
+
         const { data } = this.props;
         //console.log(data);
         return(
@@ -47,7 +54,7 @@ class PostTable extends React.Component {
                     headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                     Cell: row => (
                     <div className="table-cell">
-                        <textarea className="table-info-text" rows="5" cols="400" value={row.original.data} onChange={this.onChange}>
+                        <textarea className="table-info-text" rows={(row.original.data.split("\n").length > 0) ? row.original.data.split("\n").length + 1 : 1} cols="400" value={row.original.data} onChange={this.onChange}>
                         </textarea>
                     </div>
                     ),
