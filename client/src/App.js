@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import Navbar from './components/Navbar/';
 import Footer from './components/Footer/';
 import Home from './pages/Home';
-import Usage from './pages/Usage';
+//import Usage from './pages/Usage';
 import Resources from './pages/Resources';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
