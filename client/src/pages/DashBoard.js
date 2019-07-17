@@ -256,9 +256,7 @@ class DashBoard extends React.Component {
           <img style={ styles.dashimage } src="/Sam1.jpeg" alt="thumbnail" width="50" height="50"></img>
           <button style={styles.dashbutton} type="submit" onClick={this.handleEditOnClick}>Edit</button>
           <button style={styles.dashbutton} type="submit" onClick={this.handleReportsOnClick}>Reports</button>
-          <button style={styles.dashbutton} type="submit" onClick={this.handleChartsOnClick}>Charts</button>
-          <button style={styles.dashbutton} type="submit" onClick={this.handleLineChartsOnClick}>LineCharts</button>
-          <button style={styles.dashbutton} type="submit" onClick={this.handleLineCharts2OnClick}>LineCharts2</button>
+          <button style={styles.dashbutton} type="submit" onClick={this.handleLineCharts2OnClick}>Charts</button>
         </div>
     }
 

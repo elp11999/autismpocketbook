@@ -10,8 +10,8 @@ import Signup from './pages/Signup';
 import AddChild from './pages/AddChild';
 import NoMatch from "./pages/NoMatch";
 import DashBoard from './pages/DashBoard';
-import Charts from './pages/Charts';
-import LineCharts from './pages/LineCharts';
+//import Charts from './pages/Charts';
+//import LineCharts from './pages/LineCharts';
 import LineCharts2 from './pages/LineCharts2';
 import ForumFolders from './components/ForumFolders';
 import ForumTopics from './components/ForumTopics';
@@ -57,18 +57,15 @@ function App() {
         <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/usage" component={Usage} />
           <Route exact path="/resources" component={Resources} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute exact path="/addc" component={AddChild} />
-          <PrivateRoute exact path="/charts" component={Charts} />
-          <PrivateRoute exact path="/linecharts" component={LineCharts} />
           <PrivateRoute exact path="/linecharts2" component={LineCharts2} />
-          <Route exact path="/forum" component={ForumFolders} />
-          <Route exact path="/forum/topic" component={ForumTopics} />
-          <Route exact path="/forum/listposts" component={ForumPosts} />
+          <PrivateRoute exact path="/forum" component={ForumFolders} />
+          <PrivateRoute exact path="/forum/topic" component={ForumTopics} />
+          <PrivateRoute exact path="/forum/listposts" component={ForumPosts} />
           <Route component={NoMatch} />
         </Switch>
         <Footer />

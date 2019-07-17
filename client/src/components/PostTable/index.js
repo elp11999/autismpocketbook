@@ -24,12 +24,6 @@ class PostTable extends React.Component {
 
     render() {
 
-        /*
-        {(row.original.data.split("\n").length > 0) ? row.original.data.split("\n").length + 1 : 1}
-
-
-        */
-
         const { data } = this.props;
         //console.log(data);
         return(
