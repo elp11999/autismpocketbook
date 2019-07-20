@@ -25,16 +25,17 @@ class FoldersTable extends React.Component {
     render() {
         const { data } = this.props;
         //console.log(data);
+        // <a className="table-icon" href={"/forum/topic?fid=" + row.original._id}><Folder /></a>
         return(
             <ReactTable
                 columns={[
                     {
                         Header: data.title,
                         accessor: "folder",
-                        headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                        headerStyle: {fontSize: 15, textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                        style: { 'white-space': 'normal' },
                         Cell: row => (
-                        <div>
-                            <a className="table-icon" href={"/forum/topic?fid=" + row.original._id}><Folder /></a>                    
+                        <div>                    
                             <div className="table-header">
                                 <span>
                                     <a className="forum-a" href={"/forum/topic?fid=" + row.original._id}>{row.original.title}</a>
@@ -43,12 +44,12 @@ class FoldersTable extends React.Component {
                             </div>
                         </div>
                         ),
-                        width: 600
+                        minWidth: 150
                     },
                     {
                         Header: "Topics",
                         accessor: "topics",
-                        headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                        headerStyle: {fontSize: 15, textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                         Cell: row => (
                         <div className="table-cell">
                             <span className="table-info-text">
@@ -56,12 +57,12 @@ class FoldersTable extends React.Component {
                             </span>
                         </div>
                         ),
-                        width: 70
+                        minWidth: 45
                     },
                     {
                         Header: "Replies",
                         accessor: "replies",
-                        headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                        headerStyle: {fontSize: 15, textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                         Cell: row => (
                         <div className="table-cell">
                             <span className="table-info-text">
@@ -69,12 +70,13 @@ class FoldersTable extends React.Component {
                             </span>
                         </div>
                         ),
-                        width: 80
+                        minWidth: 50
                     },
                     {
                         Header: "Last Post",
                         accessor: "lastPost",
-                        headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                        headerStyle: {fontSize: 15, textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                        style: { 'white-space': 'normal' },
                         Cell: row => (
                         <div className="table-cell">
                             <span className="table-info-text">
@@ -83,7 +85,7 @@ class FoldersTable extends React.Component {
                             <p className="table-info-text">{row.original.lastUpdateBy}</p>
                         </div>
                         ),
-                        width: 248
+                        minWidth: 100
                     }
                 ]}
                 manual

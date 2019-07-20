@@ -50,12 +50,12 @@ body {
 }
 
 .rt-thead {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
 }
 
 .rt-td {
-    font-size: 18px;
+    font-size: 15px;
     display: flex;
 }
 

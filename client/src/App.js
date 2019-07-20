@@ -63,9 +63,9 @@ function App() {
           <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute exact path="/addc" component={AddChild} />
           <PrivateRoute exact path="/linecharts2" component={LineCharts2} />
-          <PrivateRoute exact path="/forum" component={ForumFolders} />
-          <PrivateRoute exact path="/forum/topic" component={ForumTopics} />
-          <PrivateRoute exact path="/forum/listposts" component={ForumPosts} />
+          <Route exact path="/forum" component={ForumFolders} />
+          <Route exact path="/forum/topic" component={ForumTopics} />
+          <Route exact path="/forum/listposts" component={ForumPosts} />
           <Route component={NoMatch} />
         </Switch>
         <Footer />
