@@ -32,7 +32,7 @@ class PostTable extends React.Component {
                 {
                     Header: data.author,
                     accessor: "author",
-                    headerStyle: {textAlign: 'center', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    headerStyle: {fontSize: 15, textAlign: 'center', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                     Cell: row => (
                     <div>
                         <span className="table-icon"><Book /></span>                    
@@ -40,19 +40,20 @@ class PostTable extends React.Component {
                             <p className="table-info-text">{data.author}</p>
                         </div>
                     </div>
-                    ),
-                    width: 200
+                    ),                    
+                    minWidth: 50
                 },
                 {
                     Header: "Post: " + data.postDate,
-                    headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    headerStyle: {fontSize: 15, textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    style: { 'white-space': 'normal' },
                     Cell: row => (
                     <div className="table-cell">
-                        <textarea className="table-info-text" rows={(row.original.data.split("\n").length > 0) ? row.original.data.split("\n").length + 1 : 1} cols="400" value={row.original.data} onChange={this.onChange}>
-                        </textarea>
+                        <span className="table-info-text">{row.original.data}>
+                        </span>
                     </div>
                     ),
-                    width: 798
+                    minWidth: 150
                 }
                 ]}
                 manual
