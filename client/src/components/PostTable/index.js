@@ -6,6 +6,7 @@ import ReactTable from "react-table";
 
 // Import Material icons
 import { Book } from "@material-ui/icons";
+import { Person } from "@material-ui/icons";
 
 // Import React-Table css
 import "react-table/react-table.css";
@@ -35,7 +36,7 @@ class PostTable extends React.Component {
                     headerStyle: {fontSize: 15, textAlign: 'center', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                     Cell: row => (
                     <div>
-                        <span className="table-icon"><Book /></span>                    
+                        <span className="table-icon"><Person /></span>                    
                         <div className="table-header">
                             <p className="table-info-text">{data.author}</p>
                         </div>

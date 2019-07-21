@@ -6,6 +6,7 @@ import ReactTable from "react-table";
 
 // Import Material icons
 import { Book } from "@material-ui/icons";
+import { Person } from "@material-ui/icons";
 
 // Import React-Table css
 import "react-table/react-table.css";
@@ -25,16 +26,18 @@ class TopicsTable extends React.Component {
     render() {
         const { data } = this.props;
         //console.log(data);
+        // <a className="table-icon" href={"/forum/listposts?tid=" + row.original._id}><Book /></a>
         return(
             <ReactTable
                 columns={[
                 {
                     Header: "Topics",
                     accessor: "topics",
-                    headerStyle: {textAlign: 'center', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    headerStyle: {fontSize: 15, textAlign: 'center', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    style: { 'white-space': 'normal' },
                     Cell: row => (
                     <div>
-                        <a className="table-icon" href={"/forum/listposts?tid=" + row.original._id}><Book /></a>                    
+                        <a className="table-icon" href={"/forum/listposts?tid=" + row.original._id}><Person /></a>                    
                         <div className="table-header">
                             <span>
                                 <a className="forum-a" href={"/forum/listposts?tid=" + row.original._id}>{row.original.title}</a>
@@ -43,12 +46,12 @@ class TopicsTable extends React.Component {
                         </div>
                     </div>
                     ),
-                    width: 600
+                    minWidth: 150
                 },
                 {
                     Header: "Replies",
                     accessor: "replies",
-                    headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    headerStyle: {fontSize: 15, textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                     Cell: row => (
                     <div className="table-cell">
                         <span className="table-info-text">
@@ -56,12 +59,12 @@ class TopicsTable extends React.Component {
                         </span>
                     </div>
                     ),
-                    width: 80
+                    minWidth: 50
                 },
                 {
                     Header: "Views",
                     accessor: "views",
-                    headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    headerStyle: {fontSize: 15, textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
                     Cell: row => (
                     <div className="table-cell">
                         <span className="table-info-text">
@@ -69,12 +72,13 @@ class TopicsTable extends React.Component {
                         </span>
                     </div>
                     ),
-                    width: 80
+                    minWidth: 40
                 },
                 {
                     Header: "Last Post",
                     accessor: "lastPost",
-                    headerStyle: {textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    headerStyle: {fontSize: 15, textAlign: 'left', backgroundColor: "blue", color: "white", borderRight: "1px solid lightgray"},
+                    style: { 'white-space': 'normal' },
                     Cell: row => (
                     <div className="table-cell">
                         <span className="table-info-text">
@@ -83,7 +87,7 @@ class TopicsTable extends React.Component {
                         <p className="table-info-text">{row.original.lastUpdateBy}</p>
                     </div>
                     ),
-                    width:238
+                    minWidth: 100
                 }
                 ]}
                 manual
