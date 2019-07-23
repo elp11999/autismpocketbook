@@ -86,3 +86,30 @@ body {
     margin-bottom: 1px;
     font-size: 15px;
 }
+
+@media only screen and (max-width: 1240px) {
+    .forum-title { 
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 940px) {
+    .forum-title { 
+        font-size: 25px;
+    } 
+}
+
+@media only screen and (max-width: 640px) {
+    .forum-title { 
+        font-size: 20px;
+    }    
+    .forum-image {
+        height: 25px;
+        width: 25px;
+    }
+    .post-button,
+    .new-post-button,
+    .new-topic-button {
+        font-size: 15px;
+    }
+}
