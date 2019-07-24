@@ -21,7 +21,7 @@ import './App.css';
 
 // Create local storage
 if (!localStorage.getItem("apbSystem"))
-  localStorage.setItem("apbSystem", JSON.stringify({ pid: "", cid: "", user: "" }));
+  localStorage.setItem("apbSystem", JSON.stringify({ pid: "", cid: "", user: "", email: "" }));
 
 class PrivateRoute extends React.Component {
   state = {

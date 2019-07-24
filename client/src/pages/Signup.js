@@ -146,7 +146,8 @@ class Signup extends React.Component {
                                 .then(res =>  {
                                     console.log(JSON.stringify(res.data));
                                     apbSystem.pid = res.data.pid;                                    
-                                    apbSystem.user = res.data.username;
+                                    apbSystem.user = res.data.username;                                   
+                                    apbSystem.email = res.data.email;
                                     apbSystem.cid = "";
                                     localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
                                     if (res.data.error)

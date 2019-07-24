@@ -123,7 +123,7 @@ class Login extends React.Component {
                     <p style={styles.header}>Sign in to Autism Pocket Book</p>         
                     <div style={styles.container}>
                         <Formik
-                            initialValues={{ email: '', password: '' }}
+                            initialValues={{ email: apbSystem.email, password: '' }}
                             validate={values => {
                                 let errors = {};
                                 if (!values.email) {
@@ -149,7 +149,8 @@ class Login extends React.Component {
                                     else {
                                         console.log(res); 
                                         apbSystem.pid = res.data.pid;
-                                        apbSystem.user = res.data.username;
+                                        apbSystem.user = res.data.username;                                  
+                                        apbSystem.email = res.data.email;
                                         localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
                                         
                                         // Get children count

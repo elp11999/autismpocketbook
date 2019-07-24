@@ -469,7 +469,7 @@ class AddChild extends React.Component {
                                                 defaultChecked={autismSelection === "Level 3"}
                                                 onChange={this.handleClick}
                                             />
-                                            Level 3: Extreme Support Social Needed
+                                            Level 3: Very High Support Social Needed
                                         </label>
                                     </div>
                                 </Field>

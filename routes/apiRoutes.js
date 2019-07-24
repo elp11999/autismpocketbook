@@ -52,7 +52,7 @@ module.exports = function(app) {
             expiresIn: '1h',
           }); 
           console.log(parent);    
-          res.cookie('token', token, { httpOnly: true }).status(200).json({pid: parent._id, username: parent.username, error: null});
+          res.cookie('token', token, { httpOnly: true }).status(200).json({pid: parent._id, username: parent.username, email: user.email, error: null});
         }
       });
     });
@@ -78,7 +78,7 @@ module.exports = function(app) {
                 expiresIn: '1h',
               }); 
               console.log(user);          
-              res.cookie('token', token, { httpOnly: true }).status(200).json({pid: user._id, username: user.username});
+              res.cookie('token', token, { httpOnly: true }).status(200).json({pid: user._id, username: user.username, email: user.email});
             }
           });
         }
