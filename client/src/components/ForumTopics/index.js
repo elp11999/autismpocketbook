@@ -214,23 +214,25 @@ class ForumTopics extends React.Component {
         //console.log(data);
         return (
           <React.Fragment>
-              <div className="forum-header">
-                  <img className="forum-image" src="/Forum1.png" alt="forum"></img>                 
-                  <h1 className="forum-title">Forum: {data.title}</h1>              
+              <div className="forum-topics">
+                <div className="forum-header">
+                    <img className="forum-image" src="/Forum1.png" alt="forum"></img>                 
+                    <h1 className="forum-title">Forum: {data.title}</h1>              
+                    <button className="post-button" onClick={this.handleNewTopicOnClick}>New Topic</button>
+                </div>
+                <div className="forum-container">
+                  <TopicsTable data={data.topics} />
+                </div>
+                <div className="forum-header">              
                   <button className="post-button" onClick={this.handleNewTopicOnClick}>New Topic</button>
+                </div>
+                
+                <NewForumTopic 
+                  open={this.state.showNewTopic}
+                  onSave={this.handleNewTopicOnSaveClick}
+                  onCancel={this.handleONewTopicOnCancelClick}
+                />
               </div>
-              <div className="forum-container">
-                <TopicsTable data={data.topics} />
-              </div>
-              <div className="forum-header">              
-                <button className="post-button" onClick={this.handleNewTopicOnClick}>New Topic</button>
-              </div>
-              
-              <NewForumTopic 
-                open={this.state.showNewTopic}
-                onSave={this.handleNewTopicOnSaveClick}
-                onCancel={this.handleONewTopicOnCancelClick}
-              />
             </React.Fragment>
         );
       } else {

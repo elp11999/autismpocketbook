@@ -45,7 +45,7 @@ class NewForumPost extends React.Component {
                             <div>
                                 <Form> 
                                     <div>
-                                        <Field component="textarea" className="new-post-post-data" rows="15" cols="200" name="notes" placeholder="Enter your reply here..."></Field>
+                                        <Field component="textarea" className="new-post-post-data" rows="8" cols="125" name="notes" placeholder="Enter your reply here..."></Field>
                                     </div>
 
                                     <div>

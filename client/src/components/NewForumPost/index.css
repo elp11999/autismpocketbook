@@ -1,13 +1,13 @@
 .new-post-container {
     position: fixed;
-    top: 50%;
+    top: 30%;
     left: 50%;
     background: white;
     border: 5px solid lightgray;
     border-radius: 5px;
     transform: translate(-50%, -50%);
     z-index: 1;
-    max-width: 800px;
+    width: 95%;
 }
 
 .new-post-heading {

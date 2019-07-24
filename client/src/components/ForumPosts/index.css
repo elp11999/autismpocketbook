@@ -1,6 +1,6 @@
-.forum-header {
+.forum-posts {
     margin: 10px auto 0 auto;
-    max-width: 1000px;
+    width: 95%;
 }
 
 .post-button {

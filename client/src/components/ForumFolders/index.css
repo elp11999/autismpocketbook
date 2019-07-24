@@ -19,9 +19,11 @@ body {
     font-size: 14px;
 }
 
-/*
- className="forum-a"
-*/
+.forum-folders {
+    margin: 10px auto 0 auto;
+    width: 95%;
+}
+
 .forum-a {
     text-decoration: none;
     font-weight: bold;
@@ -29,8 +31,7 @@ body {
 }
 
 .forum-container {
-    margin: 10px auto 0 auto;
-    max-width: 1010px;
+    margin: 10px 0 0 0;
     border: 5px solid lightgray;
     border-radius: 5px;
 }

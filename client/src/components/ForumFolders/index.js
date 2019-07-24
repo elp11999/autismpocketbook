@@ -119,15 +119,18 @@ class ForumFolders extends React.Component {
     if (this.state.showForum) {
       return (
         <React.Fragment>
+          <div className="forum-folders">
             <div className="forum-header">
                 <img className="forum-image" src="/Forum1.png" alt="forum"></img>             
                 <h1 className="forum-title">Forum</h1>
             </div>
-          <div className="forum-container"> 
-            {data.map(cellData => (
-              <FoldersTable data={cellData} key={key++}
-              />
-            ))}
+            <div className="forum-container"> 
+              {data.map(cellData => (
+                <FoldersTable data={cellData} key={key++}
+                />
+              ))}
+            </div>
+
           </div>
         </React.Fragment>
       );

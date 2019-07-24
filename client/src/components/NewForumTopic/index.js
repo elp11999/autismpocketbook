@@ -53,7 +53,7 @@ class NewForumTopic extends React.Component {
                                     </div>
  
                                     <div>
-                                        <Field component="textarea" className="new-topic-post-data" rows="10" cols="90" name="notes" placeholder="Describe your post here..."></Field>
+                                        <Field component="textarea" className="new-topic-post-data" rows="8" cols="125" name="notes" placeholder="Describe your post here..."></Field>
                                     </div>
 
                                     <div>

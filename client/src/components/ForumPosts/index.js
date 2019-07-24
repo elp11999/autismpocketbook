@@ -204,25 +204,27 @@ class ForumPosts extends React.Component {
       if (this.state.showPosts) {
         return(
           <React.Fragment>
-          <div className="forum-header">
-              <img className="forum-image" src="/Forum1.png" alt="forum"></img>                
-              <h1 className="forum-title">{data.title}</h1>                
+            <div className="forum-posts">
+            <div className="forum-header">
+                <img className="forum-image" src="/Forum1.png" alt="forum"></img>                
+                <h1 className="forum-title">{data.title}</h1>                
+                <button className="post-button" onClick={this.handleNewPostOnClick}>Post Reply</button>
+            </div>
+            <div className="forum-container">  
+              {data.posts.map(cellData => (
+                <PostTable data={cellData} key={key++}/>
+              ))}
+            </div>
+            <div className="forum-header">               
               <button className="post-button" onClick={this.handleNewPostOnClick}>Post Reply</button>
+            </div>          
+                
+            <NewForumPost 
+                  open={this.state.showNewPost}
+                  onSave={this.handleNewPostOnSaveClick}
+                  onCancel={this.handleONewPostOnCancelClick}
+            /> 
           </div>
-          <div className="forum-container">  
-            {data.posts.map(cellData => (
-              <PostTable data={cellData} key={key++}/>
-            ))}
-          </div>
-          <div className="forum-header">               
-            <button className="post-button" onClick={this.handleNewPostOnClick}>Post Reply</button>
-          </div>          
-              
-          <NewForumPost 
-                open={this.state.showNewPost}
-                onSave={this.handleNewPostOnSaveClick}
-                onCancel={this.handleONewPostOnCancelClick}
-          /> 
           </React.Fragment>
         );
       } else {
