@@ -10,6 +10,8 @@ import React from "react";
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+import "./AddChild.css";
+
 // Import the Modal UI component
 import Modal from "../components/Modal";
 
@@ -365,59 +367,59 @@ class AddChild extends React.Component {
                                 <p style={styles.subheader}>Current medications</p> 
                                 
                                 <div>
-                                    <label  style={Object.assign({}, styles.mlabel, styles.mNameLabel)} htmlFor="name">Name</label>
-                                    <label  style={Object.assign({}, styles.mlabel, styles.mFreqField)} htmlFor="frequency">Freq</label>
-                                    <label  style={Object.assign({}, styles.mlabel, styles.mDosField)} htmlFor="dosage">Dosage</label>
+                                    <label className="mlabel mNameLabel" htmlFor="name">Name</label>
+                                    <label className="mlabel mFreqLabel" htmlFor="frequency">Freq</label>
+                                    <label className="mlabel mDosLabel" htmlFor="dosage">Dosage</label>
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med1" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq1" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos1" />
+                                    <Field className="mfield mNameField" type="text" name="med1" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq1" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos1" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med2" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq2" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos2" />
+                                    <Field className="mfield mNameField" type="text" name="med2" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq2" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos2" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med3" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq3" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos3" />
+                                    <Field className="mfield mNameField" type="text" name="med3" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq3" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos3" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med4" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq4" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos4" />
+                                    <Field className="mfield mNameField" type="text" name="med4" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq4" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos4" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med5" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq5" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos5" />
+                                    <Field className="mfield mNameField" type="text" name="med5" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq5" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos5" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med6" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq6" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos6" />
+                                    <Field className="mfield mNameField" type="text" name="med6" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq6" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos6" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med7" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq7" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos7" />
+                                    <Field className="mfield mNameField" type="text" name="med7" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq7" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos7" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med8" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq8" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos8" />
+                                    <Field className="mfield mNameField" type="text" name="med8" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq8" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos8" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med9" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq9" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos9" />
+                                    <Field className="mfield mNameField" type="text" name="med9" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq9" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos9" />
                                 </div>
                                 <div>                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mNameField)} type="text" name="med10" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mFreqField)} type="text" name="freq10" />                            
-                                    <Field style={Object.assign({}, styles.mfield, styles.mDosField)} type="text" name="dos10" />
+                                    <Field className="mfield mNameField" type="text" name="med10" />                            
+                                    <Field className="mfield mFreqField" type="text" name="freq10" />                            
+                                    <Field className="mfield mDosField" type="text" name="dos10" />
                                 </div>
 
                                 <hr />
@@ -439,7 +441,7 @@ class AddChild extends React.Component {
                                                 defaultChecked={autismSelection === "Level 1"}
                                                 onChange={this.handleClick}
                                             />
-                                            Level 1: Requiring Support Social
+                                            Level 1: Moderate Support Social Needed
                                         </label>
                                     </div>
 
@@ -453,7 +455,7 @@ class AddChild extends React.Component {
                                                 defaultChecked={autismSelection === "Level 2"}
                                                 onChange={this.handleClick}
                                             />
-                                            Level 2: Requiring Substantial Support Social
+                                            Level 2: High Support Social Needed
                                         </label>
                                     </div>
 
@@ -467,7 +469,7 @@ class AddChild extends React.Component {
                                                 defaultChecked={autismSelection === "Level 3"}
                                                 onChange={this.handleClick}
                                             />
-                                            Level 3: Requiring Very Substantial Support Social
+                                            Level 3: Extreme Support Social Needed
                                         </label>
                                     </div>
                                 </Field>
