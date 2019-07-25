@@ -1,64 +1,64 @@
     
     
-    .mlabel {
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-right: 10px;
-        margin-bottom: 5px;
-        width: 32%;
-    }
-    
-    .mfield {
-        background: #e8f0fe;
-        font-size: 1.1rem;
-        margin-bottom: 10px;
-        margin-right: 10px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-radius: 5px;
-    }
+.mlabel {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    width: 32%;
+}
 
+.mfield {
+    background: #e8f0fe;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+
+.mNameLabel {
+    width: 70%;
+}
+
+.mFreqLabel {
+    width: 10%;
+}
+
+.mDosLabel {
+    width: 12%;
+}
+
+.mNameField {
+    width: 70%;
+}
+
+.mFreqField {
+    width: 10%;
+}
+
+.mDosField {
+    width: 12%;
+}
+
+@media only screen and (max-width: 640px) {
     .mNameLabel {
-        width: 70%;
+        width: 64%;
     }
-
-    .mFreqLabel {
-        width: 10%;
-    }
-
-    .mDosLabel {
-        width: 12%;
-    }
-
     .mNameField {
-        width: 70%;
+        width: 64%;
     }
-    
+    .mFreqLabel {
+        width: 14%;
+    }
     .mFreqField {
-        width: 10%;
-    }
-
+        width: 14%;
+    }    
     .mDosField {
-        width: 12%;
+        width: 15%;
+    }   
+    .mDosLabel {
+        width: 15%;
     }
-
-    @media only screen and (max-width: 640px) {
-        .mNameLabel {
-            width: 60%;
-        }
-        .mNameField {
-            width: 60%;
-        }
-        .mFreqLabel {
-            width: 12%;
-        }
-        .mFreqField {
-            width: 12%;
-        }    
-        .mDosField {
-            width: 15%;
-        }   
-        .mDosLabel {
-            width: 5%;
-        }
-    }
+}

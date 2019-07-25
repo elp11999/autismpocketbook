@@ -96,7 +96,7 @@ class Login extends React.Component {
             console.log(res);
             apbSystem.cid = res.data.cid;
             localStorage.setItem("apbSystem", JSON.stringify(apbSystem));                                
-            //this.props.history.push("/dashboard");
+            this.props.history.push("/dashboard");
         })
         .catch(err => {
             console.log(err);

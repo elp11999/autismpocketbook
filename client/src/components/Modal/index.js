@@ -21,7 +21,7 @@ const styles = {
       border: "1px solid #ccc",
       borderRadius: 8,
       padding: 20,
-      maxWidth: 600,
+      width: "95%",
       transform: "translate(-50%, -50%)",
       zIndex: 1
     },
