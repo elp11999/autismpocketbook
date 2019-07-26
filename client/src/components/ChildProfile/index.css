@@ -132,21 +132,21 @@
 
 @media only screen and (max-width: 640px) {
     .mNameLabel {
-        width: 60%;
+        width: 50%;
     }
     .mNameField {
-        width: 60%;
+        width: 50%;
     }
     .mFreqLabel {
-        width: 14%;
+        width: 20%;
     }
     .mFreqField {
-        width: 14%;
+        width: 20%;
     }    
     .mDosField {
-        width: 15%;
+        width: 20%;
     }   
     .mDosLabel {
-        width: 15%;
+        width: 20%;
     }
 }
