@@ -117,7 +117,8 @@
     margin-top: 5px;
     padding: 10px;
     border-radius: 5px;
-    width: 100%;
+    display: inline-block;
+    width: 50%;
 }
 
 .child-profile-errorMessageDiv {

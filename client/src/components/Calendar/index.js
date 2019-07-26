@@ -34,7 +34,8 @@ class Calendar extends React.Component {
     id: "",
     child: "",
     value: "",
-    showModal: false,
+    showCalendar: true,
+    showNotes: false,
     clickFunction: this.handleDateClick,
     level: 0,
     calendarWeekends: true,
@@ -114,7 +115,8 @@ class Calendar extends React.Component {
           this.setState({ data: defNoteData });
           this.setState({ handleOnSave: this.handleOnSave}); 
         }
-        this.setState({ showModal: !this.state.showModal});
+        this.setState({ showNotes: !this.state.showNotes});
+        this.setState({ showCalendar: !this.state.showCalendar});
     })
     .catch(err => {
         console.log(err);
@@ -142,7 +144,8 @@ class Calendar extends React.Component {
           this.setState({ data: defNoteData });
         }
         console.log("Showing modal...");
-        this.setState({ showModal: !this.state.showModal});
+        this.setState({ showNotes: !this.state.showNotes});
+        this.setState({ showCalendar: !this.state.showCalendar});
     })
     .catch(err => {
         console.log(err);
@@ -151,12 +154,14 @@ class Calendar extends React.Component {
 
   handleOnCancel = (event) => {
     console.log("handleOnCancel"); 
-    this.setState({ showModal: !this.state.showModal});
+    this.setState({ showNotes: !this.state.showNotes});
+    this.setState({ showCalendar: !this.state.showCalendar});
   }
 
   handleOnSave = (notes) => { 
     console.log("handleOnSave"); 
-    this.setState({ showModal: !this.state.showModal});
+    this.setState({ showNotes: !this.state.showNotes});
+    this.setState({ showCalendar: !this.state.showCalendar});
 
     // Save new Note to database
     API.saveNote(this.state.id, notes)
@@ -180,7 +185,8 @@ class Calendar extends React.Component {
 
   handleOnUpdate = (notes) => { 
     console.log("handleOnUpdate");
-    this.setState({ showModal: !this.state.showModal});
+    this.setState({ showNotes: !this.state.showNotes});
+    this.setState({ showCalendar: !this.state.showCalendar});
 
     // Update Note to database
     API.updateNote(this.state.data._id, notes)
@@ -194,35 +200,43 @@ class Calendar extends React.Component {
   }
 
   render() {
+         
+    let calendar = null;    
+    
+    if (this.state.showCalendar) {
+      calendar = 
+      <div className="demo-app">
+        <div className="demo-app-calendar">
+          <FullCalendar
+            defaultView="dayGridMonth"
+            header={{
+              left: "prev,next",
+              //left: "prev,next today",
+              center: "title",
+              right: "listWeek"
+              //right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+            }}
+            plugins={this.state.plugins}
+            ref={this.calendarComponentRef}
+            weekends={this.state.calendarWeekends}
+            events={this.state.calendarEvents}
+            dateClick={this.handleDateClick}
+            eventClick={this.handleEventClick}
+          />
+        </div>
+      </div>;
+    }
+
     return (
     
       <React.Fragment>
-        <div className="demo-app">
-          <div className="demo-app-calendar">
-            <FullCalendar
-              defaultView="dayGridMonth"
-              header={{
-                left: "prev,next",
-                //left: "prev,next today",
-                center: "title",
-                right: "listWeek"
-                //right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-              }}
-              plugins={this.state.plugins}
-              ref={this.calendarComponentRef}
-              weekends={this.state.calendarWeekends}
-              events={this.state.calendarEvents}
-              dateClick={this.handleDateClick}
-              eventClick={this.handleEventClick}
-            />
-          </div>
-        </div>
+        {calendar}
         <Notes heading={this.state.title}
           title={this.state.child + "'s note"}
           start={this.state.start}
           allDay={this.state.allDay}
           data={this.state.data}
-          open={this.state.showModal}
+          open={this.state.showNotes}
           onSave={this.state.handleOnSave}
           onCancel={this.handleOnCancel}
         />

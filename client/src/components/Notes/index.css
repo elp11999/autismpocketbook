@@ -1,0 +1,74 @@
+.notes-mainheader {
+    font-size: 2rem;
+    color: #eb6864;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: 500;    
+ }
+
+ .notes-subheader {
+    font-size: 1.5rem;
+    color: #eb6864;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;    
+}
+
+.notes-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 700px;
+}
+
+.notes-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+
+}
+
+.notes-select {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.notes-textarea {
+    font-size: 1.1rem;
+    margin-top: 0;    
+    border: .5px solid #ccc;   
+    display: block;
+    width: 100%;
+}
+
+.notes-button {
+    font-size: 1.1rem;
+    background-color: #2ebb4e;
+    background-image: linear-gradient(-180deg,#34d058,#28a745 90%);
+    color: white;
+    margin-top: 10px;    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+    width: 50%;
+}
+
+.notes-messageDiv {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.notes-message {
+    font-size: 1.5rem;
+    color: red;
+}

@@ -181,6 +181,18 @@ class DashBoard extends React.Component {
         console.log(err);
     });
 
+  }  
+
+  handleOnUpdateProfileCancel = (event) => {
+        
+    // Disable edit profile component      
+    this.setState({showUpdateProfile: false});
+    
+    // Show Dashboard buttons        
+    this.setState({showDashboardButtons: true});
+
+    // Show calendar        
+    this.setState({showCalendar: true});
   }
 
   handleReportsOnClick = (event) => {
@@ -273,7 +285,8 @@ class DashBoard extends React.Component {
           header={"Update " + this.state.child + "'s profile"}
           buttonLabel="Update Profile"
           data={this.state.data}
-          onProfileSave={this.handleOnUpdateProfile} />
+          onProfileSave={this.handleOnUpdateProfile} 
+          onProfileCancel={this.handleOnUpdateProfileCancel} />
     }
 
     return (

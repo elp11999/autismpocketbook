@@ -410,8 +410,11 @@ class ChildView extends React.Component {
                                     ))}
                                 </Field>
 
-                                <hr />                                
-                                <button className="child-profile-button" type="submit" disabled={isSubmitting}>{this.props.buttonLabel}</button>
+                                <hr /> 
+                                <div>
+                                    <button className="child-profile-button" type="submit" disabled={isSubmitting}>{this.props.buttonLabel}</button>
+                                    <button className="child-profile-button" disabled={true} onClick={this.props.onProfileCancel}>Cancel</button>
+                                </div>
                                 <div className="child-profile-errorMessageDiv">
                                     <ErrorMessage className="child-profile-errorMessage" name="firstname" component="div" />
                                 </div> 

@@ -99,6 +99,10 @@ class Signup extends React.Component {
             console.log(err);
         });
 
+    }  
+
+    handleOnUpdateProfileCancel = (event) => {                                
+        this.props.history.push("/");
     }
 
     render = () => {
@@ -109,7 +113,8 @@ class Signup extends React.Component {
                     header="Add a child"
                     buttonLabel="Add Child"
                     data={this.state.data}
-                    onProfileSave={this.handleOnProfileSave}
+                    onProfileSave={this.handleOnProfileSave} 
+                    onProfileCancel={this.handleOnUpdateProfileCancel}
                 />
             );
 
