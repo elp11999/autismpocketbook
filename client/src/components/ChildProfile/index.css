@@ -1,0 +1,152 @@
+/*
+ * CSS for Child View Components
+ */
+ 
+.child-profile-mainheader {
+    font-size: 2rem;
+    color: #eb6864;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: 500;    
+ }
+
+ .child-profile-subheader {
+    font-size: 1.5rem;
+    color: #eb6864;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;    
+}
+
+.child-profile-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 700px;
+}
+.child-profile-text-field {
+    background: #e8f0fe;
+    box-shadow: inset 0 1px 2px rgba(27,31,35,.075);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.child-profile-text-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.mlabel {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    width: 32%;
+}
+
+.mfield {
+    background: #e8f0fe;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+
+.mNameLabel {
+    width: 70%;
+}
+
+.mFreqLabel {
+    width: 10%;
+}
+
+.mDosLabel {
+    width: 12%;
+}
+
+.mNameField {
+    width: 70%;
+}
+
+.mFreqField {
+    width: 10%;
+}
+
+.mDosField {
+    width: 12%;
+}
+
+.child-profile-levelheader {
+    font-weight: 700
+}
+
+.child-profile-radio-label {
+    font-size: 1.0rem;
+    margin-left: 5px;
+}
+
+.child-profile-radio-button {
+    font-size: 1.1rem;
+    margin-right: 5px;
+}
+
+.child-profile-cofactor-label {
+    margin-top: 25px;
+}
+
+.child-profile-button {
+    font-size: 1.1rem;
+    background-color: #2ebb4e;
+    background-image: linear-gradient(-180deg,#34d058,#28a745 90%);
+    color: white;
+    margin-top: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.child-profile-errorMessageDiv {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.child-profile-errorMessage {
+    font-size: 1.5rem;
+    color: red;
+}
+
+@media only screen and (max-width: 640px) {
+    .mNameLabel {
+        width: 64%;
+    }
+    .mNameField {
+        width: 64%;
+    }
+    .mFreqLabel {
+        width: 14%;
+    }
+    .mFreqField {
+        width: 14%;
+    }    
+    .mDosField {
+        width: 15%;
+    }   
+    .mDosLabel {
+        width: 15%;
+    }
+}

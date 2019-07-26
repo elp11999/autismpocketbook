@@ -13,8 +13,8 @@ import ReactExport from "react-export-excel";
 // Import Calendar component
 import Calendar from "../components/Calendar";
 
-// Import Profile component
-import Profile from "../pages/AddChild";
+// Import ChildProfile component
+import ChildProfile from "../components/ChildProfile";
 
 // Import the API library
 import API from "../utils/API";
@@ -261,7 +261,7 @@ class DashBoard extends React.Component {
     }
 
     if (this.state.showAddProfile) {
-      addProfile = <Profile 
+      addProfile = <ChildProfile 
           header={"Add a child"}
           buttonLabel="Add Child"
           data={this.state.data}
@@ -269,7 +269,7 @@ class DashBoard extends React.Component {
     }
 
     if (this.state.showUpdateProfile) {
-      updateProfile = <Profile 
+      updateProfile = <ChildProfile 
           header={"Update " + this.state.child + "'s profile"}
           buttonLabel="Update Profile"
           data={this.state.data}

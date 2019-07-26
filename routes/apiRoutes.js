@@ -52,7 +52,7 @@ module.exports = function(app) {
             expiresIn: '1h',
           }); 
           console.log(parent);    
-          res.cookie('token', token, { httpOnly: true }).status(200).json({pid: parent._id, username: parent.username, email: user.email, error: null});
+          res.cookie('token', token, { httpOnly: true }).status(200).json({pid: parent._id, username: parent.username, email: parent.email, error: null});
         }
       });
     });

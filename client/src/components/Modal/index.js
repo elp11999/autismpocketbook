@@ -1,50 +1,20 @@
+// Import React
 import React from "react";
+
+// Import React-Dom
 import ReactDOM from "react-dom";
 
-const styles = {
-    nav: {
-      fontSize: "1rem",
-      padding: "0.2em 0.2em",
-      backgroundColor: "blue"
-    },
-    h1: {
-      fontSize: "1.3em",
-      color: "white",
-      display: "flex",
-      justifyContent: "center"
-    },
-    container: {
-      position: "fixed",
-      top: "50%",
-      left: "50%",
-      background: "white",
-      border: "1px solid #ccc",
-      borderRadius: 8,
-      padding: 20,
-      width: "95%",
-      transform: "translate(-50%, -50%)",
-      zIndex: 1
-    },
-    closeButton: {
-      fontSize: "1rem",
-      backgroundColor: "blue",
-      color: "white",
-      marginTop: 10,
-      padding: 5,      
-      float: "right"
-    }
-}
+// Import custom CSS
+import "./index.css";
 
 const Modal = ({heading, children, onClose, open }) => {
     return(
         open
         ? ReactDOM.createPortal(
-            <div style={styles.container}>            
-                <div style={styles.nav}><h1 style={styles.h1}>{heading}</h1></div>
+            <div className="modal-container">            
+                <div className="modal-header-div"><h1 className="modal-header-text">{heading}</h1></div>
                 {children}
-                <div style={styles.closeDiv}>
-                  <button style={styles.closeButton} onClick={onClose}>Close</button>
-                </div>
+                <button className="modal-close-button" onClick={onClose}>Close</button>
             </div>,
             document.querySelector("#modal")
         )

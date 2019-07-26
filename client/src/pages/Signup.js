@@ -10,8 +10,8 @@ import React from "react";
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-// Import Profile component
-import Profile from "../pages/AddChild";
+// Import ChildProfile component
+import ChildProfile from "../components/ChildProfile";
 
 // Import the API library
 import API from "../utils/API";
@@ -105,7 +105,7 @@ class Signup extends React.Component {
 
         if (this.state.showProfile) {
             return (
-                <Profile 
+                <ChildProfile 
                     header="Add a child"
                     buttonLabel="Add Child"
                     data={this.state.data}
