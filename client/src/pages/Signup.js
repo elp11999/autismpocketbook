@@ -101,8 +101,8 @@ class Signup extends React.Component {
 
     }  
 
-    handleOnUpdateProfileCancel = (event) => {                                
-        this.props.history.push("/");
+    handleOnUpdateProfileCancel = (event) => {
+        this.props.history.push("/"); 
     }
 
     render = () => {

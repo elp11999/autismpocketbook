@@ -36,6 +36,7 @@ class Calendar extends React.Component {
     value: "",
     showCalendar: true,
     showNotes: false,
+    dashboard: "",
     clickFunction: this.handleDateClick,
     level: 0,
     calendarWeekends: true,
@@ -57,6 +58,8 @@ class Calendar extends React.Component {
   };
 
   componentDidMount() {
+    console.log(this.props);
+    this.setState({dashboard: this.props.dashboard});
 
     // Load local storage
     let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
@@ -117,6 +120,7 @@ class Calendar extends React.Component {
         }
         this.setState({ showNotes: !this.state.showNotes});
         this.setState({ showCalendar: !this.state.showCalendar});
+        this.state.dashboard.setState({showDashboardButtons: false});
     })
     .catch(err => {
         console.log(err);
@@ -129,6 +133,7 @@ class Calendar extends React.Component {
     this.setState({ start: arg.event.start}); 
     this.setState({ allDay: true});
     this.setState({ handleOnSave: this.handleOnUpdate});
+    this.state.dashboard.setState({showDashboardButtons: false});
 
     let noteDate = {
       "date" : arg.event.start
@@ -156,12 +161,14 @@ class Calendar extends React.Component {
     console.log("handleOnCancel"); 
     this.setState({ showNotes: !this.state.showNotes});
     this.setState({ showCalendar: !this.state.showCalendar});
+    this.state.dashboard.setState({showDashboardButtons: true});
   }
 
   handleOnSave = (notes) => { 
     console.log("handleOnSave"); 
     this.setState({ showNotes: !this.state.showNotes});
     this.setState({ showCalendar: !this.state.showCalendar});
+    this.state.dashboard.setState({showDashboardButtons: true});
 
     // Save new Note to database
     API.saveNote(this.state.id, notes)
@@ -187,6 +194,7 @@ class Calendar extends React.Component {
     console.log("handleOnUpdate");
     this.setState({ showNotes: !this.state.showNotes});
     this.setState({ showCalendar: !this.state.showCalendar});
+    this.state.dashboard.setState({showDashboardButtons: true});
 
     // Update Note to database
     API.updateNote(this.state.data._id, notes)

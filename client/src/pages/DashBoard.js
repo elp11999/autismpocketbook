@@ -156,6 +156,10 @@ class DashBoard extends React.Component {
     });
   }
 
+  handleOnAddProfileCancel = (event) => {
+    this.props.history.push("/");
+  }
+
   handleOnUpdateProfile = (profile) => {
     console.log("handleOnUpdateProfile");
 
@@ -259,7 +263,7 @@ class DashBoard extends React.Component {
     }
     
     if (this.state.showCalendar) {
-      calendar = <Calendar />
+      calendar = <Calendar dashboard={this}/>
     }
 
     if (this.state.showDashboardButtons) {
@@ -277,7 +281,8 @@ class DashBoard extends React.Component {
           header={"Add a child"}
           buttonLabel="Add Child"
           data={this.state.data}
-          onProfileSave={this.handleOnAddProfile} />
+          onProfileSave={this.handleOnAddProfile}
+          onProfileCancel={this.handleOnAddProfileCancel} />
     }
 
     if (this.state.showUpdateProfile) {
