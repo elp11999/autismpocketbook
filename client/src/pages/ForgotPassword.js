@@ -1,7 +1,7 @@
 //
-// Login page
+// Forgot password page
 //
-// Login.js
+// ForgtotPassword.js
 //
 
 // Import the React library
@@ -9,9 +9,6 @@ import React from "react";
 
 // Import the Formik library
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-
-// Import ChildProfile component
-import ChildProfile from "../components/ChildProfile";
 
 // Import the API library
 import API from "../utils/API";
@@ -55,10 +52,10 @@ const styles = {
         width: "100%"
     },
     label: {
-        fontSize: "1.1rem",
+        fontSize: "1.2rem",
         fontWeight: 500,
         marginRight: 5,
-        marginBottom: 5
+        marginBottom: 15
 
     },
     button: {
@@ -79,11 +76,11 @@ const styles = {
   
 let apbSystem = JSON.parse(localStorage.getItem("apbSystem"));
 
-// Function to construct Login page of the UI
-class Login extends React.Component {
+// Function to construct Forgot Password page of the UI
+class ForgotPassword extends React.Component {
 
-    state = {   
-        showProfile: false,     
+    state = {
+        showForgotPassword: true ,   
         data: {},
         errorMessage: ""
     };
@@ -110,26 +107,16 @@ class Login extends React.Component {
 
     render = () => {
 
-        if (this.state.showProfile) {
-            return (
-                <ChildProfile 
-                    header="Add a child"
-                    buttonLabel="Add Child"
-                    data={this.state.data}
-                    onProfileSave={this.handleOnProfileSave}
-                    onProfileCancel={this.handleOnProfileCancel}
-                />
-            );
-
-        } else {
+        if (this.state.showForgotPassword) {
             return (
                 <React.Fragment>
                     
-                    <p style={styles.header}>Sign in to Autism Pocket Book</p>         
+                    <p style={styles.header}>Reset your password</p>         
                     <div style={styles.container}>
                         <Formik
-                            initialValues={{ email: apbSystem.email, password: '' }}
+                            initialValues={{ email: '' }}
                             validate={values => {
+                                this.setState({errorMessage: ""});  
                                 let errors = {};
                                 if (!values.email) {
                                     errors.email = 'Email  address required!!';
@@ -138,45 +125,27 @@ class Login extends React.Component {
                                 ) {
                                     errors.email = 'Invalid email address!!';
                                 }
-                                else if (!values.password)
-                                    errors.password = 'Password required!!';
                                 return errors;
                             }}
                             onSubmit={(values, { setSubmitting }) => {
                                 setTimeout(() => {
-                                setSubmitting(false);                                     
+                                    setSubmitting(false);
+                                    this.setState({errorMessage: ""});                                  
 
-                                // Authenticate user
-                                API.authenticateUser(values)
-                                .then(res =>  {                                    
-                                    if (res.data.error)
-                                        this.setState({errorMessage: res.data.error});
-                                    else {
-                                        console.log(res); 
-                                        apbSystem.pid = res.data.pid;
-                                        apbSystem.user = res.data.username;                                  
-                                        apbSystem.email = res.data.email;
-                                        localStorage.setItem("apbSystem", JSON.stringify(apbSystem));
-                                        
-                                        // Get children count
-                                        API.getChildrenCount(apbSystem.pid)
-                                        .then(res =>  {                                     
-                                            if (res.data.count > 0)  {
-                                                this.props.history.push("/dashboard");
-                                            } else {
-                                                this.setState({showProfile: true});
-                                            }
-                                        })
-                                        .catch(err => {
-                                            console.log(err);
-                                        });
-                                    }
-                                })
-                                .catch(err => {
-                                    console.log(err);                                
-                                    this.setState({errorMessage: "Unknown error has occurred"});
-                                });
-
+                                    // Request password reset
+                                    API.forgotPswd(values.email)
+                                    .then(res =>  {                                    
+                                        if (res.data.error)
+                                            this.setState({errorMessage: res.data.error});
+                                        else {
+                                            console.log(res); 
+                                            this.setState({showForgotPassword: false});   
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log(err);                                
+                                        this.setState({errorMessage: "Unknown error has occurred"});
+                                    });
                                 }, 400);
                             }}
                             >
@@ -184,17 +153,12 @@ class Login extends React.Component {
                                 <div>
                                     <Form>
                                         <div>
-                                            <label style={styles.label} htmlFor="email">Email address</label>
+                                            <label style={styles.label} htmlFor="email">Enter your email address and we will send you a link to reset your password.</label>
                                         </div>
-                                        <Field style={styles.field} type="email" name="email" />
+                                        <Field style={styles.field} type="email" name="email" placeholder="Enter your email address"/>
 
-                                        <div>
-                                            <label  style={styles.label} htmlFor="password">Password</label>
-                                            <a style={styles.signup} href="/forgotpsw">Forgot password?</a>
-                                        </div>
-                                        <Field style={styles.field} type="password" name="password" />
                                         <br />
-                                        <button style={styles.button} type="submit" disabled={isSubmitting}>Sign in</button>
+                                        <button style={styles.button} type="submit" disabled={isSubmitting}>Send password reset email</button>
                                         <div style={styles.errorMessageDiv}>
                                             <ErrorMessage style={styles.errorMessage} name="email" component="div" />
                                             <ErrorMessage style={styles.errorMessage} name="password" component="div" />
@@ -205,15 +169,43 @@ class Login extends React.Component {
                             )}
                         </Formik>
                     </div>
+                </React.Fragment> 
+            );
+        } else {
+            return (
+                <React.Fragment>                    
+                    <p style={styles.header}>Reset your password</p>         
                     <div style={styles.container}>
-                    <span>New to Autism Pocket Book?</span>
-                    <a style={styles.signup} href="/signup">Create Account.</a>
+                        <Formik
+                            onSubmit={(values, { setSubmitting }) => {
+                                setTimeout(() => {
+                                setSubmitting(false);                                
+                                this.props.history.push("/login");
+                                }, 400);
+                            }}
+                            >
+                            {({ isSubmitting }) => (
+                                <div>
+                                    <Form>
+                                        <div>
+                                            <label style={styles.label} htmlFor="email">Check your email for a link to reset your password. If it does't appear within a few minutes, check your spam folder.</label>
+                                        </div>
+
+                                        <button style={styles.button} type="submit" disabled={isSubmitting}>Return to sign in</button>
+                                        <div style={styles.errorMessageDiv}>
+                                            <p style={styles.errorMessage}>{this.state.errorMessage}</p>
+                                        </div>
+                                    </Form>
+                                </div>
+                            )}
+                        </Formik>
                     </div>
                 </React.Fragment> 
             );
+
         }
     }
 }
 
-// Export the Login UI page
-export default Login;
+// Export the Forgot Password UI page
+export default ForgotPassword;

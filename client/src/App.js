@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Resources from './pages/Resources';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
 import ChildProfile from './components/ChildProfile';
 import NoMatch from "./pages/NoMatch";
 import DashBoard from './pages/DashBoard';
@@ -60,6 +61,7 @@ function App() {
           <Route exact path="/resources" component={Resources} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
+          <Route exact path="/forgotpsw" component={ForgotPassword} />
           <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute exact path="/addc" component={ChildProfile} />
           <PrivateRoute exact path="/linecharts2" component={LineCharts2} />

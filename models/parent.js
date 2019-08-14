@@ -32,6 +32,16 @@ var ParentSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    // Password reset token
+    resetPasswordToken: {
+        type: String,
+        required: false
+    },
+    // Password rest token expire date
+    resetPasswordExpires: {
+        type: String,
+        required: false
     },  
     // Set up a children assocation
     children: [

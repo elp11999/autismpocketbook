@@ -12,6 +12,12 @@ const db = require("../models");
 const Parent = require('../models/parent.js');
 const withAuth = require("../withAuth");
 
+// Load Node Mailer library
+const nodeMailer = require("nodemailer");
+
+// Load crypto library
+var crypto = require('crypto');
+
 // Load Path library
 const path = require("path");
 
@@ -23,6 +29,8 @@ const wd = require('word-definition');
 
 // Set token password
 const secret = process.env.TOKEN_SECRET;
+
+const smtpURL ="smtps://hendersonmichael092@gmail.com:Elp1Elp1@smtp.gmail.com";
 
 // Express routes
 module.exports = function(app) {
@@ -399,6 +407,46 @@ module.exports = function(app) {
           console.log(err);
           res.json(err);
         });
+    });      
+
+    // Route to request a password reset
+    app.post("/api/forgotpsw/:email", function(req, res) {
+      const { email } = req.params;
+      console.log("forgotpsw: email=" + email);     
+     
+      //  Create reset password token and expiration date
+      const resetInfo = {
+        resetPasswordToken : crypto.randomBytes(20).toString('hex'),
+        resetPasswordExpires: Date.now() + 360000
+      } 
+      //console.log("forgotpsw: password resetInfo=" + JSON.stringify(resetInfo, null, 2));
+
+      // Update parent with password reset information
+      db.Parent.findOneAndUpdate({ email }, { $set: resetInfo }, { new: true }, function(err, user) {
+        if (err) {
+          res.status(200).json({error: 'Internal error please try again'});
+        } else if (!user) {
+          res.status(200).json({error: 'Incorrect email address'});
+        } else {         
+          const emailData = {
+            from: "autismpocketbook.com",
+            to: email,
+            subject: "AutsimPocketBook Password Reset",
+            text: "Hi,\nWe heard you lost your AutismPocketBook password. Sorry about that!\n\nBut dont't worry! You can use the following link to reset your password:\n\nhttp://localhost:3000/resetpsw/" + resetInfo.resetPasswordToken + "\n\nIf you don\'t use this link within 3 hours, it will expire. To get a new password reset link, visit:\n\nhttp://localhost:3000/forgotpsw\n\nThanks,\nYour friends at AutismPocketBook" 
+          };
+          
+          const transporter = nodeMailer.createTransport(smtpURL);  
+          transporter.sendMail(emailData, function(err, response) {
+            if (err) {   
+              console.log("forgotpsw: Message failed: " + err);       
+              res.status(200).json({error: 'Unable to send reset email link.'});
+            } else {
+              console.log("forgotpsw: Message sent:" + response.response); 
+              res.status(200).json("ok"); 
+            }
+          })
+        }
+      });
     });  
 
     // Use default react app if no api routes

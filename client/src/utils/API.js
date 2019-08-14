@@ -91,5 +91,10 @@ export default {
   // Saves topic views to the database
   saveTopicViews: function(id) {
     return axios.post("/api/topicviews/" + id);
+  },
+  // Reset password request
+  forgotPswd: function(email) {
+    console.log("calling api/forgotpsw");
+    return axios.post("/api/forgotpsw/" + email);
   }
 };
