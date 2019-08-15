@@ -18,6 +18,9 @@ const nodeMailer = require("nodemailer");
 // Load crypto library
 var crypto = require('crypto');
 
+// Load bcrypt library
+var bcrypt = require('bcrypt');
+
 // Load Path library
 const path = require("path");
 
@@ -26,6 +29,9 @@ const jwt = require('jsonwebtoken');
 
 // Import the Word Definition library
 const wd = require('word-definition');
+
+// Set number of salt rounds
+const saltRounds = 10;
 
 // Set token password
 const secret = process.env.TOKEN_SECRET;
@@ -417,7 +423,8 @@ module.exports = function(app) {
       //  Create reset password token and expiration date
       const resetInfo = {
         resetPasswordToken : crypto.randomBytes(20).toString('hex'),
-        resetPasswordExpires: Date.now() + 360000
+        resetPasswordExpires:  Date.now() + (60000 * 60) * 4  /* 4 hours */
+        //resetPasswordExpires:  Date.now() + 300000  /* 5 minutes */
       } 
       //console.log("forgotpsw: password resetInfo=" + JSON.stringify(resetInfo, null, 2));
 
@@ -432,7 +439,7 @@ module.exports = function(app) {
             from: "autismpocketbook.com",
             to: email,
             subject: "AutsimPocketBook Password Reset",
-            text: "Hi,\nWe heard you lost your AutismPocketBook password. Sorry about that!\n\nBut dont't worry! You can use the following link to reset your password:\n\nhttp://localhost:3000/resetpsw/" + resetInfo.resetPasswordToken + "\n\nIf you don\'t use this link within 3 hours, it will expire. To get a new password reset link, visit:\n\nhttp://localhost:3000/forgotpsw\n\nThanks,\nYour friends at AutismPocketBook" 
+            text: "Hi,\nWe heard you lost your AutismPocketBook password. Sorry about that!\n\nBut dont't worry! You can use the following link to reset your password:\n\nhttp://localhost:3000/resetpsw/" + resetInfo.resetPasswordToken + "\n\nIf you don\'t use this link within 4 hours, it will expire. To get a new password reset link, visit:\n\nhttp://localhost:3000/forgotpsw\n\nThanks,\nYour friends at AutismPocketBook" 
           };
           
           const transporter = nodeMailer.createTransport(smtpURL);  
@@ -447,7 +454,33 @@ module.exports = function(app) {
           })
         }
       });
-    });  
+    }); 
+    
+    app.post("/api/resetpsw", function(req, res) {
+
+      // Get reset token and new password
+      const { token, password } = req.body;
+      
+      // Encrypt password
+      bcrypt.hash(password, saltRounds, function(err, hashedPassword) {
+        if (err) {          
+          res.status(200).json({error: 'Internal error please try again'});
+        }
+        else {
+          // Reset password
+          db.Parent.findOneAndUpdate({ "resetPasswordToken": token, "resetPasswordExpires": { $gte: Date.now() } }, { $set: {"password": hashedPassword, "resetPasswordExpires": null, "resetPasswordToken" : null} }, { new: true }, function(err, user) {
+            if (err) {
+              res.status(200).json({error: 'Internal error please try again'});
+            } else if (!user) {
+              res.status(200).json({error: 'Token is invalid or expired.'});
+            } else {
+              console.log("password reset for " + user.username);
+              res.status(200).json("ok"); 
+            }
+          });
+        }
+      }); 
+    }); 
 
     // Use default react app if no api routes
     app.use(function(req, res){

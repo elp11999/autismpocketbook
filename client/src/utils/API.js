@@ -94,7 +94,10 @@ export default {
   },
   // Reset password request
   forgotPswd: function(email) {
-    console.log("calling api/forgotpsw");
     return axios.post("/api/forgotpsw/" + email);
+  },
+  // Reset password
+  resetPswd: function(resetData) {
+    return axios.post("/api/resetpsw/", resetData);
   }
 };

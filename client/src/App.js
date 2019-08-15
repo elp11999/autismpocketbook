@@ -8,6 +8,7 @@ import Resources from './pages/Resources';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import ChildProfile from './components/ChildProfile';
 import NoMatch from "./pages/NoMatch";
 import DashBoard from './pages/DashBoard';
@@ -62,12 +63,13 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/forgotpsw" component={ForgotPassword} />
+          <Route path="/resetpsw/:token" component={ResetPassword} />
           <PrivateRoute exact path="/dashboard" component={DashBoard} />
           <PrivateRoute exact path="/addc" component={ChildProfile} />
           <PrivateRoute exact path="/linecharts2" component={LineCharts2} />
-          <Route exact path="/forum" component={ForumFolders} />
-          <Route exact path="/forum/topic" component={ForumTopics} />
-          <Route exact path="/forum/listposts" component={ForumPosts} />
+          <PrivateRoute exact path="/forum" component={ForumFolders} />
+          <PrivateRoute exact path="/forum/topic" component={ForumTopics} />
+          <PrivateRoute exact path="/forum/listposts" component={ForumPosts} />
           <Route component={NoMatch} />
         </Switch>
         <Footer />
