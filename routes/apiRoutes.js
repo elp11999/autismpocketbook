@@ -36,7 +36,8 @@ const saltRounds = 10;
 // Set token password
 const secret = process.env.TOKEN_SECRET;
 
-const smtpURL ="smtps://hendersonmichael092@gmail.com:Elp1Elp1@smtp.gmail.com";
+// Set SMTP URL for emails
+const smtpURL = process.env.SMTP_URL;
 
 // Express routes
 module.exports = function(app) {
@@ -441,7 +442,8 @@ module.exports = function(app) {
             subject: "AutsimPocketBook Password Reset",
             text: "Hi,\nWe heard you lost your AutismPocketBook password. Sorry about that!\n\nBut dont't worry! You can use the following link to reset your password:\n\nhttp://localhost:3000/resetpsw/" + resetInfo.resetPasswordToken + "\n\nIf you don\'t use this link within 4 hours, it will expire. To get a new password reset link, visit:\n\nhttp://localhost:3000/forgotpsw\n\nThanks,\nYour friends at AutismPocketBook" 
           };
-          
+            
+          console.log("forgotpsw: smtpURL: " + smtpURL);
           const transporter = nodeMailer.createTransport(smtpURL);  
           transporter.sendMail(emailData, function(err, response) {
             if (err) {   
