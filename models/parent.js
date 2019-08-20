@@ -40,7 +40,7 @@ var ParentSchema = new Schema({
     },
     // Password rest token expire date
     resetPasswordExpires: {
-        type: String,
+        type: Number,
         required: false
     },  
     // Set up a children assocation

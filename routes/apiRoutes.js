@@ -36,6 +36,9 @@ const saltRounds = 10;
 // Set token password
 const secret = process.env.TOKEN_SECRET;
 
+// Set home url
+const home_url = process.env.HOME_URL;
+
 // Set SMTP URL for emails
 const smtpURL = process.env.SMTP_URL;
 
@@ -440,7 +443,7 @@ module.exports = function(app) {
             from: "autismpocketbook.com",
             to: email,
             subject: "AutsimPocketBook Password Reset",
-            text: "Hi,\nWe heard you lost your AutismPocketBook password. Sorry about that!\n\nBut dont't worry! You can use the following link to reset your password:\n\nhttp://localhost:3000/resetpsw/" + resetInfo.resetPasswordToken + "\n\nIf you don\'t use this link within 4 hours, it will expire. To get a new password reset link, visit:\n\nhttp://localhost:3000/forgotpsw\n\nThanks,\nYour friends at AutismPocketBook" 
+            text: "Hi,\nWe heard you lost your AutismPocketBook password. Sorry about that!\n\nBut dont't worry! You can use the following link to reset your password:\n\n" + home_url + "resetpsw/" + resetInfo.resetPasswordToken + "\n\nIf you don\'t use this link within 4 hours, it will expire. To get a new password reset link, visit:\n\n" + home_url + "forgotpsw\n\nThanks,\nYour friends at AutismPocketBook" 
           };
             
           console.log("forgotpsw: smtpURL: " + smtpURL);
@@ -470,7 +473,9 @@ module.exports = function(app) {
         }
         else {
           // Reset password
-          db.Parent.findOneAndUpdate({ "resetPasswordToken": token, "resetPasswordExpires": { $gte: Date.now() } }, { $set: {"password": hashedPassword, "resetPasswordExpires": null, "resetPasswordToken" : null} }, { new: true }, function(err, user) {
+          let timeNow = Date.now();
+          //console.log("password=" + password + " token=" + token + " time=" + timeNow);
+          db.Parent.findOneAndUpdate({ "resetPasswordToken": token, "resetPasswordExpires": { $gte: timeNow } }, { $set: {"password": hashedPassword, "resetPasswordExpires": null, "resetPasswordToken" : null} }, { new: true }, function(err, user) {
             if (err) {
               res.status(200).json({error: 'Internal error please try again'});
             } else if (!user) {
